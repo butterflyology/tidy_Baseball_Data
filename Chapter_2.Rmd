@@ -1,0 +1,92 @@
+---
+title: "tidy_Baseball_Ch2"
+author: "C. A. Hamm"
+date: "July 31, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Beginning with Chapter 2, because Chapter 1 doesn't have much for us. 
+
+
+### Load packages, set seed, and note which package versions we will use.
+```{r preliminaries}
+library("Lahman")
+library("dplyr")
+library("ggplot2")
+library("devtools")
+library("readr")
+
+set.seed(8761825)
+session_info()
+```
+
+```{r Spahn}
+Spahn <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/spahn.csv", col_names = TRUE) # Note the "raw." to get the unformatted .csv
+
+# create the FIP stat
+Spahn <- Spahn %>% mutate(FIP = ((13 * HR) + (3 * BB) -2 * SO) / IP)
+head(Spahn)
+pos <- order(Spahn$FIP)
+head(Spahn[pos, c("Year", "Age", "W", "L", "ERA", "FIP")])
+
+Spahn1 <- Spahn %>% filter(Tm == "BSN" | Tm == "MLN") %>% mutate(Tm = factor(Tm, levels = c("BSN", "MLN")))
+head(Spahn1)
+by(Spahn1[, c("W-L", "ERA", "WHIP", "FIP")], Spahn1$Tm, summary)
+```
+
+
+```{r Batting}
+Batting <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/Batting.csv", col_names = TRUE)
+head(Batting)
+dim(Batting)
+
+Batting.60 <- Batting %>% filter(yearID >= 1960 & yearID <= 1969)
+head(Batting.60)
+dim(Batting.60)
+max(Batting.60$yearID)
+min(Batting.60$yearID)
+
+compute.hr <- function(pid){
+	d <- Batting.60 %>% filter(playerID == pid)
+	sum(d$HR)
+}
+
+# The book way with multiple steps and a function:
+players <- unique(Batting.60$playerID)
+system.time(S <- sapply(players, compute.hr))
+head(S)
+length(S) #1786 players had home runs in the 1960's
+
+# The tidy way, one line of code:
+system.time(S1 <- Batting.60 %>% group_by(playerID) %>% summarize(sum(HR)))
+head(S1)
+dim(S1)
+
+
+# create a data frame 
+dataframe.AB <- Batting %>% select(playerID, AB, HR, SO) %>% group_by(playerID) %>% filter(!is.na(AB)) %>% summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
+
+head(dataframe.AB)
+dim(dataframe.AB)
+
+# Note here that merging as described in the book makes no sense. Why add repeared rows of summarized data back to the original data frame "Batting"
+
+Batting2 <- dplyr::full_join(Batting, dataframe.AB, by = "playerID")
+head(Batting2)
+dim(Batting2)
+
+
+Batting.5000 <- dataframe.AB %>% filter(AB >= 5000)
+dim(Batting.5000)
+head(Batting.5000)
+
+
+# This function "compute.hr" is now unnecessary, as we have already calculated the relevent statistics. See how, with one line of dplyr code, we can replace a function and other awkward subsetting.
+Batting.5000 %>% filter(playerID == "aaronha01") %>% summarize(AB = sum(AB, na.rm = TRUE), HR = sum(HR, na.rm = TRUE), SO = sum(AB, na.rm = TRUE))
+
+# Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
+ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + theme_bw() + xlim(0, 0.1) + ylim(0, 0.35) + geom_point(cex = 2) + stat_smooth(method = "loess", col = "red") + ylab("SO / AB") + xlab("HR / AB")
+```
