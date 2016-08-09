@@ -1,8 +1,10 @@
 ---
 title: "tidy Baseball Chapter 2"
 author: "C. A. Hamm"
-date: "July 31, 2016"
-output: html_document
+date: "`r format(Sys.Date())`"
+output:  
+      html_document:  
+        keep_md: true  
 ---
 
 ```{r setup, include=FALSE}
