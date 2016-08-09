@@ -1,5 +1,5 @@
 ---
-title: "tidy_Baseball_Ch2"
+title: "tidy Baseball Chapter 2"
 author: "C. A. Hamm"
 date: "July 31, 2016"
 output: html_document
@@ -99,7 +99,7 @@ ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + theme_bw() + xlim(0, 0.1) 
   + Compute the number of stolen bases per game SB.Game = SB / Game.
   + Construct a scatterplot of the stolen bases per game against the success rates. Are there particular players with unusually high or low stolen base success rates? Which player had the greatest number of stolen bases per game?
 
-```{r Q2.1a}
+```{r Ch2.Q1a}
 # Import the Hall of Fame data set from the repo:
 hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
 dim(hof)
@@ -126,4 +126,140 @@ head(SB.Game)
 
 # e)
 ggplot(hof, aes(x = (SB / (SB + CS)), y = (SB / G)), label = X2) + theme_bw() + geom_point(size = 1.5) + xlab("Stolen Base \nSuccess Rate") + ylab("Stolen Bases \nper Game") + geom_text(size= 2, aes(label = X2), nudge_y = 0.0125)
-``` 
+```
+
+2. Question 2 - Suppose one records the outcomes of a batter in ten plate appearances:
+*Single*, *Out*, *Out*, *Single*, *Out*, *Double*, *Out*, *Walk*, *Out*, *Single*
+  + Use the c function to collect these outcomes in a character vector "outcomes."
+```{r Ch2.Q2a}
+outcomes <- c("Single", "Out", "Out", "Single", "Out", "Double", "Out", "Walk", "Out", "Single")
+```
+  + Use the table function to construct a frequency table of "outcomes." 
+```{r Ch2.Q2b}
+table(outcomes)
+```
+  + In tabulating these results, suppose one prefers the results to be ordered from least-successful to most-successful. Use the following
+code to convert the character vector outcomes to a factor variable "f.outcomes."
+
+```{r Ch2.Q2c1}
+f.outcomes <- factor(outcomes, levels=c("Out", "Walk", "Single", "Double"))
+```
+  + Use the table function to tabulate the values in f.outcomes. How does the output differ from what you saw in part (b)?
+```{r Ch2.Q2c2}
+table(f.outcomes)
+# The output in the first call was alphabetical.
+```
+  + Suppose you want to focus only on the walks in the plate appearances. Describe what is done in each of the following statements.
+
+```{r }
+outcomes == "Walk" # This calls all instances of Walk
+sum(outcomes == "Walk") # This sums all instances of Walk
+```
+
+3. Question 3
+  + In R, place the wins and losses in the vectors W and L, respectively. Also, create a character vector Name containing the last names of these pitchers.
+```{r Ch2.Q3a}
+pitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/pitching.csv", col_names = TRUE)
+dim(pitching)
+head(pitching)
+
+pitching.350 <- pitching %>% group_by(playerID) %>% summarize(W = sum(W), L = sum(L), SO = sum(SO), BB = sum(BB)) %>% filter(W >= 350) %>% rename(Name = playerID)
+dim(pitching.350)
+head(pitching.350)
+```
+  + Compute the winning percentage for all pitchers defined by 100 × W/(W+L) and put these winning percentages in the vector Win.PCT.
+```{r Ch2.Q3b}
+Win.PCT <- pitching.350 %>% mutate(Win.PCT = ((100 * W) / (W + L))) %>% select(Name, Win.PCT)
+Win.PCT
+```
+  + By use of the command Wins.350 <- data.frame(Name, W, L, Win.PCT) create a data frame Wins.350 containing the names, wins, losses, and winning percentages.
+```{r Ch2.Q3c}
+Wins.350 <- pitching.350 %>% select(Name, W, L) %>% inner_join(Win.PCT, by = "Name")
+Wins.350
+```
+  + By use of the "order" function, sort the data frame Wins.350 by winning percentage. Among these pitchers, who had the largest and smallest winning percentages?
+```{r Ch2.Q3d}
+Wins.350 %>% arrange(desc(Win.PCT))
+```
+
+4. Question 4
+  + In R, place the strikeout and walk totals from the 350 win pitchers in the vectors SO and BB, respectively. Also, create a character vector "Name" containing the last names of these pitchers.
+
+```{r Ch2.Q4a}
+# Already done!
+pitching.350
+```
+
+  + Compute the strikeout-walk ratio by SO/BB and put these ratios in the vector SO.BB.Ratio.
+  
+```{r Ch2.Q4b}
+SO.BB.Ratio <- pitching.350 %>% mutate(SO.BB.Ratio = (SO / BB)) %>% select(Name, SO.BB.Ratio)
+SO.BB.Ratio
+```
+
+  + by use of the command "SO.BB <- data.frame(Name, SO, BB, SO.BB.Ratio)" create a data frame "SO.BB" containing the names, strikeouts, walks, and strikeout-walk ratios.
+
+```{r Ch2.Q4c}
+SO.BB <- pitching.350 %>% mutate(SO.BB.Ratio = (SO / BB)) %>% select(Name, SO, BB, SO.BB.Ratio)
+SO.BB
+```
+
+  + By use of the subset function, find the pitchers who had a strikeout-walk ratio exceeding 2.8.
+
+```{r Ch2.Q4d}
+SO.BB %>% filter(SO.BB.Ratio > 2.8)
+```
+
+  + By use of the order function, sort the data frame by the number of walks. Did the pitcher with the largest number of walks have a high or low strikeout-walk ratio?
+
+```{r Ch2.Q4e}
+SO.BB %>% arrange(desc(BB))
+# The pitcher with the most walks (Roger Clemens) had a high SO/BB ratio. 
+```
+
+5. Question 5
+
+  + Read the Lahman “pitching.csv” data file into R into a data frame Pitching. 
+```{r Ch2.Q5a}
+# Already done!
+```
+  + The following function computes the cumulative strikeouts, cumulative walks, mid career year, and the total innings pitched (measured in terms of outs) for a pitcher whose season statistics are stored in the data frame d.
+
+```{r Ch2.Q5b1}
+stats <- function(d){
+c.SO <- sum(d$SO, na.rm=TRUE)
+c.BB <- sum(d$BB, na.rm=TRUE)
+c.IPouts <- sum(d$IPouts, na.rm=TRUE)
+c.midYear <- median(d$yearID, na.rm=TRUE)
+data.frame(SO = c.SO, BB = c.BB, IPouts = c.IPouts,
+midYear=c.midYear)
+}
+```
+  + Using the function "ddply"" (plyr package) together with the function stats, find the career statistics for all pitchers in the pitching dataset. Call this new data frame career.pitching.
+
+```{r Ch2.Q5b2}
+# We don't need to run the function, just use "summarize" in dplyr. 
+career.pitching <- pitching %>% group_by(playerID) %>% summarize(SO = sum(SO, na.rm = TRUE), BB = sum(BB, na.rm = TRUE), IPouts = sum(IPouts, na.rm = TRUE), midyear = median(yearID, na.rm = TRUE))
+head(career.pitching)
+```
+  + Use the merge function to merge the Pitching and career.pitching data frames.
+```{r Ch2.Q5c}
+# I confess this makes no sense to me because the dimensions of the data.frames are different.
+dim(career.pitching)
+dim(pitching)
+new.pitching <- right_join(pitching, career.pitching, by = "playerID")
+```
+
+  + Use the subset function to construct a new data frame career.10000 consisting of data for only those pitchers with at least 10,000 career IPouts.
+
+```{r Ch2.Q5d}
+career.1000 <- career.pitching %>% filter(IPouts >= 10000)
+dim(career.1000)
+head(career.1000)
+```
+
+  + For the pitchers with at least 10,000 career IPouts, construct a scatterplot of mid career year and ratio of strikeouts to walks. Comment on the general pattern in this scatterplot.
+
+```{r Ch2.Q5e}
+ggplot(career.1000, aes(x = midyear, y = (SO / BB))) + theme_bw() + geom_point(size = 1.5) + ylab("Strikeout : Walk ratio") + xlab("Midcareer Year") + stat_smooth(method = lm, color = "black")# I see only a slightly positive trend between the SO / BB ratio and midcareer year.
+```

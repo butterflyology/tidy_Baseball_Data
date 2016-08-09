@@ -8,7 +8,8 @@ All data (and the original code) are available on github here: **https://github.
 
 I will be downloading the data remotely so the repo is not filled with large files. If you are following along at home you may want to clone the repo or download the data locally. 
 
-**Major commits:**
+**Commits:**
 
 1. 31 July - Initial commit (README.md)
-2. 7 August - Updated Ch 2 file to include exercises
+2. 7 August - Updated Ch. 2 file to include exercises
+3. 9 August - Completed Ch. 2 questions at the end of the chapter. 
