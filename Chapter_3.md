@@ -485,12 +485,11 @@ bonds.data <- batting %>% filter(playerID == bonds.info$name.code) %>% mutate(Ag
 
 arod.data <- batting %>% filter(playerID == arod.info$name.code) %>% mutate(Age = yearID - arod.info$byear)
 
+RABA <- rbind(ruth.data, aaron.data, bonds.data, arod.data)
+RABA <- RABA %>% select(playerID, HR, Age) %>% group_by(playerID) %>% mutate(cumHR = cumsum(HR))
+
 ## Figure 3.14
-with(ruth.data, plot(Age, cumsum(HR), type = "l", lty = 3, lwd = 2, xlab = "Age", ylab = "Career HR", xlim = c(18, 45), ylim = c(0, 800), las = 1))
-with(aaron.data, lines(Age, cumsum(HR), lty = 2, lwd = 2))
-with(bonds.data, lines(Age, cumsum(HR), lty = 1, lwd = 2))
-with(arod.data, lines(Age, cumsum(HR), lty = 4, lwd = 2))
-legend("topleft", legend = c("Ruth", "Aaron", "Bonds", "Arod"), lty = c(3, 2, 1, 4), lwd = 2, bty = "n")
+ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) + theme_bw() + geom_line(size = 1.1) + ylab("Career HR") + xlab("Age") + scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
 ```
 
 ![](Chapter_3_files/figure-html/Section_3.8-1.png)<!-- -->
@@ -774,7 +773,7 @@ pie(table(hofpitching$BF.group), col = c("dark grey", "white", "light grey", "bl
 
 ![](Chapter_3_files/figure-html/Ch3.Q1c-1.png)<!-- -->
 
-2. Question 2 - HoF pitching continued - WAR
+2. Question 2 - HoF pitching continued (WAR)
   + Using the hist function, construct a histogram of WAR for the pitchers in the Hall of Fame dataset.
 
 
@@ -810,3 +809,384 @@ hofpitching %>% arrange(desc(WAR)) %>% slice(1:2)
 ```r
 # The two pitchers are Cy Young and Walter Johnson
 ```
+
+3. Question 3 - HoF data set continued - To understand a pitcher’s season contribution, suppose we define the new variable WAR.Season defined by hofpitching$WAR.Season <- with(hofpitching, WAR / Yrs)
+
+
+```r
+hofpitching <- hofpitching %>% mutate(WAR.Season = (WAR / Yrs))
+head(hofpitching)
+```
+
+```
+## # A tibble: 6 x 32
+##      Rk           Name Inducted   Yrs  From    To   ASG   WAR     W     L
+##   <int>          <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
+## 1     1 Pete Alexander     1938    20  1911  1930     0 112.8   373   208
+## 2     2   Chief Bender     1953    16  1903  1925     0  40.8   212   127
+## 3     3  Bert Blyleven     2011    22  1970  1992     2  90.7   287   250
+## 4     4 Mordecai Brown     1949    14  1903  1916     0  51.7   239   130
+## 5     5    Jim Bunning     1996    17  1955  1971     9  56.7   224   184
+## 6     6  Steve Carlton     1994    24  1965  1988    10  78.6   329   244
+##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
+##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
+## 1 0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852  1476
+## 2 0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108   823
+## 3 0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029  1830
+## 4 0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044   725
+## 5 0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527  1366
+## 6 0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130  1864
+##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1   165   951    NA  2198    70     1    38 20893 more than 20000
+## 2    40   712    NA  1711   102    10    79 11895  (10000, 15000)
+## 3   430  1322    71  3701   155    19   114 20491 more than 20000
+## 4    43   673    NA  1375    61     4    61 12422  (10000, 15000)
+## 5   372  1000    98  2855   160     8    47 15618  (15000, 20000)
+## 6   414  1833   150  4136    53    90   183 21683 more than 20000
+##   WAR.Season
+##        <dbl>
+## 1   5.640000
+## 2   2.550000
+## 3   4.122727
+## 4   3.692857
+## 5   3.335294
+## 6   3.275000
+```
+  + Use the stripchart function to construct parallel stripcharts of WAR.Season for the different levels of BF.group.
+  
+
+```r
+ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_point(size = 2)  + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("WAR / Years") + xlab("Batters Faced")
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q3a-1.png)<!-- -->
+
+  + Use the boxplot function to construct parallel boxplots of WAR.Season across BP.group.
+
+
+```r
+ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_boxplot(fill = "grey") + ylab("WAR / Years") + xlab("Batters Faced")
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q3b-1.png)<!-- -->
+  + Based on your graphs, how does the wins above replacement per season depend on the number of batters faced?
+
+
+```r
+ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + theme_bw() + ylim(0, 8) + xlim(0, 30000) + geom_point(size = 2) + stat_smooth(method = "lm", col = "black")+ ylab("WAR / Years") + xlab("Batters Faced")
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q3c-1.png)<!-- -->
+
+```r
+# There is a positive relationship between WAR / Years and batters faced. It appears that the slope is driven by a few outliers.
+```
+
+4. Question 4 - Suppose we limit our exploration to pitchers whose mid-career was 1960 or later. We first define the MidYear variable and then use the subset function to construct a data frame consisting of only these 1960+ pitchers.
+
+
+```r
+hofpitching <- hofpitching %>% mutate(MidYear = ((From + To) / 2))
+head(hofpitching)
+```
+
+```
+## # A tibble: 6 x 33
+##      Rk           Name Inducted   Yrs  From    To   ASG   WAR     W     L
+##   <int>          <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
+## 1     1 Pete Alexander     1938    20  1911  1930     0 112.8   373   208
+## 2     2   Chief Bender     1953    16  1903  1925     0  40.8   212   127
+## 3     3  Bert Blyleven     2011    22  1970  1992     2  90.7   287   250
+## 4     4 Mordecai Brown     1949    14  1903  1916     0  51.7   239   130
+## 5     5    Jim Bunning     1996    17  1955  1971     9  56.7   224   184
+## 6     6  Steve Carlton     1994    24  1965  1988    10  78.6   329   244
+##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
+##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
+## 1 0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852  1476
+## 2 0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108   823
+## 3 0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029  1830
+## 4 0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044   725
+## 5 0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527  1366
+## 6 0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130  1864
+##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1   165   951    NA  2198    70     1    38 20893 more than 20000
+## 2    40   712    NA  1711   102    10    79 11895  (10000, 15000)
+## 3   430  1322    71  3701   155    19   114 20491 more than 20000
+## 4    43   673    NA  1375    61     4    61 12422  (10000, 15000)
+## 5   372  1000    98  2855   160     8    47 15618  (15000, 20000)
+## 6   414  1833   150  4136    53    90   183 21683 more than 20000
+##   WAR.Season MidYear
+##        <dbl>   <dbl>
+## 1   5.640000  1920.5
+## 2   2.550000  1914.0
+## 3   4.122727  1981.0
+## 4   3.692857  1909.5
+## 5   3.335294  1963.0
+## 6   3.275000  1976.5
+```
+
+```r
+hofpitching.recent <- hofpitching %>% filter(MidYear >= 1960)
+min(hofpitching.recent$MidYear)
+```
+
+```
+## [1] 1960.5
+```
+
+  + By use of the order function, order the rows of the data frame by the value of WAR.Season.
+
+```r
+hofpitching.recent %>% arrange(desc(WAR.Season))
+```
+
+```
+## # A tibble: 20 x 33
+##       Rk             Name Inducted   Yrs  From    To   ASG   WAR     W
+##    <int>            <chr>    <int> <int> <int> <int> <int> <dbl> <int>
+## 1     56       Tom Seaver     1992    20  1967  1986    12 101.1   311
+## 2     19       Bob Gibson     1981    17  1959  1975     9  77.5   251
+## 3     33     Sandy Koufax     1972    12  1955  1966     7  50.3   165
+## 4      3    Bert Blyleven     2011    22  1970  1992     2  90.7   287
+## 5     12     Don Drysdale     1984    14  1956  1969     9  57.4   209
+## 6     29   Fergie Jenkins     1991    19  1965  1983     3  77.4   284
+## 7     47    Gaylord Perry     1991    22  1962  1983     5  87.5   314
+## 8     42      Phil Niekro     1997    24  1964  1987     5  91.7   318
+## 9     36    Juan Marichal     1983    16  1960  1975    10  58.2   243
+## 10     5      Jim Bunning     1996    17  1955  1971     9  56.7   224
+## 11    45       Jim Palmer     1990    19  1965  1984     6  63.2   268
+## 12     6    Steve Carlton     1994    24  1965  1988    10  78.6   329
+## 13    55       Nolan Ryan     1999    27  1966  1993     8  77.4   324
+## 14    60       Don Sutton     1998    23  1966  1988     4  62.9   324
+## 15    13 Dennis Eckersley     2004    24  1975  1998     6  58.6   197
+## 16    66     Hoyt Wilhelm     1985    21  1952  1972     8  47.4   143
+## 17    28   Catfish Hunter     1987    15  1965  1979     8  32.1   224
+## 18    59     Bruce Sutter     2006    12  1976  1988     6  23.6    68
+## 19    21     Rich Gossage     2008    22  1972  1994     9  39.9   124
+## 20    16   Rollie Fingers     1992    17  1968  1985     7  23.3   114
+##        L  W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H
+##    <int> <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int>
+## 1    205 0.603  2.86   656   647     6   231    61     1 4783.0  3971
+## 2    174 0.591  2.91   528   482    21   255    56     6 3884.1  3279
+## 3     87 0.655  2.76   397   314    44   137    40     9 2324.1  1754
+## 4    250 0.534  3.31   692   685     3   242    60     0 4970.0  4632
+## 5    166 0.557  2.95   518   465    34   167    49     6 3432.0  3084
+## 6    226 0.557  3.34   664   594    37   267    49     7 4500.2  4142
+## 7    265 0.542  3.11   777   690    33   303    53    11 5350.0  4938
+## 8    274 0.537  3.35   864   716    83   245    45    29 5404.0  5044
+## 9    142 0.631  2.89   471   457    11   244    52     2 3507.0  3153
+## 10   184 0.549  3.27   591   519    39   151    40    16 3760.1  3433
+## 11   152 0.638  2.86   558   521    15   211    53     4 3948.0  3349
+## 12   244 0.574  3.22   741   709    13   254    55     2 5217.2  4672
+## 13   292 0.526  3.19   807   773    13   222    61     3 5386.0  3923
+## 14   256 0.559  3.26   774   756    12   178    58     5 5282.1  4692
+## 15   171 0.535  3.50  1071   361   577   100    20   390 3285.2  3076
+## 16   122 0.540  2.52  1070    52   651    20     5   227 2254.1  1757
+## 17   166 0.574  3.26   500   476     6   181    42     1 3449.1  2958
+## 18    71 0.489  2.83   661     0   512     0     0   300 1042.0   879
+## 19   107 0.537  3.01  1002    37   681    16     0   310 1809.1  1497
+## 20   118 0.491  2.90   944    37   709     4     2   341 1701.1  1474
+##        R    ER    HR    BB   IBB    SO   HBP    BK    WP    BF
+##    <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
+## 1   1674  1521   380  1390   116  3640    76     8   126 19369
+## 2   1420  1258   257  1336   118  3117   102    13   108 16068
+## 3    806   713   204   817    48  2396    18     7    87  9497
+## 4   2029  1830   430  1322    71  3701   155    19   114 20491
+## 5   1292  1124   280   855   123  2486   154    10    82 14097
+## 6   1853  1669   484   997   116  3192    84    18    62 18400
+## 7   2128  1846   399  1379   164  3534   108     6   160 21953
+## 8   2337  2012   482  1809    86  3342   123    42   226 22677
+## 9   1329  1126   320   709    82  2303    40    20    51 14236
+## 10  1527  1366   372  1000    98  2855   160     8    47 15618
+## 11  1395  1253   303  1311    37  2212    38    11    85 16114
+## 12  2130  1864   414  1833   150  4136    53    90   183 21683
+## 13  2178  1911   321  2795    78  5714   158    33   277 22575
+## 14  2104  1914   472  1343   102  3574    82    21   112 21631
+## 15  1382  1278   347   738    91  2401    75    16    28 13534
+## 16   773   632   150   778    61  1610    62     4    90  9164
+## 17  1380  1248   374   954    57  2012    49     7    49 14032
+## 18   370   328    77   309    83   861    13     8    37  4252
+## 19   670   605   119   732    90  1502    47     5    63  7507
+## 20   615   549   123   492   109  1299    39     7    40  6942
+##           BF.group WAR.Season MidYear
+##             <fctr>      <dbl>   <dbl>
+## 1   (15000, 20000)   5.055000  1976.5
+## 2   (15000, 20000)   4.558824  1967.0
+## 3  Less than 10000   4.191667  1960.5
+## 4  more than 20000   4.122727  1981.0
+## 5   (10000, 15000)   4.100000  1962.5
+## 6   (15000, 20000)   4.073684  1974.0
+## 7  more than 20000   3.977273  1972.5
+## 8  more than 20000   3.820833  1975.5
+## 9   (10000, 15000)   3.637500  1967.5
+## 10  (15000, 20000)   3.335294  1963.0
+## 11  (15000, 20000)   3.326316  1974.5
+## 12 more than 20000   3.275000  1976.5
+## 13 more than 20000   2.866667  1979.5
+## 14 more than 20000   2.734783  1977.0
+## 15  (10000, 15000)   2.441667  1986.5
+## 16 Less than 10000   2.257143  1962.0
+## 17  (10000, 15000)   2.140000  1972.0
+## 18 Less than 10000   1.966667  1982.0
+## 19 Less than 10000   1.813636  1983.0
+## 20 Less than 10000   1.370588  1976.5
+```
+
+  + Construct a dot plot of the values of WAR.Season where the labels are the pitcher names.
+
+
+```r
+ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) + theme_bw() + geom_point(size = 2) + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + xlim(1, 5.5) + ylab("Name") + xlab("War / Season")
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q4b-1.png)<!-- -->
+  + Which two 1960+ pitchers stand out with respect to wins above replacement per season?
+
+```r
+# Tough question. To me, Tom Seaver is nearly a full WAR point above Koufax, which blows my mind. Rollie Fingers has a rather low WAR at ~1.5.  
+```
+
+  5. Question 5 - The variables MidYear and WAR.Season are defined in the previous exercises.
+  + Construct a scatterplot of MidYear (horizontal) against WAR.Season (vertical).
++ Is there a general pattern in this scatterplot? Explain.
+
+```r
+ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) + theme_bw() + geom_point(size = 2) + ylim(0, 8) + ylab("WAR / Season") + xlab("Midyear of Career") + stat_smooth(method = "lm", col = "black")
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q5ab-1.png)<!-- -->
+
+```r
+# I see a negative association between WAR.Season and mid year of career.
+```
+
+  + There are two pitchers whose mid careers were in the 1800s who had relatively low WAR.Season values. Use the identify function with the scatterplot to find the names of these two pitchers.
+
+
+```r
+hofpitching %>% filter(WAR.Season < 2 & MidYear < 1900)
+```
+
+```
+## # A tibble: 2 x 33
+##      Rk       Name Inducted   Yrs  From    To   ASG   WAR     W     L
+##   <int>      <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
+## 1    43 Hank O'Day     2013     7  1884  1890     0   7.1    73   110
+## 2    64 Monte Ward     1964    17  1878  1894     0  26.0   164   103
+##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
+##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
+## 1 0.399  3.74   201   192     8   177     5     4 1651.1  1655  1128   687
+## 2 0.614  2.10   293   262    32   245    24     3 2469.2  2324  1185   576
+##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1    65   578    NA   663    81     0   122  7247 Less than 10000
+## 2    26   253    NA   920    NA     0   144 10164  (10000, 15000)
+##   WAR.Season MidYear
+##        <dbl>   <dbl>
+## 1   1.014286    1887
+## 2   1.529412    1886
+```
+
+```r
+# The two pitchers are Hank O'Day and Monte Ward
+```
+
+6. Question 6 - The Lahman data set
+  + Read the Lahman “Master.csv” and “batting.csv” data files into R. *Already done*
+  + Use the *getinfo* to obtain three data frames for the season batting statistics for the great hitters Ty Cobb, Ted Williams, and Pete Rose.
+    + Add the variable Age to each data frame corresponding to the ages of the three players.
+
+```r
+Cobb.info <- getinfo("Ty", "Cobb")
+Williams.info <- getinfo("Ted", "Williams")
+Rose.info <- getinfo("Pete", "Rose")
+
+Cobb.data <- batting %>% filter(playerID == Cobb.info$name.code) %>% mutate(Age = yearID - Cobb.info$byear)
+
+Williams.data <- batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
+
+Rose.data <- batting %>% filter(playerID == Rose.info$name.code[1]) %>% mutate(Age = yearID - Rose.info$byear[1])
+
+# We need to do a little manipulation to run ggplot with the three batters.
+CWR <- rbind(Cobb.data, Williams.data, Rose.data)
+CWR <- CWR %>% select(playerID, H, Age) %>% group_by(playerID) %>% mutate(cumH = cumsum(H))
+```
+  + Using the plot function, construct a line graph of the cumulative hit totals against age for Pete Rose.
+  
+
+```r
+ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + theme_bw() + geom_line(size = 1.25) + ylab("Hits")
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q6d-1.png)<!-- -->
+  + Using the lines function, overlay the cumulative hit totals for Cobb and Williams.
+  
+
+```r
+ggplot(CWR, aes(y = cumH, x = Age)) + theme_bw() + geom_line(size = 1.25, aes(color = playerID)) 
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q6e-1.png)<!-- -->
+  + Write a short paragraph summarizing what you have learned about the hitting pattern of these three players.
+  *Nah, I'm good. Thanks*
+  
+7. Question 7 - Retrosheet play-by-play data
+  + Following the work in Section 3.9, create the two data frames mac.data and sosa.data containing the batting data for the two players.
+  + Use the following R commands to restrict the two data frames to the plays where a batting event occurred. (The relevant variable BAT EVENT FL is either TRUE or FALSE.)
+mac.data <- subset(mac.data, BAT_EVENT_FL == TRUE)
+sosa.data <- subset(sosa.data, BAT_EVENT_FL == TRUE)
+
+
+```r
+mac.data <- mac.data %>% filter(BAT_EVENT_FL == TRUE)
+sosa.data <- sosa.data %>% filter(BAT_EVENT_FL == TRUE)
+```
+
+For each data frame, create a new variable PA that numbers the plate appearances 1, 2, ... (The function nrow gives the number of rows of a data frame.)
+
+
+```r
+mac.data <- mac.data %>% mutate(PA = 1:nrow(mac.data))
+sosa.data <- sosa.data %>% mutate(PA = 1:nrow(sosa.data))
+```
+
+  + The following commands will return the numbers of the plate appearances when the players hit home runs.
+  + Using the R function diff, the following commands compute the spacings between the occurrences of home runs.
+
+
+```r
+mac.HR.PA <- mac.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% mutate(spacings = diff(c(0, PA)))
+sosa.HR.PA <- sosa.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% mutate(spacings = diff(c(0, PA)))
+```
+
+  + By use of the summary and hist functions on the vectors
+mac.spacings and sosa.spacings, compare the home run spacings of the two players.
+
+
+```r
+summary(mac.HR.PA$spacings); summary(sosa.HR.PA$spacings)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   3.000   7.000   9.729  13.000  40.000
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00    4.00    8.00   10.68   15.75   48.00
+```
+
+```r
+ggplot(mac.HR.PA, aes(spacings)) + theme_bw() + geom_histogram(bins = 20) + ggtitle("McGwire") + xlab("ABs between HRs") + ylab("Count") + xlim(0, 50)
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q7f-1.png)<!-- -->
+
+```r
+ggplot(sosa.HR.PA, aes(spacings)) + theme_bw() + geom_histogram(bins = 20) + ggtitle("Sosa") + xlab("ABs between HRs") + ylab("Count") + xlim(0, 50)
+```
+
+![](Chapter_3_files/figure-html/Ch3.Q7f-2.png)<!-- -->
