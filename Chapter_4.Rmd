@@ -1,0 +1,189 @@
+---
+title: "tidy Baseball Chapter 4"
+author: "C. A. Hamm"
+date: "`r format(Sys.Date())`"
+output:  
+      html_document:  
+        keep_md: true  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Chapter 4 -  The relation between runs and wins
+
+```{r preliminaries}
+library("Lahman")
+library("dplyr"); options(dplyr.width = Inf)
+library("ggplot2")
+library("devtools")
+library("readr")
+
+set.seed(8761825)
+session_info()
+```
+
+
+```{r Teams_Table}
+setwd("~/Desktop/Projects/Baseball_R")
+
+teams <- read_csv("2016_core/core/Teams.csv", col_names = TRUE)
+
+tail(teams)
+dim(teams)
+
+
+## Section 4.2 - Teams in Lahman's Database
+# run differential is the difference between runs scored and runs allowed. Rather than use the with statements in section 4.2 we will use a dplyr pipeline
+
+myteams <- teams %>% filter(yearID > 2000) %>% 
+  select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L))
+tail(myteams)
+
+# Figure 4.1
+ggplot(myteams, aes(x = RD, y = Wpct)) + 
+  geom_point(cex = 2, alpha = 0.6) + 
+  theme_bw() + 
+  stat_smooth(method = lm, colour = "black") + 
+  xlab("Run differential") + 
+  ylab("Winning percentage")
+```
+
+
+```{r linear_regression}
+linfit <- lm(Wpct ~ RD, data = myteams)
+summary(linfit)
+# Wpct = 0.50 + 0.000628*RD
+
+myteams <- myteams %>% mutate(linWpct = predict(linfit), linResiduals = residuals(linfit))
+tail(myteams)
+min(myteams$linResiduals)
+max(myteams$linResiduals)
+
+# Figure 4.2
+ggplot(myteams, aes(x = RD, y = linResiduals)) + 
+  geom_point(size = 2) + 
+  theme_bw() + 
+  ylab("Residuals") + 
+  xlab("Run differential") + 
+  scale_y_continuous(limits = c(-0.09, 0.09)) + 
+  scale_x_continuous(limits = c(-400, 400)) 
+
+mean(myteams$linResiduals)
+linRMSE <- sqrt(mean(myteams$linResiduals^2))
+linRMSE
+
+nrow(subset(myteams, abs(linResiduals) < linRMSE)) / nrow(myteams)
+nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
+
+# section 4.4 - the Pythagorean expectation
+myteams <- myteams %>% 
+  mutate(pytWpct = R^2 / (R^2 + RA^2), 
+         pytResiduals = Wpct - pytWpct)
+tail(myteams)
+sqrt(mean(myteams$pytResiduals^2))
+
+ggplot(myteams, aes(y = pytWpct, x = Wpct)) +
+  theme_bw() + 
+  geom_point(cex = 2, alpha = 0.6) + 
+  ylab("Pythagorean Win %") + 
+  xlab("Win %") + 
+  stat_smooth(method = "lm", color = "black")
+
+lm2 <- lm(pytWpct ~ Wpct, data = myteams)
+summary(lm2) # 0.034 + 0.93*Wpct
+
+# a function to compare the Bill James Pythagorean model with the linear model. RunsSc = Runs Scored, RunsAll = Runs Allowed, N = exponant
+Pythag.line <- function(RunsSc, RunsAll, N){
+	linear <- 0.50 + 0.000628 * (RunsSc - RunsAll)
+	Pythag <- RunsSc^N / (RunsSc^N + RunsAll^N)
+	return(list = c("linear" = linear, "Pythagorean" = Pythag))
+}
+Pythag.line(1620, 810, N = 2)
+Pythag.line(186, 0, N = 2)
+Pythag.line(100, 100, N = 2)
+
+# Section 4.5 - the exponent of the Pythagorean formula
+myteams <- myteams %>% 
+  mutate(logWratio = log(W / L), 
+         logRratio = log(R / RA))
+tail(myteams)
+
+pytFit <- lm(logWratio ~ logRratio, data = myteams)
+summary(pytFit) # suggests a Pythagorean exponent of 1.88 rather than 2.
+
+# Section 4.6 - Good and Bad predictions
+games1 <- Pythag.line(875, 737, N = 2)
+games1 * 162
+games1a <- Pythag.line(875, 757, N = 1.88)
+games1a * 162
+
+
+# Section 4.6 - Good and bad predictions based on the Pythagorean Formula
+gl2011 <- read_delim("baseball_R-master/data/gl2011.txt", delim = ",", col_names = FALSE)
+head(gl2011) # needs headers
+glheaders <- read_csv("baseball_R-master/data/game_log_header.csv")
+glheaders
+names(gl2011) <- names(glheaders)
+head(gl2011)
+
+BOS2011 <- gl2011 %>% filter(HomeTeam == "BOS" | VisitingTeam == "BOS") %>% 
+  select(VisitingTeam, HomeTeam, VisitorRunsScored, HomeRunsScore) %>% 
+  mutate(ScoreDiff = ifelse(HomeTeam == "BOS", yes = HomeRunsScore - VisitorRunsScored, no = VisitorRunsScored - HomeRunsScore), 
+         W = ScoreDiff > 0)
+head(BOS2011)
+# aggregate(abs(BOS2011$ScoreDiff), list(W = BOS2011$W), summary)
+
+results <- gl2011 %>% 
+  select(VisitingTeam, HomeTeam, VisitorRunsScored, HomeRunsScore) %>% 
+  mutate(winner = ifelse(HomeRunsScore > VisitorRunsScored, yes = as.character(HomeTeam), no = as.character(VisitingTeam)), 
+         diff = abs(VisitorRunsScored - HomeRunsScore))
+head(results)
+
+onerungames <- results %>% filter(diff == 1)
+dim(onerungames)
+head(onerungames)
+
+onerunwins <- onerungames %>% 
+  group_by(winner) %>% 
+  tally()
+names(onerunwins) <- c("teamID", "onerunW")
+onerunwins
+
+teams2011 <- myteams %>% filter(yearID == 2011)
+teams2011[teams2011$teamID == "LAA", "teamID"] <- "ANA"
+teams2011 <- merge(teams2011, onerunwins)
+head(teams2011)
+
+# Figure 4.3
+ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) + geom_point(cex = 2) + theme_bw() + xlab("One run wins") + ylab("Pythagorean residuals")
+
+pit <- read_csv("baseball_R-master/data/pitching.csv", col_names = TRUE)
+head(pit)
+
+top_closers <- pit %>% filter(GF > 50, ERA < 2.5) %>% select(playerID, yearID, teamID)
+head(top_closers)
+teams_top_closers <- merge(myteams, top_closers)
+summary(teams_top_closers$pytResiduals)
+mean(teams_top_closers$pytResiduals) * 162 # teams with a top closer will outperform their Pythagorean expectation by 0.8 games
+
+
+# Section 4.7 -  How many runs for a win?
+IR <- function(RS, RA){IRtable <- expand
+	round((RS^2 + RA^2)^2 / (2 * RS * RA^2), 1)
+}
+IRtable <- expand.grid(RS = seq(3, 6, 0.5), RA = seq(3, 6, 0.5))
+dim(IRtable)
+rbind(head(IRtable), tail(IRtable))
+IRtable <- IRtable %>% mutate(IRW = IR(RS, RA))
+head(IRtable)
+
+xtabs(IRW ~ RS + RA, data = IRtable)
+
+

@@ -69,7 +69,11 @@ dim(S1)
 
 
 # create a data frame 
-dataframe.AB <- Batting %>% select(playerID, AB, HR, SO) %>% group_by(playerID) %>% filter(!is.na(AB)) %>% summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
+dataframe.AB <- Batting %>% 
+  select(playerID, AB, HR, SO) %>% 
+  group_by(playerID) %>% 
+  filter(!is.na(AB)) %>% 
+  summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
 
 head(dataframe.AB)
 dim(dataframe.AB)
@@ -87,10 +91,20 @@ head(Batting.5000)
 
 
 # This function "compute.hr" is now unnecessary, as we have already calculated the relevent statistics. See how, with one line of dplyr code, we can replace a function and other awkward subsetting.
-Batting.5000 %>% filter(playerID == "aaronha01") %>% summarize(AB = sum(AB, na.rm = TRUE), HR = sum(HR, na.rm = TRUE), SO = sum(AB, na.rm = TRUE))
+Batting.5000 %>% filter(playerID == "aaronha01") %>% 
+  summarize(AB = sum(AB, na.rm = TRUE), 
+            HR = sum(HR, na.rm = TRUE), 
+            SO = sum(AB, na.rm = TRUE))
 
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
-ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + theme_bw() + xlim(0, 0.1) + ylim(0, 0.35) + geom_point(cex = 2) + stat_smooth(method = "loess", col = "red") + ylab("SO / AB") + xlab("HR / AB")
+ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
+  theme_bw() + 
+  xlim(0, 0.1) + 
+  ylim(0, 0.35) + 
+  geom_point(cex = 2) + 
+  stat_smooth(method = "loess", col = "red") + 
+  ylab("SO / AB") + 
+  xlab("HR / AB")
 ```
 
 ### Chapter 2 exercises
