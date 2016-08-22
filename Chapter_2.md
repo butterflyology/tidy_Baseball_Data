@@ -46,12 +46,12 @@ session_info()
 ```
 ##  setting  value                       
 ##  version  R version 3.3.1 (2016-06-21)
-##  system   x86_64, darwin13.4.0        
+##  system   x86_64, linux-gnu           
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/New_York            
-##  date     2016-08-09
+##  tz       posixrules                  
+##  date     2016-08-21
 ```
 
 ```
@@ -60,33 +60,33 @@ session_info()
 
 ```
 ##  package    * version date       source        
-##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
-##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
-##  DBI          0.4-1   2016-05-08 CRAN (R 3.3.0)
-##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.0)
+##  assertthat   0.1     2013-12-06 CRAN (R 3.3.1)
+##  colorspace   1.2-4   2013-09-30 CRAN (R 3.1.0)
+##  DBI          0.5     2016-08-11 CRAN (R 3.3.1)
+##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.1)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
-##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
-##  evaluate     0.9     2016-04-29 CRAN (R 3.3.0)
-##  formatR      1.4     2016-05-09 CRAN (R 3.3.0)
-##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.0)
-##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.0)
-##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.0)
-##  knitr        1.13    2016-05-09 CRAN (R 3.3.0)
-##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.0)
-##  magrittr     1.5     2014-11-22 CRAN (R 3.3.0)
-##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.0)
-##  munsell      0.4.3   2016-02-13 CRAN (R 3.3.0)
-##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
-##  R6           2.1.2   2016-01-26 CRAN (R 3.3.0)
-##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.0)
-##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
-##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
-##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
-##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.0)
-##  stringr      1.0.0   2015-04-30 CRAN (R 3.3.0)
+##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.1)
+##  evaluate     0.9     2016-04-29 CRAN (R 3.3.1)
+##  formatR      1.4     2016-05-09 CRAN (R 3.3.1)
+##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.1)
+##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.1)
+##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.1)
+##  knitr        1.14    2016-08-13 CRAN (R 3.3.1)
+##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.1)
+##  magrittr     1.5     2014-11-22 CRAN (R 3.3.1)
+##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.1)
+##  munsell      0.4.2   2013-07-11 CRAN (R 3.0.2)
+##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.1)
+##  R6           2.1.3   2016-08-19 CRAN (R 3.3.1)
+##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.1)
+##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.1)
+##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.1)
+##  scales       0.4.0   2016-02-26 CRAN (R 3.3.1)
+##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.1)
+##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.1)
 ##  tibble       1.1     2016-07-04 CRAN (R 3.3.1)
-##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
-##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
+##  withr        1.0.2   2016-06-20 CRAN (R 3.3.1)
+##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.1)
 ```
 
 
@@ -356,7 +356,7 @@ system.time(S <- sapply(players, compute.hr))
 
 ```
 ##    user  system elapsed 
-##   1.484   0.007   1.493
+##   2.588   0.008   2.594
 ```
 
 ```r
@@ -377,13 +377,13 @@ length(S) #1786 players had home runs in the 1960's
 ```
 
 ```r
-# The tidy way, one line of code:
+# The tidy way, one line of code, really fast:
 system.time(S1 <- Batting.60 %>% group_by(playerID) %>% summarize(sum(HR)))
 ```
 
 ```
 ##    user  system elapsed 
-##   0.011   0.000   0.012
+##   0.016   0.000   0.015
 ```
 
 ```r
@@ -412,7 +412,11 @@ dim(S1)
 
 ```r
 # create a data frame 
-dataframe.AB <- Batting %>% select(playerID, AB, HR, SO) %>% group_by(playerID) %>% filter(!is.na(AB)) %>% summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
+dataframe.AB <- Batting %>% 
+  select(playerID, AB, HR, SO) %>% 
+  group_by(playerID) %>% 
+  filter(!is.na(AB)) %>% 
+  summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
 
 head(dataframe.AB)
 ```
@@ -507,7 +511,10 @@ head(Batting.5000)
 
 ```r
 # This function "compute.hr" is now unnecessary, as we have already calculated the relevent statistics. See how, with one line of dplyr code, we can replace a function and other awkward subsetting.
-Batting.5000 %>% filter(playerID == "aaronha01") %>% summarize(AB = sum(AB, na.rm = TRUE), HR = sum(HR, na.rm = TRUE), SO = sum(AB, na.rm = TRUE))
+Batting.5000 %>% filter(playerID == "aaronha01") %>% 
+  summarize(AB = sum(AB, na.rm = TRUE), 
+            HR = sum(HR, na.rm = TRUE), 
+            SO = sum(AB, na.rm = TRUE))
 ```
 
 ```
@@ -519,7 +526,14 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>% summarize(AB = sum(AB, na.r
 
 ```r
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
-ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + theme_bw() + xlim(0, 0.1) + ylim(0, 0.35) + geom_point(cex = 2) + stat_smooth(method = "loess", col = "red") + ylab("SO / AB") + xlab("HR / AB")
+ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
+  theme_bw() + 
+  xlim(0, 0.1) + 
+  ylim(0, 0.35) + 
+  geom_point(cex = 2) + 
+  stat_smooth(method = "loess", col = "red") + 
+  ylab("SO / AB") + 
+  xlab("HR / AB")
 ```
 
 ```

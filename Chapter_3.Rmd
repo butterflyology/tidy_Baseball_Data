@@ -33,7 +33,7 @@ dim(hof)
 
 ```{r Chapter_3.Section_2}
 # Rather than multiple additions to the data, lets create all of the variables we are interested in all at once. 
-hof <- hof %>% mutate(MidCareer = ((From + To) / 2), Era = cut(MidCareer, breaks = c(1800, 1900, 1919, 1941, 1960, 1976, 1993, 2050), labels=c("19th Century", "Lively Ball", "Dead Ball", "Integration", "Expansion", "Free Agency", "Long Ball")), HR.Rate = (HR / AB)) %>% rename(Name = X2)
+hof <- hof %>% mutate(MidCareer = ((From + To) / 2), Era = cut(MidCareer, breaks = c(1800, 1900, 1919, 1941, 1960, 1976, 1993, 2050), labels = c("19th Century", "Lively Ball", "Dead Ball", "Integration", "Expansion", "Free Agency", "Long Ball")), HR.Rate = (HR / AB)) %>% rename(Name = X2)
 head(hof)
 # Let's get rid of the " HOF" in the name column
 hof[, 2] <- gsub(" HOF", "", hof$Name)
@@ -43,7 +43,10 @@ head(hof)
 ```{r Figure_3.1}
 # Using ggplot we don't need to create a table
 ## Figure 3.1
-ggplot(hof, aes(x = Era)) + theme_bw() + geom_bar() + ylab("Frequency") + xlab("Era") + ggtitle("Era of the Nonpitching Hall of Famers")
+ggplot(hof, aes(x = Era)) + 
+  theme_bw() + geom_bar() + 
+  ylab("Frequency") + xlab("Era") + 
+  ggtitle("Era of the Nonpitching Hall of Famers")
 ```
 
 ### Skipping Figure 3.2
@@ -59,7 +62,10 @@ dotchart(as.numeric(T.era), labels = names(T.era), xlab = "Frequency", ylab = ""
 
 ```{r Figure_3.4}
 ## Figure 3.4 - No need to subset priot to plotting, we can do it inline with the plot call. 
-ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) + geom_point(size = 3) + theme_bw() + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("") + xlab("OPS")
+ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) + 
+  geom_point(size = 3) + theme_bw() + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("") + 
+  xlab("OPS")
 ```
 
 ```{r Figure_3.5}
@@ -69,27 +75,54 @@ stripchart(hof$MidCareer, method = "jitter", pch = 19, xlab = "Mid Career")
 
 ```{r Figure_3.6}
 ## Figure 3.6
-ggplot(hof, aes(x = MidCareer)) + theme_bw() + geom_histogram(binwidth = 5, fill = "grey", color = "black") + ylab("Frequency") + ylab("Frequency")
+ggplot(hof, aes(x = MidCareer)) + 
+  theme_bw() + 
+  geom_histogram(binwidth = 5, fill = "grey", color = "black") + 
+  ylab("Frequency")
 ```
 
 ```{r Figure_3.7}
 ## Figure 3.7
-ggplot(hof, aes(x = MidCareer, y = OPS))+ theme_bw() + geom_point(size = 2) + stat_smooth(method = "loess", col = "black", se = FALSE)
+ggplot(hof, aes(x = MidCareer, y = OPS)) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  stat_smooth(method = "loess", col = "black", se = FALSE)
 ```
 
 ```{r Figure_3.8}
 ## Figure 3.8
-ggplot(hof, aes(x = OBP, y = SLG)) + geom_point(size = 2.5) + theme_bw() + xlab("On-Base Percentage") + ylab("Slugging Percentage")
+ggplot(hof, aes(x = OBP, y = SLG)) + 
+   theme_bw() + 
+  geom_point(size = 2.5) + 
+  xlab("On-Base Percentage") + 
+  ylab("Slugging Percentage")
 ```
 
 ```{r Figure_3.9}
 ## Figure 3.9 (Changing the axes limits)
-ggplot(hof, aes(x = OBP, y = SLG)) + geom_point(size = 2.5) + theme_bw() + ylim(0.28, 0.75) + xlim(0.25, 0.50) + xlab("On-Base Percentage") + ylab("Slugging Percentage")
+ggplot(hof, aes(x = OBP, y = SLG)) + 
+  theme_bw() + 
+  geom_point(size = 2.5) + 
+  ylim(0.28, 0.75) + 
+  xlim(0.25, 0.50) + 
+  xlab("On-Base Percentage") + 
+  ylab("Slugging Percentage")
 ```
 
 ```{r Figure_3.10}
 ## Figure 3.10 (with lines delimiting OPS)
-ggplot(hof, aes(x = OBP, y = SLG))+ theme_bw() + geom_point(size = 2.5) + ylim(0.28, 0.75) + xlim(0.25, 0.50) + xlab("On-Base Percentage") + ylab("Slugging Percentage") + stat_function(fun = function(x) 0.7 - x) + stat_function(fun = function(x) 0.8 - x) + stat_function(fun = function(x) 0.9 - x) + stat_function(fun = function(x) 1.0 - x) + annotate("text", x = 0.27, y = c(0.42, 0.52, 0.62, 0.72), label = c("OPS = 0.7", "OPS = 0.8", "OPS = 0.9", "OPS = 1.0"))
+ggplot(hof, aes(x = OBP, y = SLG)) + 
+  theme_bw() + 
+  geom_point(size = 2.5) + 
+  ylim(0.28, 0.75) + 
+  xlim(0.25, 0.50) + 
+  xlab("On-Base Percentage") + 
+  ylab("Slugging Percentage") + 
+  stat_function(fun = function(x) 0.7 - x) + 
+  stat_function(fun = function(x) 0.8 - x) + 
+  stat_function(fun = function(x) 0.9 - x) + 
+  stat_function(fun = function(x) 1.0 - x) + 
+  annotate("text", x = 0.27, y = c(0.42, 0.52, 0.62, 0.72), label = c("OPS = 0.7", "OPS = 0.8", "OPS = 0.9", "OPS = 1.0"))
 ```
 
 ```{r Figure_3.12}
@@ -100,7 +133,12 @@ stripchart(HR.Rate ~ Era, data = hof, pch = 19, ylab = "", method = "jitter", la
 
 ```{r figure_3.13}
 ## Figure 3.13
-ggplot(hof, aes(y = HR.Rate, x = Era)) + theme_bw() + geom_boxplot(outlier.size = 2, stat = "boxplot") + coord_flip() + xlab("") + ylab("HR Rate")
+ggplot(hof, aes(y = HR.Rate, x = Era)) + 
+  theme_bw() + 
+  geom_boxplot(outlier.size = 2, stat = "boxplot") + 
+  coord_flip() + 
+  xlab("") + 
+  ylab("HR Rate")
 ```
 
 ### This next section requires data from the Lahman database, available here: http://www.seanlahman.com/baseball-archive/statistics/
@@ -108,7 +146,7 @@ I have added the relevant files from the Lahman database to the "Data" directory
 
 ```{r Section_3.8}
 ## Section 3.8
-master <- read_csv("data/master.csv", col_names = TRUE)
+master <- read_csv("Data/Master.csv", col_names = TRUE)
 head(master)
 dim(master)
 
@@ -129,23 +167,39 @@ arod.info <- getinfo("Alex", "Rodriguez")
 ruth.info
 
 # comparing Ruth, Aaron, Bonds, and A-Rod
-batting <- read_csv("data/batting.csv", col_names = TRUE)
+batting <- read_csv("Data/Batting.csv", col_names = TRUE)
 dim(batting)
 
 # I rewrote this to use dplyr
-ruth.data <- batting %>% filter(playerID == ruth.info$name.code) %>% mutate(Age = yearID - ruth.info$byear)
+ruth.data <- batting %>% 
+  filter(playerID == ruth.info$name.code) %>% 
+  mutate(Age = yearID - ruth.info$byear)
 
-aaron.data <- batting %>% filter(playerID == aaron.info$name.code) %>% mutate(Age = yearID - aaron.info$byear)
+aaron.data <- batting %>% 
+  filter(playerID == aaron.info$name.code) %>% 
+  mutate(Age = yearID - aaron.info$byear)
 
-bonds.data <- batting %>% filter(playerID == bonds.info$name.code) %>% mutate(Age = yearID - bonds.info$byear)
+bonds.data <- batting %>% 
+  filter(playerID == bonds.info$name.code) %>% 
+  mutate(Age = yearID - bonds.info$byear)
 
-arod.data <- batting %>% filter(playerID == arod.info$name.code) %>% mutate(Age = yearID - arod.info$byear)
+arod.data <- batting %>% 
+  filter(playerID == arod.info$name.code) %>% 
+  mutate(Age = yearID - arod.info$byear)
 
 RABA <- rbind(ruth.data, aaron.data, bonds.data, arod.data)
-RABA <- RABA %>% select(playerID, HR, Age) %>% group_by(playerID) %>% mutate(cumHR = cumsum(HR))
+RABA <- RABA %>% 
+  select(playerID, HR, Age) %>% 
+  group_by(playerID) %>% 
+  mutate(cumHR = cumsum(HR))
 
 ## Figure 3.14
-ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) + theme_bw() + geom_line(size = 1.1) + ylab("Career HR") + xlab("Age") + scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
+ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) + 
+  theme_bw() + 
+  geom_line(size = 1.1) + 
+  ylab("Career HR") + 
+  xlab("Age") + 
+  scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
 
 ```
 
@@ -195,7 +249,9 @@ legend("topleft", legend = c("McGwire (70)", "Sosa (66)"), lwd = 2, col = c("bla
 ```{r import_Q_data}
 hofpitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofpitching.csv", col_names = TRUE)
 
-hofpitching <- hofpitching %>% mutate(BF.group = cut(BF, c(0, 10000, 15000, 20000, 30000), labels = c("Less than 10000", "(10000, 15000)", "(15000, 20000)", "more than 20000"))) %>% rename(Name = X2)
+hofpitching <- hofpitching %>% 
+  mutate(BF.group = cut(BF, c(0, 10000, 15000, 20000, 30000), labels = c("Less than 10000", "(10000, 15000)", "(15000, 20000)", "more than 20000"))) %>% 
+  rename(Name = X2)
 
 head(hofpitching)
 hofpitching[, 2] <- gsub(" HOF", "", hofpitching$Name)
@@ -213,7 +269,11 @@ table(hofpitching$BF.group)
 ```{r Ch3.Q1b}
 # I think there was a typo in the above question. I propose that BF means "Batters Faced" and that we should replace "pitchers" with "batters." 
 # 14 pitchers faced over 20,000 batters
-ggplot(hofpitching, aes(BF.group)) + theme_bw() + geom_bar() + ylab("# HoF pitchers") + xlab("# batters faced")
+ggplot(hofpitching, aes(BF.group)) + 
+  theme_bw() + 
+  geom_bar() + 
+  ylab("# HoF pitchers") + 
+  xlab("# batters faced")
 ```
 
   + Construct a pie graph of the BF.group variable. Compare the effec-tiveness of the bar graph and pie graph in comparing the frequencies in the four intervals.
@@ -226,7 +286,10 @@ pie(table(hofpitching$BF.group), col = c("dark grey", "white", "light grey", "bl
   + Using the hist function, construct a histogram of WAR for the pitchers in the Hall of Fame dataset.
 
 ```{r Ch3.Q2a}
-ggplot(hofpitching, aes(WAR)) + theme_bw() + geom_histogram(bins = 15) + ylab("Count")
+ggplot(hofpitching, aes(WAR)) + 
+  theme_bw() + 
+  geom_histogram(bins = 15) + 
+  ylab("Count")
 ```
 
   + There are two pitchers who stand out among all of the Hall of Famers on the total WAR variable. Identify these two pitchers.
@@ -245,28 +308,46 @@ head(hofpitching)
   + Use the stripchart function to construct parallel stripcharts of WAR.Season for the different levels of BF.group.
   
 ```{r Ch3.Q3a}
-ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_point(size = 2)  + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("WAR / Years") + xlab("Batters Faced")
+ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + 
+  theme_bw() + 
+  geom_point(size = 2)  + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + 
+  ylab("WAR / Years") + 
+  xlab("Batters Faced")
 ```
 
   + Use the boxplot function to construct parallel boxplots of WAR.Season across BP.group.
 
 ```{r Ch3.Q3b}
-ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_boxplot(fill = "grey") + ylab("WAR / Years") + xlab("Batters Faced")
+ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + 
+  theme_bw() + 
+  geom_boxplot(fill = "grey") + 
+  ylab("WAR / Years") + 
+  xlab("Batters Faced")
 ```
   + Based on your graphs, how does the wins above replacement per season depend on the number of batters faced?
 
 ```{r Ch3.Q3c}
-ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + theme_bw() + ylim(0, 8) + xlim(0, 30000) + geom_point(size = 2) + stat_smooth(method = "lm", col = "black")+ ylab("WAR / Years") + xlab("Batters Faced")
+ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + 
+  theme_bw() + 
+  ylim(0, 8) + 
+  xlim(0, 30000) + 
+  geom_point(size = 2) + 
+  stat_smooth(method = "lm", col = "black") + 
+  ylab("WAR / Years") + 
+  xlab("Batters Faced")
 # There is a positive relationship between WAR / Years and batters faced. It appears that the slope is driven by a few outliers.
 ```
 
 4. Question 4 - Suppose we limit our exploration to pitchers whose mid-career was 1960 or later. We first define the MidYear variable and then use the subset function to construct a data frame consisting of only these 1960+ pitchers.
 
 ```{r Ch3.Q4}
-hofpitching <- hofpitching %>% mutate(MidYear = ((From + To) / 2))
+hofpitching <- hofpitching %>% 
+  mutate(MidYear = ((From + To) / 2))
 head(hofpitching)
 
-hofpitching.recent <- hofpitching %>% filter(MidYear >= 1960)
+hofpitching.recent <- hofpitching %>% 
+  filter(MidYear >= 1960)
 min(hofpitching.recent$MidYear)
 ```
 
@@ -278,7 +359,13 @@ hofpitching.recent %>% arrange(desc(WAR.Season))
   + Construct a dot plot of the values of WAR.Season where the labels are the pitcher names.
 
 ```{r Ch3.Q4b}
-ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) + theme_bw() + geom_point(size = 2) + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + xlim(1, 5.5) + ylab("Name") + xlab("War / Season")
+ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + 
+  xlim(1, 5.5) + 
+  ylab("Name") + 
+  xlab("War / Season")
 ```
   + Which two 1960+ pitchers stand out with respect to wins above replacement per season?
 ```{r Ch3.Q4c}
@@ -289,7 +376,12 @@ ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) +
   + Construct a scatterplot of MidYear (horizontal) against WAR.Season (vertical).
 + Is there a general pattern in this scatterplot? Explain.
 ```{r Ch3.Q5ab}
-ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) + theme_bw() + geom_point(size = 2) + ylim(0, 8) + ylab("WAR / Season") + xlab("Midyear of Career") + stat_smooth(method = "lm", col = "black")
+ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  ylim(0, 8) + ylab("WAR / Season") + 
+  xlab("Midyear of Career") + 
+  stat_smooth(method = "lm", col = "black")
 # I see a negative association between WAR.Season and mid year of career.
 ```
 
@@ -309,7 +401,9 @@ Cobb.info <- getinfo("Ty", "Cobb")
 Williams.info <- getinfo("Ted", "Williams")
 Rose.info <- getinfo("Pete", "Rose")
 
-Cobb.data <- batting %>% filter(playerID == Cobb.info$name.code) %>% mutate(Age = yearID - Cobb.info$byear)
+Cobb.data <- batting %>% 
+  filter(playerID == Cobb.info$name.code) %>% 
+  mutate(Age = yearID - Cobb.info$byear)
 
 Williams.data <- batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
 
@@ -323,13 +417,17 @@ CWR <- CWR %>% select(playerID, H, Age) %>% group_by(playerID) %>% mutate(cumH =
   + Using the plot function, construct a line graph of the cumulative hit totals against age for Pete Rose.
   
 ```{r Ch3.Q6d}
-ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + theme_bw() + geom_line(size = 1.25) + ylab("Hits")
+ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + 
+  theme_bw() + 
+  geom_line(size = 1.25) + 
+  ylab("Hits")
 ```
   + Using the lines function, overlay the cumulative hit totals for Cobb and Williams.
   
 ```{r Ch3.Q6e}  
-ggplot(CWR, aes(y = cumH, x = Age)) + theme_bw() + geom_line(size = 1.25, aes(color = playerID)) 
-
+ggplot(CWR, aes(y = cumH, x = Age)) + 
+  theme_bw() + 
+  geom_line(size = 1.25, aes(color = playerID)) 
 ```
   + Write a short paragraph summarizing what you have learned about the hitting pattern of these three players.
   *Nah, I'm good. Thanks*
@@ -356,8 +454,12 @@ sosa.data <- sosa.data %>% mutate(PA = 1:nrow(sosa.data))
   + Using the R function diff, the following commands compute the spacings between the occurrences of home runs.
 
 ```{r Ch3.Q7de}
-mac.HR.PA <- mac.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% mutate(spacings = diff(c(0, PA)))
-sosa.HR.PA <- sosa.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% mutate(spacings = diff(c(0, PA)))
+mac.HR.PA <- mac.data %>% 
+  filter(EVENT_CD == 23) %>% 
+  select(PA) %>% 
+  mutate(spacings = diff(c(0, PA)))
+sosa.HR.PA <- sosa.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% 
+  mutate(spacings = diff(c(0, PA)))
 ```
 
   + By use of the summary and hist functions on the vectors
@@ -365,6 +467,19 @@ mac.spacings and sosa.spacings, compare the home run spacings of the two players
 
 ```{r Ch3.Q7f}
 summary(mac.HR.PA$spacings); summary(sosa.HR.PA$spacings)
-ggplot(mac.HR.PA, aes(spacings)) + theme_bw() + geom_histogram(bins = 20) + ggtitle("McGwire") + xlab("ABs between HRs") + ylab("Count") + xlim(0, 50)
-ggplot(sosa.HR.PA, aes(spacings)) + theme_bw() + geom_histogram(bins = 20) + ggtitle("Sosa") + xlab("ABs between HRs") + ylab("Count") + xlim(0, 50)
+ggplot(mac.HR.PA, aes(spacings)) + 
+  theme_bw() + 
+  geom_histogram(bins = 20) + 
+  ggtitle("McGwire") + 
+  xlab("ABs between HRs") + 
+  ylab("Count") + 
+  xlim(0, 50)
+
+ggplot(sosa.HR.PA, aes(spacings)) + 
+  theme_bw() + 
+  geom_histogram(bins = 20) + 
+  ggtitle("Sosa") + 
+  xlab("ABs between HRs") + 
+  ylab("Count") + 
+  xlim(0, 50)
 ```
