@@ -118,7 +118,7 @@ ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) +
 
 ```{r Ch2.Q1a}
 # Import the Hall of Fame data set from the repo:
-# hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
+hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
 dim(hof)
 head(hof)
 hof$X2 <- gsub(" HOF", "", hof$X2)

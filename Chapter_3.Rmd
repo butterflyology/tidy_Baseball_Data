@@ -104,16 +104,16 @@ ggplot(hof, aes(y = HR.Rate, x = Era)) + theme_bw() + geom_boxplot(outlier.size 
 ```
 
 ### This next section requires data from the Lahman database, available here: http://www.seanlahman.com/baseball-archive/statistics/
-I have added the relevant files from the Lahman database to the "Data" directory.
+I have added the relevant files from the Lahman database to the "Data" directory; alternatively you could use the Lahman package from R. 
 
 ```{r Section_3.8}
 ## Section 3.8
-master <- read_csv("data/master.csv", col_names = TRUE)
-head(master)
-dim(master)
+# Master <- read_csv("data/master.csv", col_names = TRUE)
+head(Master)
+dim(Master)
 
 getinfo <- function(firstname, lastname){
-	playerline <- subset(master, nameFirst == firstname & nameLast == lastname)
+	playerline <- subset(Master, nameFirst == firstname & nameLast == lastname)
 	name.code <- as.character(playerline$playerID)
 	birthyear <- playerline$birthYear
 	birthmonth <- playerline$birthMonth
@@ -129,17 +129,25 @@ arod.info <- getinfo("Alex", "Rodriguez")
 ruth.info
 
 # comparing Ruth, Aaron, Bonds, and A-Rod
-batting <- read_csv("data/batting.csv", col_names = TRUE)
-dim(batting)
+#Batting <- read_csv("data/batting.csv", col_names = TRUE)
+dim(Batting)
 
 # I rewrote this to use dplyr
-ruth.data <- batting %>% filter(playerID == ruth.info$name.code) %>% mutate(Age = yearID - ruth.info$byear)
+ruth.data <- Batting %>% 
+  filter(playerID == ruth.info$name.code) %>% 
+  mutate(Age = yearID - ruth.info$byear)
 
-aaron.data <- batting %>% filter(playerID == aaron.info$name.code) %>% mutate(Age = yearID - aaron.info$byear)
+aaron.data <- Batting %>% 
+  filter(playerID == aaron.info$name.code) %>% 
+  mutate(Age = yearID - aaron.info$byear)
 
-bonds.data <- batting %>% filter(playerID == bonds.info$name.code) %>% mutate(Age = yearID - bonds.info$byear)
+bonds.data <- Batting %>% 
+  filter(playerID == bonds.info$name.code) %>% 
+  mutate(Age = yearID - bonds.info$byear)
 
-arod.data <- batting %>% filter(playerID == arod.info$name.code) %>% mutate(Age = yearID - arod.info$byear)
+arod.data <- Batting %>% 
+  filter(playerID == arod.info$name.code) %>% 
+  mutate(Age = yearID - arod.info$byear)
 
 RABA <- rbind(ruth.data, aaron.data, bonds.data, arod.data)
 RABA <- RABA %>% select(playerID, HR, Age) %>% group_by(playerID) %>% mutate(cumHR = cumsum(HR))

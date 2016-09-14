@@ -51,7 +51,7 @@ session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-08-09
+##  date     2016-09-14
 ```
 
 ```
@@ -62,7 +62,7 @@ session_info()
 ##  package    * version date       source        
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
 ##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
-##  DBI          0.4-1   2016-05-08 CRAN (R 3.3.0)
+##  DBI          0.5-1   2016-09-10 CRAN (R 3.3.0)
 ##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.0)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
 ##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
@@ -71,20 +71,20 @@ session_info()
 ##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.0)
 ##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.0)
 ##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.0)
-##  knitr        1.13    2016-05-09 CRAN (R 3.3.0)
-##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.0)
+##  knitr        1.14    2016-08-13 CRAN (R 3.3.0)
+##  Lahman     * 5.0-0   2016-08-27 CRAN (R 3.3.0)
 ##  magrittr     1.5     2014-11-22 CRAN (R 3.3.0)
 ##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.0)
 ##  munsell      0.4.3   2016-02-13 CRAN (R 3.3.0)
 ##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
-##  R6           2.1.2   2016-01-26 CRAN (R 3.3.0)
-##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.0)
+##  R6           2.1.3   2016-08-19 CRAN (R 3.3.0)
+##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
 ##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
 ##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
 ##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
 ##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.0)
-##  stringr      1.0.0   2015-04-30 CRAN (R 3.3.0)
-##  tibble       1.1     2016-07-04 CRAN (R 3.3.1)
+##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
+##  tibble       1.2     2016-08-26 CRAN (R 3.3.0)
 ##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
 ```
@@ -124,8 +124,8 @@ head(Spahn)
 ```
 
 ```
-## # A tibble: 6 x 35
-##    Year   Age    Tm    Lg     W     L   W-L   ERA     G    GS    GF    CG
+## # A tibble: 6 × 35
+##    Year   Age    Tm    Lg     W     L `W-L`   ERA     G    GS    GF    CG
 ##   <int> <int> <chr> <chr> <int> <int> <dbl> <dbl> <int> <int> <int> <int>
 ## 1  1942    21   BSN    NL     0     0    NA  5.74     4     2     0     1
 ## 2  1946    25   BSN    NL     8     5 0.615  2.94    24    16     7     8
@@ -141,14 +141,22 @@ head(Spahn)
 ## 4     3     1 257.0   237   115   106    19    77    NA   114     1     0
 ## 5     4     0 302.1   283   125   103    27    86    NA   151     3     0
 ## 6     1     1 293.0   248   123   103    22   111    NA   191     1     0
-##      WP    BF  ERA+  WHIP   H/9  HR/9  BB/9  SO/9 SO/BB   Awards       FIP
-##   <int> <int> <int> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <chr>     <dbl>
-## 1     0    79    59 2.298  14.4   0.0   6.3   4.0  0.64     <NA> 1.2500000
-## 2     4   514   118 1.138   7.7   0.4   2.6   4.8  1.86     <NA> 0.4153355
-## 3     5  1174   170 1.136   7.6   0.5   2.6   3.8  1.46 ASMVP-15 0.6950207
-## 4     4  1064   105 1.222   8.3   0.7   2.7   4.0  1.48   MVP-14 0.9727626
-## 5     4  1258   124 1.221   8.4   0.8   2.6   4.5  1.76  ASMVP-7 1.0162198
-## 6     8  1217   122 1.225   7.6   0.7   3.4   5.9  1.72 ASMVP-18 0.8088737
+##      WP    BF `ERA+`  WHIP `H/9` `HR/9` `BB/9` `SO/9` `SO/BB`   Awards
+##   <int> <int>  <int> <dbl> <dbl>  <dbl>  <dbl>  <dbl>   <dbl>    <chr>
+## 1     0    79     59 2.298  14.4    0.0    6.3    4.0    0.64     <NA>
+## 2     4   514    118 1.138   7.7    0.4    2.6    4.8    1.86     <NA>
+## 3     5  1174    170 1.136   7.6    0.5    2.6    3.8    1.46 ASMVP-15
+## 4     4  1064    105 1.222   8.3    0.7    2.7    4.0    1.48   MVP-14
+## 5     4  1258    124 1.221   8.4    0.8    2.6    4.5    1.76  ASMVP-7
+## 6     8  1217    122 1.225   7.6    0.7    3.4    5.9    1.72 ASMVP-18
+##         FIP
+##       <dbl>
+## 1 1.2500000
+## 2 0.4153355
+## 3 0.6950207
+## 4 0.9727626
+## 5 1.0162198
+## 6 0.8088737
 ```
 
 ```r
@@ -157,7 +165,7 @@ head(Spahn[pos, c("Year", "Age", "W", "L", "ERA", "FIP")])
 ```
 
 ```
-## # A tibble: 6 x 6
+## # A tibble: 6 × 6
 ##    Year   Age     W     L   ERA       FIP
 ##   <int> <int> <int> <int> <dbl>     <dbl>
 ## 1  1952    31    14    19  2.98 0.3448276
@@ -174,8 +182,8 @@ head(Spahn1)
 ```
 
 ```
-## # A tibble: 6 x 35
-##    Year   Age     Tm    Lg     W     L   W-L   ERA     G    GS    GF    CG
+## # A tibble: 6 × 35
+##    Year   Age     Tm    Lg     W     L `W-L`   ERA     G    GS    GF    CG
 ##   <int> <int> <fctr> <chr> <int> <int> <dbl> <dbl> <int> <int> <int> <int>
 ## 1  1942    21    BSN    NL     0     0    NA  5.74     4     2     0     1
 ## 2  1946    25    BSN    NL     8     5 0.615  2.94    24    16     7     8
@@ -191,14 +199,22 @@ head(Spahn1)
 ## 4     3     1 257.0   237   115   106    19    77    NA   114     1     0
 ## 5     4     0 302.1   283   125   103    27    86    NA   151     3     0
 ## 6     1     1 293.0   248   123   103    22   111    NA   191     1     0
-##      WP    BF  ERA+  WHIP   H/9  HR/9  BB/9  SO/9 SO/BB   Awards       FIP
-##   <int> <int> <int> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <chr>     <dbl>
-## 1     0    79    59 2.298  14.4   0.0   6.3   4.0  0.64     <NA> 1.2500000
-## 2     4   514   118 1.138   7.7   0.4   2.6   4.8  1.86     <NA> 0.4153355
-## 3     5  1174   170 1.136   7.6   0.5   2.6   3.8  1.46 ASMVP-15 0.6950207
-## 4     4  1064   105 1.222   8.3   0.7   2.7   4.0  1.48   MVP-14 0.9727626
-## 5     4  1258   124 1.221   8.4   0.8   2.6   4.5  1.76  ASMVP-7 1.0162198
-## 6     8  1217   122 1.225   7.6   0.7   3.4   5.9  1.72 ASMVP-18 0.8088737
+##      WP    BF `ERA+`  WHIP `H/9` `HR/9` `BB/9` `SO/9` `SO/BB`   Awards
+##   <int> <int>  <int> <dbl> <dbl>  <dbl>  <dbl>  <dbl>   <dbl>    <chr>
+## 1     0    79     59 2.298  14.4    0.0    6.3    4.0    0.64     <NA>
+## 2     4   514    118 1.138   7.7    0.4    2.6    4.8    1.86     <NA>
+## 3     5  1174    170 1.136   7.6    0.5    2.6    3.8    1.46 ASMVP-15
+## 4     4  1064    105 1.222   8.3    0.7    2.7    4.0    1.48   MVP-14
+## 5     4  1258    124 1.221   8.4    0.8    2.6    4.5    1.76  ASMVP-7
+## 6     8  1217    122 1.225   7.6    0.7    3.4    5.9    1.72 ASMVP-18
+##         FIP
+##       <dbl>
+## 1 1.2500000
+## 2 0.4153355
+## 3 0.6950207
+## 4 0.9727626
+## 5 1.0162198
+## 6 0.8088737
 ```
 
 ```r
@@ -229,53 +245,26 @@ by(Spahn1[, c("W-L", "ERA", "WHIP", "FIP")], Spahn1$Tm, summary)
 
 
 ```r
-Batting <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/Batting.csv", col_names = TRUE)
-```
-
-```
-## Parsed with column specification:
-## cols(
-##   .default = col_integer(),
-##   playerID = col_character(),
-##   teamID = col_character(),
-##   lgID = col_character()
-## )
-```
-
-```
-## See spec(...) for full column specifications.
-```
-
-```r
+# Note, by loading the "Lahman" package we don't need to import the raw data. I have included the code to download the external file in case you want it
+# Batting <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/Batting.csv", col_names = TRUE)
 head(Batting)
 ```
 
 ```
-## # A tibble: 6 x 24
-##    playerID yearID stint teamID  lgID     G G_batting    AB     R     H
-##       <chr>  <int> <int>  <chr> <chr> <int>     <int> <int> <int> <int>
-## 1 aardsda01   2004     1    SFN    NL    11        11     0     0     0
-## 2 aardsda01   2006     1    CHN    NL    45        43     2     0     0
-## 3 aardsda01   2007     1    CHA    AL    25         2     0     0     0
-## 4 aardsda01   2008     1    BOS    AL    47         5     1     0     0
-## 5 aardsda01   2009     1    SEA    AL    73         3     0     0     0
-## 6 aardsda01   2010     1    SEA    AL    53         4     0     0     0
-##      2B    3B    HR   RBI    SB    CS    BB    SO   IBB   HBP    SH    SF
-##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
-## 1     0     0     0     0     0     0     0     0     0     0     0     0
-## 2     0     0     0     0     0     0     0     0     0     0     1     0
-## 3     0     0     0     0     0     0     0     0     0     0     0     0
-## 4     0     0     0     0     0     0     0     1     0     0     0     0
-## 5     0     0     0     0     0     0     0     0     0     0     0     0
-## 6     0     0     0     0     0     0     0     0     0     0     0     0
-##    GIDP G_old
-##   <int> <int>
-## 1     0    11
-## 2     0    45
-## 3     0     2
-## 4     0     5
-## 5     0    NA
-## 6     0    NA
+##    playerID yearID stint teamID lgID  G  AB  R  H X2B X3B HR RBI SB CS BB
+## 1 abercda01   1871     1    TRO   NA  1   4  0  0   0   0  0   0  0  0  0
+## 2  addybo01   1871     1    RC1   NA 25 118 30 32   6   0  0  13  8  1  4
+## 3 allisar01   1871     1    CL1   NA 29 137 28 40   4   5  0  19  3  1  2
+## 4 allisdo01   1871     1    WS3   NA 27 133 28 44  10   2  2  27  1  1  0
+## 5 ansonca01   1871     1    RC1   NA 25 120 29 39  11   3  0  16  6  2  2
+## 6 armstbo01   1871     1    FW1   NA 12  49  9 11   2   1  0   5  0  1  0
+##   SO IBB HBP SH SF GIDP
+## 1  0  NA  NA NA NA   NA
+## 2  0  NA  NA NA NA   NA
+## 3  5  NA  NA NA NA   NA
+## 4  2  NA  NA NA NA   NA
+## 5  1  NA  NA NA NA   NA
+## 6  1  NA  NA NA NA   NA
 ```
 
 ```r
@@ -283,7 +272,7 @@ dim(Batting)
 ```
 
 ```
-## [1] 95195    24
+## [1] 101332     22
 ```
 
 ```r
@@ -292,31 +281,20 @@ head(Batting.60)
 ```
 
 ```
-## # A tibble: 6 x 24
-##    playerID yearID stint teamID  lgID     G G_batting    AB     R     H
-##       <chr>  <int> <int>  <chr> <chr> <int>     <int> <int> <int> <int>
-## 1 aaronha01   1960     1    ML1    NL   153       153   590   102   172
-## 2 aaronha01   1961     1    ML1    NL   155       155   603   115   197
-## 3 aaronha01   1962     1    ML1    NL   156       156   592   127   191
-## 4 aaronha01   1963     1    ML1    NL   161       161   631   121   201
-## 5 aaronha01   1964     1    ML1    NL   145       145   570   103   187
-## 6 aaronha01   1965     1    ML1    NL   150       150   570   109   181
-##      2B    3B    HR   RBI    SB    CS    BB    SO   IBB   HBP    SH    SF
-##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
-## 1    20    11    40   126    16     7    60    63    13     2     0    12
-## 2    39    10    34   120    21     9    56    64    20     2     1     9
-## 3    28     6    45   128    15     7    66    73    14     3     0     6
-## 4    29     4    44   130    31     5    78    94    18     0     0     5
-## 5    30     2    24    95    22     4    62    46     9     0     0     2
-## 6    40     1    32    89    24     4    60    81    10     1     0     8
-##    GIDP G_old
-##   <int> <int>
-## 1     8   153
-## 2    16   155
-## 3    14   156
-## 4    11   161
-## 5    22   145
-## 6    15   150
+##    playerID yearID stint teamID lgID   G  AB   R   H X2B X3B HR RBI SB CS
+## 1 aaronha01   1960     1    ML1   NL 153 590 102 172  20  11 40 126 16  7
+## 2 abernte02   1960     1    WS1   AL   2   1   1   1   0   0  0   0  0  0
+## 3 adairje01   1960     1    BAL   AL   3   5   1   1   0   0  1   1  0  0
+## 4 adcocjo01   1960     1    ML1   NL 138 514  55 153  21   4 25  91  2  2
+## 5 aguirha01   1960     1    DET   AL  37  28   0   1   0   0  0   0  0  0
+## 6 allisbo01   1960     1    WS1   AL 144 501  79 126  30   3 15  69 11  9
+##   BB SO IBB HBP SH SF GIDP
+## 1 60 63  13   2  0 12    8
+## 2  0  0   0   0  0  0    0
+## 3  0  0   0   0  0  0    0
+## 4 46 86   7   1  5  4   13
+## 5  0 19   0   0  2  0    0
+## 6 92 94   4   2  5  4   14
 ```
 
 ```r
@@ -324,7 +302,7 @@ dim(Batting.60)
 ```
 
 ```
-## [1] 7559   24
+## [1] 7559   22
 ```
 
 ```r
@@ -356,7 +334,7 @@ system.time(S <- sapply(players, compute.hr))
 
 ```
 ##    user  system elapsed 
-##   1.484   0.007   1.493
+##   2.195   0.015   2.216
 ```
 
 ```r
@@ -364,8 +342,8 @@ head(S)
 ```
 
 ```
-## aaronha01 aaronto01 abernte02 acklefr01 adairje01 adamsdo01 
-##       375        11         0         0        57         0
+## aaronha01 abernte02 adairje01 adcocjo01 aguirha01 allisbo01 
+##       375         0        57       155         0       225
 ```
 
 ```r
@@ -383,7 +361,7 @@ system.time(S1 <- Batting.60 %>% group_by(playerID) %>% summarize(sum(HR)))
 
 ```
 ##    user  system elapsed 
-##   0.011   0.000   0.012
+##   0.014   0.000   0.014
 ```
 
 ```r
@@ -391,15 +369,15 @@ head(S1)
 ```
 
 ```
-## # A tibble: 6 x 2
-##    playerID sum(HR)
-##       <chr>   <int>
-## 1 aaronha01     375
-## 2 aaronto01      11
-## 3 abernte02       0
-## 4 acklefr01       0
-## 5 adairje01      57
-## 6 adamsdo01       0
+## # A tibble: 6 × 2
+##    playerID `sum(HR)`
+##       <chr>     <int>
+## 1 aaronha01       375
+## 2 aaronto01        11
+## 3 abernte02         0
+## 4 acklefr01         0
+## 5 adairje01        57
+## 6 adamsdo01         0
 ```
 
 ```r
@@ -412,21 +390,25 @@ dim(S1)
 
 ```r
 # create a data frame 
-dataframe.AB <- Batting %>% select(playerID, AB, HR, SO) %>% group_by(playerID) %>% filter(!is.na(AB)) %>% summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
+dataframe.AB <- Batting %>% 
+  select(playerID, AB, HR, SO) %>% 
+  group_by(playerID) %>% 
+  filter(!is.na(AB)) %>% 
+  summarize(AB = sum(AB), HR = sum(HR), SO = sum(SO))
 
 head(dataframe.AB)
 ```
 
 ```
-## # A tibble: 6 x 4
+## # A tibble: 6 × 4
 ##    playerID    AB    HR    SO
 ##       <chr> <int> <int> <int>
-## 1 aardsda01     3     0     1
+## 1 aardsda01     4     0     2
 ## 2 aaronha01 12364   755  1383
 ## 3 aaronto01   944    13   145
 ## 4  aasedo01     5     0     3
 ## 5  abadan01    21     0     5
-## 6  abadfe01     1     0     1
+## 6  abadfe01     8     0     4
 ```
 
 ```r
@@ -434,7 +416,7 @@ dim(dataframe.AB)
 ```
 
 ```
-## [1] 17122     4
+## [1] 18232     4
 ```
 
 ```r
@@ -445,31 +427,20 @@ head(Batting2)
 ```
 
 ```
-## # A tibble: 6 x 27
-##    playerID yearID stint teamID  lgID     G G_batting  AB.x     R     H
-##       <chr>  <int> <int>  <chr> <chr> <int>     <int> <int> <int> <int>
-## 1 aardsda01   2004     1    SFN    NL    11        11     0     0     0
-## 2 aardsda01   2006     1    CHN    NL    45        43     2     0     0
-## 3 aardsda01   2007     1    CHA    AL    25         2     0     0     0
-## 4 aardsda01   2008     1    BOS    AL    47         5     1     0     0
-## 5 aardsda01   2009     1    SEA    AL    73         3     0     0     0
-## 6 aardsda01   2010     1    SEA    AL    53         4     0     0     0
-##      2B    3B  HR.x   RBI    SB    CS    BB  SO.x   IBB   HBP    SH    SF
-##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
-## 1     0     0     0     0     0     0     0     0     0     0     0     0
-## 2     0     0     0     0     0     0     0     0     0     0     1     0
-## 3     0     0     0     0     0     0     0     0     0     0     0     0
-## 4     0     0     0     0     0     0     0     1     0     0     0     0
-## 5     0     0     0     0     0     0     0     0     0     0     0     0
-## 6     0     0     0     0     0     0     0     0     0     0     0     0
-##    GIDP G_old  AB.y  HR.y  SO.y
-##   <int> <int> <int> <int> <int>
-## 1     0    11     3     0     1
-## 2     0    45     3     0     1
-## 3     0     2     3     0     1
-## 4     0     5     3     0     1
-## 5     0    NA     3     0     1
-## 6     0    NA     3     0     1
+##    playerID yearID stint teamID lgID  G AB.x  R  H X2B X3B HR.x RBI SB CS
+## 1 abercda01   1871     1    TRO   NA  1    4  0  0   0   0    0   0  0  0
+## 2  addybo01   1871     1    RC1   NA 25  118 30 32   6   0    0  13  8  1
+## 3 allisar01   1871     1    CL1   NA 29  137 28 40   4   5    0  19  3  1
+## 4 allisdo01   1871     1    WS3   NA 27  133 28 44  10   2    2  27  1  1
+## 5 ansonca01   1871     1    RC1   NA 25  120 29 39  11   3    0  16  6  2
+## 6 armstbo01   1871     1    FW1   NA 12   49  9 11   2   1    0   5  0  1
+##   BB SO.x IBB HBP SH SF GIDP  AB.y HR.y SO.y
+## 1  0    0  NA  NA NA NA   NA     4    0    0
+## 2  4    0  NA  NA NA NA   NA  1231    1    7
+## 3  2    5  NA  NA NA NA   NA   740    1   18
+## 4  0    2  NA  NA NA NA   NA  1407    2   NA
+## 5  2    1  NA  NA NA NA   NA 10277   97   NA
+## 6  0    1  NA  NA NA NA   NA    49    0    1
 ```
 
 ```r
@@ -477,7 +448,7 @@ dim(Batting2)
 ```
 
 ```
-## [1] 95195    27
+## [1] 101332     25
 ```
 
 ```r
@@ -486,7 +457,7 @@ dim(Batting.5000)
 ```
 
 ```
-## [1] 722   4
+## [1] 758   4
 ```
 
 ```r
@@ -494,11 +465,11 @@ head(Batting.5000)
 ```
 
 ```
-## # A tibble: 6 x 4
+## # A tibble: 6 × 4
 ##    playerID    AB    HR    SO
 ##       <chr> <int> <int> <int>
 ## 1 aaronha01 12364   755  1383
-## 2 abreubo01  8128   284  1763
+## 2 abreubo01  8480   288  1840
 ## 3 adamssp01  5557     9   223
 ## 4 adcocjo01  6606   336  1059
 ## 5 alfoned01  5385   146   617
@@ -507,11 +478,14 @@ head(Batting.5000)
 
 ```r
 # This function "compute.hr" is now unnecessary, as we have already calculated the relevent statistics. See how, with one line of dplyr code, we can replace a function and other awkward subsetting.
-Batting.5000 %>% filter(playerID == "aaronha01") %>% summarize(AB = sum(AB, na.rm = TRUE), HR = sum(HR, na.rm = TRUE), SO = sum(AB, na.rm = TRUE))
+Batting.5000 %>% filter(playerID == "aaronha01") %>% 
+  summarize(AB = sum(AB, na.rm = TRUE), 
+            HR = sum(HR, na.rm = TRUE), 
+            SO = sum(AB, na.rm = TRUE))
 ```
 
 ```
-## # A tibble: 1 x 3
+## # A tibble: 1 × 3
 ##      AB    HR    SO
 ##   <int> <int> <int>
 ## 1 12364   755 12364
@@ -519,15 +493,22 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>% summarize(AB = sum(AB, na.r
 
 ```r
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
-ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + theme_bw() + xlim(0, 0.1) + ylim(0, 0.35) + geom_point(cex = 2) + stat_smooth(method = "loess", col = "red") + ylab("SO / AB") + xlab("HR / AB")
+ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
+  theme_bw() + 
+  xlim(0, 0.08) + 
+  ylim(0, 0.4) + 
+  geom_point(cex = 2) + 
+  stat_smooth(method = "loess", col = "red") + 
+  ylab("SO / AB") + 
+  xlab("HR / AB")
 ```
 
 ```
-## Warning: Removed 121 rows containing non-finite values (stat_smooth).
+## Warning: Removed 123 rows containing non-finite values (stat_smooth).
 ```
 
 ```
-## Warning: Removed 121 rows containing missing values (geom_point).
+## Warning: Removed 123 rows containing missing values (geom_point).
 ```
 
 ![](Chapter_2_files/figure-html/Batting-1.png)<!-- -->
@@ -580,31 +561,31 @@ head(hof)
 ```
 
 ```
-## # A tibble: 6 x 25
-##      Rk                 X2 Inducted   Yrs  From    To   ASG WAR/pos     G
-##   <int>              <chr>    <int> <int> <int> <int> <int>   <dbl> <int>
-## 1     1     Hank Aaron HOF     1982    23  1954  1976    25   137.3  3298
-## 2     3 Roberto Alomar HOF     2011    17  1988  2004    12    62.9  2379
-## 3     6      Cap Anson HOF     1939    27  1871  1897     0    91.1  2524
-## 4     7  Luis Aparicio HOF     1984    18  1956  1973    13    51.7  2599
-## 5     8   Luke Appling HOF     1964    20  1930  1950     7    69.9  2422
-## 6     9 Richie Ashburn HOF     1995    15  1948  1962     6    60.2  2189
-##      PA    AB     R     H    2B    3B    HR   RBI    SB    CS    BB    SO
+## # A tibble: 6 × 25
+##      Rk                 X2 Inducted   Yrs  From    To   ASG `WAR/pos`
+##   <int>              <chr>    <int> <int> <int> <int> <int>     <dbl>
+## 1     1     Hank Aaron HOF     1982    23  1954  1976    25     137.3
+## 2     3 Roberto Alomar HOF     2011    17  1988  2004    12      62.9
+## 3     6      Cap Anson HOF     1939    27  1871  1897     0      91.1
+## 4     7  Luis Aparicio HOF     1984    18  1956  1973    13      51.7
+## 5     8   Luke Appling HOF     1964    20  1930  1950     7      69.9
+## 6     9 Richie Ashburn HOF     1995    15  1948  1962     6      60.2
+##       G    PA    AB     R     H  `2B`  `3B`    HR   RBI    SB    CS    BB
 ##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
-## 1 13941 12364  2174  3771   624    98   755  2297   240    73  1402  1383
-## 2 10400  9073  1508  2724   504    80   210  1134   474   114  1032  1140
-## 3 11331 10281  1999  3435   582   142    97  2075   277    16   984   330
-## 4 11230 10230  1335  2677   394    92    83   791   506   136   736   742
-## 5 10254  8856  1319  2749   440   102    45  1116   179   108  1302   528
-## 6  9736  8365  1322  2574   317   109    29   586   234    92  1198   571
-##      BA   OBP   SLG   OPS
-##   <dbl> <dbl> <dbl> <dbl>
-## 1 0.305 0.374 0.555 0.928
-## 2 0.300 0.371 0.443 0.814
-## 3 0.334 0.394 0.447 0.841
-## 4 0.262 0.311 0.343 0.653
-## 5 0.310 0.399 0.398 0.798
-## 6 0.308 0.396 0.382 0.778
+## 1  3298 13941 12364  2174  3771   624    98   755  2297   240    73  1402
+## 2  2379 10400  9073  1508  2724   504    80   210  1134   474   114  1032
+## 3  2524 11331 10281  1999  3435   582   142    97  2075   277    16   984
+## 4  2599 11230 10230  1335  2677   394    92    83   791   506   136   736
+## 5  2422 10254  8856  1319  2749   440   102    45  1116   179   108  1302
+## 6  2189  9736  8365  1322  2574   317   109    29   586   234    92  1198
+##      SO    BA   OBP   SLG   OPS
+##   <int> <dbl> <dbl> <dbl> <dbl>
+## 1  1383 0.305 0.374 0.555 0.928
+## 2  1140 0.300 0.371 0.443 0.814
+## 3   330 0.334 0.394 0.447 0.841
+## 4   742 0.262 0.311 0.343 0.653
+## 5   528 0.310 0.399 0.398 0.798
+## 6   571 0.308 0.396 0.382 0.778
 ```
 
 ```r
@@ -629,7 +610,7 @@ head(SB.Attempt)
 ```
 
 ```
-## # A tibble: 6 x 1
+## # A tibble: 6 × 1
 ##   SB.Attempt
 ##        <int>
 ## 1       1741
@@ -647,7 +628,7 @@ head(Success.Rate)
 ```
 
 ```
-## # A tibble: 6 x 1
+## # A tibble: 6 × 1
 ##   Success.Rate
 ##          <dbl>
 ## 1    1.0000000
@@ -665,7 +646,7 @@ head(SB.Game)
 ```
 
 ```
-## # A tibble: 6 x 1
+## # A tibble: 6 × 1
 ##     SB.Game
 ##       <dbl>
 ## 1 0.5734003
@@ -754,70 +735,38 @@ sum(outcomes == "Walk") # This sums all instances of Walk
   + In R, place the wins and losses in the vectors W and L, respectively. Also, create a character vector Name containing the last names of these pitchers.
 
 ```r
-pitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/pitching.csv", col_names = TRUE)
+# The Pitching database is contained in the Lahman package, but just in case you want to download the raw data from GitHub. 
+# Pitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/pitching.csv", col_names = TRUE)
+dim(Pitching)
 ```
 
 ```
-## Parsed with column specification:
-## cols(
-##   .default = col_integer(),
-##   playerID = col_character(),
-##   teamID = col_character(),
-##   lgID = col_character(),
-##   BAOpp = col_double(),
-##   ERA = col_double(),
-##   SH = col_character(),
-##   SF = col_character(),
-##   GIDP = col_character()
-## )
-```
-
-```
-## See spec(...) for full column specifications.
+## [1] 44139    30
 ```
 
 ```r
-dim(pitching)
+head(Pitching)
 ```
 
 ```
-## [1] 41139    30
-```
-
-```r
-head(pitching)
-```
-
-```
-## # A tibble: 6 x 30
-##    playerID yearID stint teamID  lgID     W     L     G    GS    CG   SHO
-##       <chr>  <int> <int>  <chr> <chr> <int> <int> <int> <int> <int> <int>
-## 1 aardsda01   2004     1    SFN    NL     1     0    11     0     0     0
-## 2 aardsda01   2006     1    CHN    NL     3     0    45     0     0     0
-## 3 aardsda01   2007     1    CHA    AL     2     1    25     0     0     0
-## 4 aardsda01   2008     1    BOS    AL     4     2    47     0     0     0
-## 5 aardsda01   2009     1    SEA    AL     3     6    73     0     0     0
-## 6 aardsda01   2010     1    SEA    AL     0     6    53     0     0     0
-##      SV IPouts     H    ER    HR    BB    SO BAOpp   ERA   IBB    WP   HBP
-##   <int>  <int> <int> <int> <int> <int> <int> <dbl> <dbl> <int> <int> <int>
-## 1     0     32    20     8     1    10     5  0.41  6.75     0     0     2
-## 2     0    159    41    24     9    28    49    NA  4.08     0     1     1
-## 3     0     97    39    23     4    17    36    NA  6.40     3     2     1
-## 4     0    146    49    30     4    35    49    NA  5.55     2     3     5
-## 5    38    214    49    20     4    34    80    NA  2.52     3     2     0
-## 6    31    149    33    19     5    25    49    NA  3.44     5     2     2
-##      BK   BFP    GF     R    SH    SF  GIDP
-##   <int> <int> <int> <int> <chr> <chr> <chr>
-## 1     0    61     5     8  <NA>  <NA>  <NA>
-## 2     0   225     9    25  <NA>  <NA>  <NA>
-## 3     0   151     7    24  <NA>  <NA>  <NA>
-## 4     0   228     7    32  <NA>  <NA>  <NA>
-## 5     0   296    53    23  <NA>  <NA>  <NA>
-## 6     0   202    43    19  <NA>  <NA>  <NA>
+##    playerID yearID stint teamID lgID  W  L  G GS CG SHO SV IPouts   H  ER
+## 1 bechtge01   1871     1    PH1   NA  1  2  3  3  2   0  0     78  43  23
+## 2 brainas01   1871     1    WS3   NA 12 15 30 30 30   0  0    792 361 132
+## 3 fergubo01   1871     1    NY2   NA  0  0  1  0  0   0  0      3   8   3
+## 4 fishech01   1871     1    RC1   NA  4 16 24 24 22   1  0    639 295 103
+## 5 fleetfr01   1871     1    NY2   NA  0  1  1  1  1   0  0     27  20  10
+## 6 flowedi01   1871     1    TRO   NA  0  0  1  0  0   0  0      3   1   0
+##   HR BB SO BAOpp   ERA IBB WP HBP BK BFP GF   R SH SF GIDP
+## 1  0 11  1    NA  7.96  NA NA  NA  0  NA NA  42 NA NA   NA
+## 2  4 37 13    NA  4.50  NA NA  NA  0  NA NA 292 NA NA   NA
+## 3  0  0  0    NA 27.00  NA NA  NA  0  NA NA   9 NA NA   NA
+## 4  3 31 15    NA  4.35  NA NA  NA  0  NA NA 257 NA NA   NA
+## 5  0  3  0    NA 10.00  NA NA  NA  0  NA NA  21 NA NA   NA
+## 6  0  0  0    NA  0.00  NA NA  NA  0  NA NA   0 NA NA   NA
 ```
 
 ```r
-pitching.350 <- pitching %>% group_by(playerID) %>% summarize(W = sum(W), L = sum(L), SO = sum(SO), BB = sum(BB)) %>% filter(W >= 350) %>% rename(Name = playerID)
+pitching.350 <- Pitching %>% group_by(playerID) %>% summarize(W = sum(W), L = sum(L), SO = sum(SO), BB = sum(BB)) %>% filter(W >= 350) %>% rename(Name = playerID)
 dim(pitching.350)
 ```
 
@@ -830,7 +779,7 @@ head(pitching.350)
 ```
 
 ```
-## # A tibble: 6 x 5
+## # A tibble: 6 × 5
 ##        Name     W     L    SO    BB
 ##       <chr> <int> <int> <int> <int>
 ## 1 alexape01   373   208  2198   951
@@ -848,7 +797,7 @@ Win.PCT
 ```
 
 ```
-## # A tibble: 9 x 2
+## # A tibble: 9 × 2
 ##        Name  Win.PCT
 ##       <chr>    <dbl>
 ## 1 alexape01 64.19966
@@ -869,7 +818,7 @@ Wins.350
 ```
 
 ```
-## # A tibble: 9 x 4
+## # A tibble: 9 × 4
 ##        Name     W     L  Win.PCT
 ##       <chr> <int> <int>    <dbl>
 ## 1 alexape01   373   208 64.19966
@@ -889,7 +838,7 @@ Wins.350 %>% arrange(desc(Win.PCT))
 ```
 
 ```
-## # A tibble: 9 x 4
+## # A tibble: 9 × 4
 ##        Name     W     L  Win.PCT
 ##       <chr> <int> <int>    <dbl>
 ## 1 mathech01   373   188 66.48841
@@ -913,7 +862,7 @@ pitching.350
 ```
 
 ```
-## # A tibble: 9 x 5
+## # A tibble: 9 × 5
 ##        Name     W     L    SO    BB
 ##       <chr> <int> <int> <int> <int>
 ## 1 alexape01   373   208  2198   951
@@ -936,7 +885,7 @@ SO.BB.Ratio
 ```
 
 ```
-## # A tibble: 9 x 2
+## # A tibble: 9 × 2
 ##        Name SO.BB.Ratio
 ##       <chr>       <dbl>
 ## 1 alexape01    2.311251
@@ -959,7 +908,7 @@ SO.BB
 ```
 
 ```
-## # A tibble: 9 x 4
+## # A tibble: 9 × 4
 ##        Name    SO    BB SO.BB.Ratio
 ##       <chr> <int> <int>       <dbl>
 ## 1 alexape01  2198   951    2.311251
@@ -981,7 +930,7 @@ SO.BB %>% filter(SO.BB.Ratio > 2.8)
 ```
 
 ```
-## # A tibble: 3 x 4
+## # A tibble: 3 × 4
 ##        Name    SO    BB SO.BB.Ratio
 ##       <chr> <int> <int>       <dbl>
 ## 1 clemero02  4672  1580    2.956962
@@ -997,7 +946,7 @@ SO.BB %>% arrange(desc(BB))
 ```
 
 ```
-## # A tibble: 9 x 4
+## # A tibble: 9 × 4
 ##        Name    SO    BB SO.BB.Ratio
 ##       <chr> <int> <int>       <dbl>
 ## 1 clemero02  4672  1580    2.956962
@@ -1020,19 +969,19 @@ SO.BB %>% arrange(desc(BB))
   + Read the Lahman “pitching.csv” data file into R into a data frame Pitching. 
 
 ```r
-# Already done!
+# Already done! (see above code)
 ```
   + The following function computes the cumulative strikeouts, cumulative walks, mid career year, and the total innings pitched (measured in terms of outs) for a pitcher whose season statistics are stored in the data frame d.
 
 
 ```r
 stats <- function(d){
-c.SO <- sum(d$SO, na.rm=TRUE)
-c.BB <- sum(d$BB, na.rm=TRUE)
-c.IPouts <- sum(d$IPouts, na.rm=TRUE)
-c.midYear <- median(d$yearID, na.rm=TRUE)
-data.frame(SO = c.SO, BB = c.BB, IPouts = c.IPouts,
-midYear=c.midYear)
+  c.SO <- sum(d$SO, na.rm=TRUE)
+  c.BB <- sum(d$BB, na.rm=TRUE)
+  c.IPouts <- sum(d$IPouts, na.rm=TRUE)
+  c.midYear <- median(d$yearID, na.rm=TRUE)
+  data.frame(SO = c.SO, BB = c.BB, IPouts = c.IPouts,
+  midYear=c.midYear)
 }
 ```
   + Using the function "ddply"" (plyr package) together with the function stats, find the career statistics for all pitchers in the pitching dataset. Call this new data frame career.pitching.
@@ -1040,17 +989,17 @@ midYear=c.midYear)
 
 ```r
 # We don't need to run the function, just use "summarize" in dplyr. 
-career.pitching <- pitching %>% group_by(playerID) %>% summarize(SO = sum(SO, na.rm = TRUE), BB = sum(BB, na.rm = TRUE), IPouts = sum(IPouts, na.rm = TRUE), midyear = median(yearID, na.rm = TRUE))
+career.pitching <- Pitching %>% group_by(playerID) %>% summarize(SO = sum(SO, na.rm = TRUE), BB = sum(BB, na.rm = TRUE), IPouts = sum(IPouts, na.rm = TRUE), midyear = median(yearID, na.rm = TRUE))
 head(career.pitching)
 ```
 
 ```
-## # A tibble: 6 x 5
+## # A tibble: 6 × 5
 ##    playerID    SO    BB IPouts midyear
 ##       <chr> <int> <int>  <int>   <dbl>
-## 1 aardsda01   268   149    797  2007.5
+## 1 aardsda01   340   183   1011  2009.0
 ## 2  aasedo01   641   457   3328  1984.0
-## 3  abadfe01    27    14    116  2010.5
+## 3  abadfe01   193    77    682  2012.5
 ## 4 abbeybe01   161   192   1704  1894.5
 ## 5 abbeych01     0     0      6  1896.0
 ## 6 abbotda01     1     8     39  1890.0
@@ -1063,19 +1012,19 @@ dim(career.pitching)
 ```
 
 ```
-## [1] 8551    5
+## [1] 9126    5
 ```
 
 ```r
-dim(pitching)
+dim(Pitching)
 ```
 
 ```
-## [1] 41139    30
+## [1] 44139    30
 ```
 
 ```r
-new.pitching <- right_join(pitching, career.pitching, by = "playerID")
+new.pitching <- right_join(Pitching, career.pitching, by = "playerID")
 ```
 
   + Use the subset function to construct a new data frame career.10000 consisting of data for only those pitchers with at least 10,000 career IPouts.
@@ -1095,7 +1044,7 @@ head(career.1000)
 ```
 
 ```
-## # A tibble: 6 x 5
+## # A tibble: 6 × 5
 ##    playerID    SO    BB IPouts midyear
 ##       <chr> <int> <int>  <int>   <dbl>
 ## 1 alexado01  1528   978  10103  1981.0
