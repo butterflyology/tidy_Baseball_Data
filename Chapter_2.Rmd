@@ -41,7 +41,8 @@ by(Spahn1[, c("W-L", "ERA", "WHIP", "FIP")], Spahn1$Tm, summary)
 
 
 ```{r Batting}
-Batting <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/Batting.csv", col_names = TRUE)
+# Note, by loading the "Lahman" package we don't need to import the raw data. I have included the code to download the external file in case you want it
+# Batting <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/Batting.csv", col_names = TRUE)
 head(Batting)
 dim(Batting)
 
@@ -99,8 +100,8 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
 ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
   theme_bw() + 
-  xlim(0, 0.1) + 
-  ylim(0, 0.35) + 
+  xlim(0, 0.08) + 
+  ylim(0, 0.4) + 
   geom_point(cex = 2) + 
   stat_smooth(method = "loess", col = "red") + 
   ylab("SO / AB") + 
@@ -117,7 +118,7 @@ ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) +
 
 ```{r Ch2.Q1a}
 # Import the Hall of Fame data set from the repo:
-hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
+# hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
 dim(hof)
 head(hof)
 hof$X2 <- gsub(" HOF", "", hof$X2)
@@ -175,11 +176,12 @@ sum(outcomes == "Walk") # This sums all instances of Walk
 3. Question 3
   + In R, place the wins and losses in the vectors W and L, respectively. Also, create a character vector Name containing the last names of these pitchers.
 ```{r Ch2.Q3a}
-pitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/pitching.csv", col_names = TRUE)
-dim(pitching)
-head(pitching)
+# The Pitching database is contained in the Lahman package, but just in case you want to download the raw data from GitHub. 
+# Pitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/pitching.csv", col_names = TRUE)
+dim(Pitching)
+head(Pitching)
 
-pitching.350 <- pitching %>% group_by(playerID) %>% summarize(W = sum(W), L = sum(L), SO = sum(SO), BB = sum(BB)) %>% filter(W >= 350) %>% rename(Name = playerID)
+pitching.350 <- Pitching %>% group_by(playerID) %>% summarize(W = sum(W), L = sum(L), SO = sum(SO), BB = sum(BB)) %>% filter(W >= 350) %>% rename(Name = playerID)
 dim(pitching.350)
 head(pitching.350)
 ```
@@ -237,33 +239,33 @@ SO.BB %>% arrange(desc(BB))
 
   + Read the Lahman “pitching.csv” data file into R into a data frame Pitching. 
 ```{r Ch2.Q5a}
-# Already done!
+# Already done! (see above code)
 ```
   + The following function computes the cumulative strikeouts, cumulative walks, mid career year, and the total innings pitched (measured in terms of outs) for a pitcher whose season statistics are stored in the data frame d.
 
 ```{r Ch2.Q5b1}
 stats <- function(d){
-c.SO <- sum(d$SO, na.rm=TRUE)
-c.BB <- sum(d$BB, na.rm=TRUE)
-c.IPouts <- sum(d$IPouts, na.rm=TRUE)
-c.midYear <- median(d$yearID, na.rm=TRUE)
-data.frame(SO = c.SO, BB = c.BB, IPouts = c.IPouts,
-midYear=c.midYear)
+  c.SO <- sum(d$SO, na.rm=TRUE)
+  c.BB <- sum(d$BB, na.rm=TRUE)
+  c.IPouts <- sum(d$IPouts, na.rm=TRUE)
+  c.midYear <- median(d$yearID, na.rm=TRUE)
+  data.frame(SO = c.SO, BB = c.BB, IPouts = c.IPouts,
+  midYear=c.midYear)
 }
 ```
   + Using the function "ddply"" (plyr package) together with the function stats, find the career statistics for all pitchers in the pitching dataset. Call this new data frame career.pitching.
 
 ```{r Ch2.Q5b2}
 # We don't need to run the function, just use "summarize" in dplyr. 
-career.pitching <- pitching %>% group_by(playerID) %>% summarize(SO = sum(SO, na.rm = TRUE), BB = sum(BB, na.rm = TRUE), IPouts = sum(IPouts, na.rm = TRUE), midyear = median(yearID, na.rm = TRUE))
+career.pitching <- Pitching %>% group_by(playerID) %>% summarize(SO = sum(SO, na.rm = TRUE), BB = sum(BB, na.rm = TRUE), IPouts = sum(IPouts, na.rm = TRUE), midyear = median(yearID, na.rm = TRUE))
 head(career.pitching)
 ```
   + Use the merge function to merge the Pitching and career.pitching data frames.
 ```{r Ch2.Q5c}
 # I confess this makes no sense to me because the dimensions of the data.frames are different.
 dim(career.pitching)
-dim(pitching)
-new.pitching <- right_join(pitching, career.pitching, by = "playerID")
+dim(Pitching)
+new.pitching <- right_join(Pitching, career.pitching, by = "playerID")
 ```
 
   + Use the subset function to construct a new data frame career.10000 consisting of data for only those pitchers with at least 10,000 career IPouts.
