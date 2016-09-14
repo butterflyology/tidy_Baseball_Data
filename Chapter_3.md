@@ -45,12 +45,12 @@ session_info()
 ```
 ##  setting  value                       
 ##  version  R version 3.3.1 (2016-06-21)
-##  system   x86_64, darwin13.4.0        
+##  system   x86_64, linux-gnu           
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/New_York            
-##  date     2016-08-09
+##  tz       posixrules                  
+##  date     2016-08-21
 ```
 
 ```
@@ -59,33 +59,33 @@ session_info()
 
 ```
 ##  package    * version date       source        
-##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
-##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
-##  DBI          0.4-1   2016-05-08 CRAN (R 3.3.0)
-##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.0)
+##  assertthat   0.1     2013-12-06 CRAN (R 3.3.1)
+##  colorspace   1.2-4   2013-09-30 CRAN (R 3.1.0)
+##  DBI          0.5     2016-08-11 CRAN (R 3.3.1)
+##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.1)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
-##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
-##  evaluate     0.9     2016-04-29 CRAN (R 3.3.0)
-##  formatR      1.4     2016-05-09 CRAN (R 3.3.0)
-##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.0)
-##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.0)
-##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.0)
-##  knitr        1.13    2016-05-09 CRAN (R 3.3.0)
-##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.0)
-##  magrittr     1.5     2014-11-22 CRAN (R 3.3.0)
-##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.0)
-##  munsell      0.4.3   2016-02-13 CRAN (R 3.3.0)
-##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
-##  R6           2.1.2   2016-01-26 CRAN (R 3.3.0)
-##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.0)
-##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
-##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
-##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
-##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.0)
-##  stringr      1.0.0   2015-04-30 CRAN (R 3.3.0)
+##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.1)
+##  evaluate     0.9     2016-04-29 CRAN (R 3.3.1)
+##  formatR      1.4     2016-05-09 CRAN (R 3.3.1)
+##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.1)
+##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.1)
+##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.1)
+##  knitr        1.14    2016-08-13 CRAN (R 3.3.1)
+##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.1)
+##  magrittr     1.5     2014-11-22 CRAN (R 3.3.1)
+##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.1)
+##  munsell      0.4.2   2013-07-11 CRAN (R 3.0.2)
+##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.1)
+##  R6           2.1.3   2016-08-19 CRAN (R 3.3.1)
+##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.1)
+##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.1)
+##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.1)
+##  scales       0.4.0   2016-02-26 CRAN (R 3.3.1)
+##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.1)
+##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.1)
 ##  tibble       1.1     2016-07-04 CRAN (R 3.3.1)
-##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
-##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
+##  withr        1.0.2   2016-06-20 CRAN (R 3.3.1)
+##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.1)
 ```
 
 
@@ -158,7 +158,7 @@ dim(hof)
 
 ```r
 # Rather than multiple additions to the data, lets create all of the variables we are interested in all at once. 
-hof <- hof %>% mutate(MidCareer = ((From + To) / 2), Era = cut(MidCareer, breaks = c(1800, 1900, 1919, 1941, 1960, 1976, 1993, 2050), labels=c("19th Century", "Lively Ball", "Dead Ball", "Integration", "Expansion", "Free Agency", "Long Ball")), HR.Rate = (HR / AB)) %>% rename(Name = X2)
+hof <- hof %>% mutate(MidCareer = ((From + To) / 2), Era = cut(MidCareer, breaks = c(1800, 1900, 1919, 1941, 1960, 1976, 1993, 2050), labels = c("19th Century", "Lively Ball", "Dead Ball", "Integration", "Expansion", "Free Agency", "Long Ball")), HR.Rate = (HR / AB)) %>% rename(Name = X2)
 head(hof)
 ```
 
@@ -228,7 +228,10 @@ head(hof)
 ```r
 # Using ggplot we don't need to create a table
 ## Figure 3.1
-ggplot(hof, aes(x = Era)) + theme_bw() + geom_bar() + ylab("Frequency") + xlab("Era") + ggtitle("Era of the Nonpitching Hall of Famers")
+ggplot(hof, aes(x = Era)) + 
+  theme_bw() + geom_bar() + 
+  ylab("Frequency") + xlab("Era") + 
+  ggtitle("Era of the Nonpitching Hall of Famers")
 ```
 
 ![](Chapter_3_files/figure-html/Figure_3.1-1.png)<!-- -->
@@ -263,7 +266,10 @@ dotchart(as.numeric(T.era), labels = names(T.era), xlab = "Frequency", ylab = ""
 
 ```r
 ## Figure 3.4 - No need to subset priot to plotting, we can do it inline with the plot call. 
-ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) + geom_point(size = 3) + theme_bw() + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("") + xlab("OPS")
+ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) + 
+  geom_point(size = 3) + theme_bw() + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("") + 
+  xlab("OPS")
 ```
 
 ![](Chapter_3_files/figure-html/Figure_3.4-1.png)<!-- -->
@@ -279,7 +285,10 @@ stripchart(hof$MidCareer, method = "jitter", pch = 19, xlab = "Mid Career")
 
 ```r
 ## Figure 3.6
-ggplot(hof, aes(x = MidCareer)) + theme_bw() + geom_histogram(binwidth = 5, fill = "grey", color = "black") + ylab("Frequency") + ylab("Frequency")
+ggplot(hof, aes(x = MidCareer)) + 
+  theme_bw() + 
+  geom_histogram(binwidth = 5, fill = "grey", color = "black") + 
+  ylab("Frequency")
 ```
 
 ![](Chapter_3_files/figure-html/Figure_3.6-1.png)<!-- -->
@@ -287,7 +296,10 @@ ggplot(hof, aes(x = MidCareer)) + theme_bw() + geom_histogram(binwidth = 5, fill
 
 ```r
 ## Figure 3.7
-ggplot(hof, aes(x = MidCareer, y = OPS))+ theme_bw() + geom_point(size = 2) + stat_smooth(method = "loess", col = "black", se = FALSE)
+ggplot(hof, aes(x = MidCareer, y = OPS)) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  stat_smooth(method = "loess", col = "black", se = FALSE)
 ```
 
 ![](Chapter_3_files/figure-html/Figure_3.7-1.png)<!-- -->
@@ -295,7 +307,11 @@ ggplot(hof, aes(x = MidCareer, y = OPS))+ theme_bw() + geom_point(size = 2) + st
 
 ```r
 ## Figure 3.8
-ggplot(hof, aes(x = OBP, y = SLG)) + geom_point(size = 2.5) + theme_bw() + xlab("On-Base Percentage") + ylab("Slugging Percentage")
+ggplot(hof, aes(x = OBP, y = SLG)) + 
+   theme_bw() + 
+  geom_point(size = 2.5) + 
+  xlab("On-Base Percentage") + 
+  ylab("Slugging Percentage")
 ```
 
 ![](Chapter_3_files/figure-html/Figure_3.8-1.png)<!-- -->
@@ -303,7 +319,13 @@ ggplot(hof, aes(x = OBP, y = SLG)) + geom_point(size = 2.5) + theme_bw() + xlab(
 
 ```r
 ## Figure 3.9 (Changing the axes limits)
-ggplot(hof, aes(x = OBP, y = SLG)) + geom_point(size = 2.5) + theme_bw() + ylim(0.28, 0.75) + xlim(0.25, 0.50) + xlab("On-Base Percentage") + ylab("Slugging Percentage")
+ggplot(hof, aes(x = OBP, y = SLG)) + 
+  theme_bw() + 
+  geom_point(size = 2.5) + 
+  ylim(0.28, 0.75) + 
+  xlim(0.25, 0.50) + 
+  xlab("On-Base Percentage") + 
+  ylab("Slugging Percentage")
 ```
 
 ```
@@ -315,7 +337,18 @@ ggplot(hof, aes(x = OBP, y = SLG)) + geom_point(size = 2.5) + theme_bw() + ylim(
 
 ```r
 ## Figure 3.10 (with lines delimiting OPS)
-ggplot(hof, aes(x = OBP, y = SLG))+ theme_bw() + geom_point(size = 2.5) + ylim(0.28, 0.75) + xlim(0.25, 0.50) + xlab("On-Base Percentage") + ylab("Slugging Percentage") + stat_function(fun = function(x) 0.7 - x) + stat_function(fun = function(x) 0.8 - x) + stat_function(fun = function(x) 0.9 - x) + stat_function(fun = function(x) 1.0 - x) + annotate("text", x = 0.27, y = c(0.42, 0.52, 0.62, 0.72), label = c("OPS = 0.7", "OPS = 0.8", "OPS = 0.9", "OPS = 1.0"))
+ggplot(hof, aes(x = OBP, y = SLG)) + 
+  theme_bw() + 
+  geom_point(size = 2.5) + 
+  ylim(0.28, 0.75) + 
+  xlim(0.25, 0.50) + 
+  xlab("On-Base Percentage") + 
+  ylab("Slugging Percentage") + 
+  stat_function(fun = function(x) 0.7 - x) + 
+  stat_function(fun = function(x) 0.8 - x) + 
+  stat_function(fun = function(x) 0.9 - x) + 
+  stat_function(fun = function(x) 1.0 - x) + 
+  annotate("text", x = 0.27, y = c(0.42, 0.52, 0.62, 0.72), label = c("OPS = 0.7", "OPS = 0.8", "OPS = 0.9", "OPS = 1.0"))
 ```
 
 ```
@@ -340,7 +373,12 @@ stripchart(HR.Rate ~ Era, data = hof, pch = 19, ylab = "", method = "jitter", la
 
 ```r
 ## Figure 3.13
-ggplot(hof, aes(y = HR.Rate, x = Era)) + theme_bw() + geom_boxplot(outlier.size = 2, stat = "boxplot") + coord_flip() + xlab("") + ylab("HR Rate")
+ggplot(hof, aes(y = HR.Rate, x = Era)) + 
+  theme_bw() + 
+  geom_boxplot(outlier.size = 2, stat = "boxplot") + 
+  coord_flip() + 
+  xlab("") + 
+  ylab("HR Rate")
 ```
 
 ![](Chapter_3_files/figure-html/figure_3.13-1.png)<!-- -->
@@ -351,7 +389,7 @@ I have added the relevant files from the Lahman database to the "Data" directory
 
 ```r
 ## Section 3.8
-master <- read_csv("data/master.csv", col_names = TRUE)
+master <- read_csv("Data/Master.csv", col_names = TRUE)
 ```
 
 ```
@@ -451,7 +489,7 @@ ruth.info
 
 ```r
 # comparing Ruth, Aaron, Bonds, and A-Rod
-batting <- read_csv("data/batting.csv", col_names = TRUE)
+batting <- read_csv("Data/Batting.csv", col_names = TRUE)
 ```
 
 ```
@@ -477,19 +515,35 @@ dim(batting)
 
 ```r
 # I rewrote this to use dplyr
-ruth.data <- batting %>% filter(playerID == ruth.info$name.code) %>% mutate(Age = yearID - ruth.info$byear)
+ruth.data <- batting %>% 
+  filter(playerID == ruth.info$name.code) %>% 
+  mutate(Age = yearID - ruth.info$byear)
 
-aaron.data <- batting %>% filter(playerID == aaron.info$name.code) %>% mutate(Age = yearID - aaron.info$byear)
+aaron.data <- batting %>% 
+  filter(playerID == aaron.info$name.code) %>% 
+  mutate(Age = yearID - aaron.info$byear)
 
-bonds.data <- batting %>% filter(playerID == bonds.info$name.code) %>% mutate(Age = yearID - bonds.info$byear)
+bonds.data <- batting %>% 
+  filter(playerID == bonds.info$name.code) %>% 
+  mutate(Age = yearID - bonds.info$byear)
 
-arod.data <- batting %>% filter(playerID == arod.info$name.code) %>% mutate(Age = yearID - arod.info$byear)
+arod.data <- batting %>% 
+  filter(playerID == arod.info$name.code) %>% 
+  mutate(Age = yearID - arod.info$byear)
 
 RABA <- rbind(ruth.data, aaron.data, bonds.data, arod.data)
-RABA <- RABA %>% select(playerID, HR, Age) %>% group_by(playerID) %>% mutate(cumHR = cumsum(HR))
+RABA <- RABA %>% 
+  select(playerID, HR, Age) %>% 
+  group_by(playerID) %>% 
+  mutate(cumHR = cumsum(HR))
 
 ## Figure 3.14
-ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) + theme_bw() + geom_line(size = 1.1) + ylab("Career HR") + xlab("Age") + scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
+ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) + 
+  theme_bw() + 
+  geom_line(size = 1.1) + 
+  ylab("Career HR") + 
+  xlab("Age") + 
+  scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
 ```
 
 ![](Chapter_3_files/figure-html/Section_3.8-1.png)<!-- -->
@@ -674,7 +728,9 @@ hofpitching <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/ma
 ```
 
 ```r
-hofpitching <- hofpitching %>% mutate(BF.group = cut(BF, c(0, 10000, 15000, 20000, 30000), labels = c("Less than 10000", "(10000, 15000)", "(15000, 20000)", "more than 20000"))) %>% rename(Name = X2)
+hofpitching <- hofpitching %>% 
+  mutate(BF.group = cut(BF, c(0, 10000, 15000, 20000, 30000), labels = c("Less than 10000", "(10000, 15000)", "(15000, 20000)", "more than 20000"))) %>% 
+  rename(Name = X2)
 
 head(hofpitching)
 ```
@@ -759,7 +815,11 @@ table(hofpitching$BF.group)
 ```r
 # I think there was a typo in the above question. I propose that BF means "Batters Faced" and that we should replace "pitchers" with "batters." 
 # 14 pitchers faced over 20,000 batters
-ggplot(hofpitching, aes(BF.group)) + theme_bw() + geom_bar() + ylab("# HoF pitchers") + xlab("# batters faced")
+ggplot(hofpitching, aes(BF.group)) + 
+  theme_bw() + 
+  geom_bar() + 
+  ylab("# HoF pitchers") + 
+  xlab("# batters faced")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q1b-1.png)<!-- -->
@@ -778,7 +838,10 @@ pie(table(hofpitching$BF.group), col = c("dark grey", "white", "light grey", "bl
 
 
 ```r
-ggplot(hofpitching, aes(WAR)) + theme_bw() + geom_histogram(bins = 15) + ylab("Count")
+ggplot(hofpitching, aes(WAR)) + 
+  theme_bw() + 
+  geom_histogram(bins = 15) + 
+  ylab("Count")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q2a-1.png)<!-- -->
@@ -857,7 +920,12 @@ head(hofpitching)
   
 
 ```r
-ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_point(size = 2)  + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("WAR / Years") + xlab("Batters Faced")
+ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + 
+  theme_bw() + 
+  geom_point(size = 2)  + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + 
+  ylab("WAR / Years") + 
+  xlab("Batters Faced")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q3a-1.png)<!-- -->
@@ -866,7 +934,11 @@ ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_point
 
 
 ```r
-ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_boxplot(fill = "grey") + ylab("WAR / Years") + xlab("Batters Faced")
+ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + 
+  theme_bw() + 
+  geom_boxplot(fill = "grey") + 
+  ylab("WAR / Years") + 
+  xlab("Batters Faced")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q3b-1.png)<!-- -->
@@ -874,7 +946,14 @@ ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + theme_bw() + geom_boxpl
 
 
 ```r
-ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + theme_bw() + ylim(0, 8) + xlim(0, 30000) + geom_point(size = 2) + stat_smooth(method = "lm", col = "black")+ ylab("WAR / Years") + xlab("Batters Faced")
+ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + 
+  theme_bw() + 
+  ylim(0, 8) + 
+  xlim(0, 30000) + 
+  geom_point(size = 2) + 
+  stat_smooth(method = "lm", col = "black") + 
+  ylab("WAR / Years") + 
+  xlab("Batters Faced")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q3c-1.png)<!-- -->
@@ -887,7 +966,8 @@ ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + theme_bw() + ylim(0, 8) + xli
 
 
 ```r
-hofpitching <- hofpitching %>% mutate(MidYear = ((From + To) / 2))
+hofpitching <- hofpitching %>% 
+  mutate(MidYear = ((From + To) / 2))
 head(hofpitching)
 ```
 
@@ -928,7 +1008,8 @@ head(hofpitching)
 ```
 
 ```r
-hofpitching.recent <- hofpitching %>% filter(MidYear >= 1960)
+hofpitching.recent <- hofpitching %>% 
+  filter(MidYear >= 1960)
 min(hofpitching.recent$MidYear)
 ```
 
@@ -1038,7 +1119,13 @@ hofpitching.recent %>% arrange(desc(WAR.Season))
 
 
 ```r
-ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) + theme_bw() + geom_point(size = 2) + theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + xlim(1, 5.5) + ylab("Name") + xlab("War / Season")
+ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + 
+  xlim(1, 5.5) + 
+  ylab("Name") + 
+  xlab("War / Season")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q4b-1.png)<!-- -->
@@ -1053,7 +1140,12 @@ ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) +
 + Is there a general pattern in this scatterplot? Explain.
 
 ```r
-ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) + theme_bw() + geom_point(size = 2) + ylim(0, 8) + ylab("WAR / Season") + xlab("Midyear of Career") + stat_smooth(method = "lm", col = "black")
+ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  ylim(0, 8) + ylab("WAR / Season") + 
+  xlab("Midyear of Career") + 
+  stat_smooth(method = "lm", col = "black")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q5ab-1.png)<!-- -->
@@ -1103,7 +1195,9 @@ Cobb.info <- getinfo("Ty", "Cobb")
 Williams.info <- getinfo("Ted", "Williams")
 Rose.info <- getinfo("Pete", "Rose")
 
-Cobb.data <- batting %>% filter(playerID == Cobb.info$name.code) %>% mutate(Age = yearID - Cobb.info$byear)
+Cobb.data <- batting %>% 
+  filter(playerID == Cobb.info$name.code) %>% 
+  mutate(Age = yearID - Cobb.info$byear)
 
 Williams.data <- batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
 
@@ -1117,7 +1211,10 @@ CWR <- CWR %>% select(playerID, H, Age) %>% group_by(playerID) %>% mutate(cumH =
   
 
 ```r
-ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + theme_bw() + geom_line(size = 1.25) + ylab("Hits")
+ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + 
+  theme_bw() + 
+  geom_line(size = 1.25) + 
+  ylab("Hits")
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q6d-1.png)<!-- -->
@@ -1125,7 +1222,9 @@ ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + theme_bw() + geom_line(size = 1
   
 
 ```r
-ggplot(CWR, aes(y = cumH, x = Age)) + theme_bw() + geom_line(size = 1.25, aes(color = playerID)) 
+ggplot(CWR, aes(y = cumH, x = Age)) + 
+  theme_bw() + 
+  geom_line(size = 1.25, aes(color = playerID)) 
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q6e-1.png)<!-- -->
@@ -1157,8 +1256,12 @@ sosa.data <- sosa.data %>% mutate(PA = 1:nrow(sosa.data))
 
 
 ```r
-mac.HR.PA <- mac.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% mutate(spacings = diff(c(0, PA)))
-sosa.HR.PA <- sosa.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% mutate(spacings = diff(c(0, PA)))
+mac.HR.PA <- mac.data %>% 
+  filter(EVENT_CD == 23) %>% 
+  select(PA) %>% 
+  mutate(spacings = diff(c(0, PA)))
+sosa.HR.PA <- sosa.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% 
+  mutate(spacings = diff(c(0, PA)))
 ```
 
   + By use of the summary and hist functions on the vectors
@@ -1180,13 +1283,25 @@ summary(mac.HR.PA$spacings); summary(sosa.HR.PA$spacings)
 ```
 
 ```r
-ggplot(mac.HR.PA, aes(spacings)) + theme_bw() + geom_histogram(bins = 20) + ggtitle("McGwire") + xlab("ABs between HRs") + ylab("Count") + xlim(0, 50)
+ggplot(mac.HR.PA, aes(spacings)) + 
+  theme_bw() + 
+  geom_histogram(bins = 20) + 
+  ggtitle("McGwire") + 
+  xlab("ABs between HRs") + 
+  ylab("Count") + 
+  xlim(0, 50)
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q7f-1.png)<!-- -->
 
 ```r
-ggplot(sosa.HR.PA, aes(spacings)) + theme_bw() + geom_histogram(bins = 20) + ggtitle("Sosa") + xlab("ABs between HRs") + ylab("Count") + xlim(0, 50)
+ggplot(sosa.HR.PA, aes(spacings)) + 
+  theme_bw() + 
+  geom_histogram(bins = 20) + 
+  ggtitle("Sosa") + 
+  xlab("ABs between HRs") + 
+  ylab("Count") + 
+  xlim(0, 50)
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q7f-2.png)<!-- -->

@@ -63,7 +63,7 @@ system.time(S <- sapply(players, compute.hr))
 head(S)
 length(S) #1786 players had home runs in the 1960's
 
-# The tidy way, one line of code:
+# The tidy way, one line of code, really fast:
 system.time(S1 <- Batting.60 %>% group_by(playerID) %>% summarize(sum(HR)))
 head(S1)
 dim(S1)

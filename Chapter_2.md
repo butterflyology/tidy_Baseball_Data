@@ -46,12 +46,17 @@ session_info()
 ```
 ##  setting  value                       
 ##  version  R version 3.3.1 (2016-06-21)
-##  system   x86_64, darwin13.4.0        
+##  system   x86_64, linux-gnu           
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
+<<<<<<< HEAD
 ##  tz       America/New_York            
 ##  date     2016-09-14
+=======
+##  tz       posixrules                  
+##  date     2016-08-21
+>>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
 ```
 
 ```
@@ -60,6 +65,7 @@ session_info()
 
 ```
 ##  package    * version date       source        
+<<<<<<< HEAD
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
 ##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
 ##  DBI          0.5-1   2016-09-10 CRAN (R 3.3.0)
@@ -87,6 +93,35 @@ session_info()
 ##  tibble       1.2     2016-08-26 CRAN (R 3.3.0)
 ##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
+=======
+##  assertthat   0.1     2013-12-06 CRAN (R 3.3.1)
+##  colorspace   1.2-4   2013-09-30 CRAN (R 3.1.0)
+##  DBI          0.5     2016-08-11 CRAN (R 3.3.1)
+##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.1)
+##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
+##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.1)
+##  evaluate     0.9     2016-04-29 CRAN (R 3.3.1)
+##  formatR      1.4     2016-05-09 CRAN (R 3.3.1)
+##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.1)
+##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.1)
+##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.1)
+##  knitr        1.14    2016-08-13 CRAN (R 3.3.1)
+##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.1)
+##  magrittr     1.5     2014-11-22 CRAN (R 3.3.1)
+##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.1)
+##  munsell      0.4.2   2013-07-11 CRAN (R 3.0.2)
+##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.1)
+##  R6           2.1.3   2016-08-19 CRAN (R 3.3.1)
+##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.1)
+##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.1)
+##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.1)
+##  scales       0.4.0   2016-02-26 CRAN (R 3.3.1)
+##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.1)
+##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.1)
+##  tibble       1.1     2016-07-04 CRAN (R 3.3.1)
+##  withr        1.0.2   2016-06-20 CRAN (R 3.3.1)
+##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.1)
+>>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
 ```
 
 
@@ -334,7 +369,11 @@ system.time(S <- sapply(players, compute.hr))
 
 ```
 ##    user  system elapsed 
+<<<<<<< HEAD
 ##   2.195   0.015   2.216
+=======
+##   2.588   0.008   2.594
+>>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
 ```
 
 ```r
@@ -355,13 +394,17 @@ length(S) #1786 players had home runs in the 1960's
 ```
 
 ```r
-# The tidy way, one line of code:
+# The tidy way, one line of code, really fast:
 system.time(S1 <- Batting.60 %>% group_by(playerID) %>% summarize(sum(HR)))
 ```
 
 ```
 ##    user  system elapsed 
+<<<<<<< HEAD
 ##   0.014   0.000   0.014
+=======
+##   0.016   0.000   0.015
+>>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
 ```
 
 ```r
@@ -495,8 +538,13 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
 ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
   theme_bw() + 
+<<<<<<< HEAD
   xlim(0, 0.08) + 
   ylim(0, 0.4) + 
+=======
+  xlim(0, 0.1) + 
+  ylim(0, 0.35) + 
+>>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
   geom_point(cex = 2) + 
   stat_smooth(method = "loess", col = "red") + 
   ylab("SO / AB") + 
