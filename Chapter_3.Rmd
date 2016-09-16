@@ -146,15 +146,8 @@ I have added the relevant files from the Lahman database to the "Data" directory
 
 ```{r Section_3.8}
 ## Section 3.8
-<<<<<<< HEAD
-# Master <- read_csv("data/master.csv", col_names = TRUE)
 head(Master)
 dim(Master)
-=======
-master <- read_csv("Data/Master.csv", col_names = TRUE)
-head(master)
-dim(master)
->>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
 
 getinfo <- function(firstname, lastname){
 	playerline <- subset(Master, nameFirst == firstname & nameLast == lastname)
@@ -173,7 +166,6 @@ arod.info <- getinfo("Alex", "Rodriguez")
 ruth.info
 
 # comparing Ruth, Aaron, Bonds, and A-Rod
-<<<<<<< HEAD
 #Batting <- read_csv("data/batting.csv", col_names = TRUE)
 dim(Batting)
 
@@ -191,27 +183,9 @@ bonds.data <- Batting %>%
   mutate(Age = yearID - bonds.info$byear)
 
 arod.data <- Batting %>% 
-=======
-batting <- read_csv("Data/Batting.csv", col_names = TRUE)
-dim(batting)
-
-# I rewrote this to use dplyr
-ruth.data <- batting %>% 
-  filter(playerID == ruth.info$name.code) %>% 
-  mutate(Age = yearID - ruth.info$byear)
-
-aaron.data <- batting %>% 
-  filter(playerID == aaron.info$name.code) %>% 
-  mutate(Age = yearID - aaron.info$byear)
-
-bonds.data <- batting %>% 
-  filter(playerID == bonds.info$name.code) %>% 
-  mutate(Age = yearID - bonds.info$byear)
-
-arod.data <- batting %>% 
->>>>>>> b199dd03df0af916ffa54bae9c4b707660a1d50b
   filter(playerID == arod.info$name.code) %>% 
   mutate(Age = yearID - arod.info$byear)
+
 
 RABA <- rbind(ruth.data, aaron.data, bonds.data, arod.data)
 RABA <- RABA %>% 
@@ -226,7 +200,6 @@ ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) +
   ylab("Career HR") + 
   xlab("Age") + 
   scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
-
 ```
 
 ```{r Section_3.9}
@@ -427,13 +400,13 @@ Cobb.info <- getinfo("Ty", "Cobb")
 Williams.info <- getinfo("Ted", "Williams")
 Rose.info <- getinfo("Pete", "Rose")
 
-Cobb.data <- batting %>% 
+Cobb.data <- Batting %>% 
   filter(playerID == Cobb.info$name.code) %>% 
   mutate(Age = yearID - Cobb.info$byear)
 
-Williams.data <- batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
+Williams.data <- Batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
 
-Rose.data <- batting %>% filter(playerID == Rose.info$name.code[1]) %>% mutate(Age = yearID - Rose.info$byear[1])
+Rose.data <- Batting %>% filter(playerID == Rose.info$name.code[1]) %>% mutate(Age = yearID - Rose.info$byear[1])
 
 # We need to do a little manipulation to run ggplot with the three batters.
 CWR <- rbind(Cobb.data, Williams.data, Rose.data)
@@ -455,6 +428,7 @@ ggplot(CWR, aes(y = cumH, x = Age)) +
   theme_bw() + 
   geom_line(size = 1.25, aes(color = playerID)) 
 ```
+
   + Write a short paragraph summarizing what you have learned about the hitting pattern of these three players.
   *Nah, I'm good. Thanks*
   

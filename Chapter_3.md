@@ -45,12 +45,12 @@ session_info()
 ```
 ##  setting  value                       
 ##  version  R version 3.3.1 (2016-06-21)
-##  system   x86_64, linux-gnu           
+##  system   x86_64, darwin13.4.0        
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       posixrules                  
-##  date     2016-08-21
+##  tz       America/New_York            
+##  date     2016-09-15
 ```
 
 ```
@@ -59,33 +59,33 @@ session_info()
 
 ```
 ##  package    * version date       source        
-##  assertthat   0.1     2013-12-06 CRAN (R 3.3.1)
-##  colorspace   1.2-4   2013-09-30 CRAN (R 3.1.0)
-##  DBI          0.5     2016-08-11 CRAN (R 3.3.1)
-##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.1)
+##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
+##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
+##  DBI          0.5-1   2016-09-10 CRAN (R 3.3.0)
+##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.0)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
-##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.1)
-##  evaluate     0.9     2016-04-29 CRAN (R 3.3.1)
-##  formatR      1.4     2016-05-09 CRAN (R 3.3.1)
-##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.1)
-##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.1)
-##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.1)
-##  knitr        1.14    2016-08-13 CRAN (R 3.3.1)
-##  Lahman     * 4.0-1   2015-09-15 CRAN (R 3.3.1)
-##  magrittr     1.5     2014-11-22 CRAN (R 3.3.1)
-##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.1)
-##  munsell      0.4.2   2013-07-11 CRAN (R 3.0.2)
-##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.1)
-##  R6           2.1.3   2016-08-19 CRAN (R 3.3.1)
-##  Rcpp         0.12.6  2016-07-19 CRAN (R 3.3.1)
-##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.1)
-##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.1)
-##  scales       0.4.0   2016-02-26 CRAN (R 3.3.1)
-##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.1)
-##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.1)
-##  tibble       1.1     2016-07-04 CRAN (R 3.3.1)
-##  withr        1.0.2   2016-06-20 CRAN (R 3.3.1)
-##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.1)
+##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
+##  evaluate     0.9     2016-04-29 CRAN (R 3.3.0)
+##  formatR      1.4     2016-05-09 CRAN (R 3.3.0)
+##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.0)
+##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.0)
+##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.0)
+##  knitr        1.14    2016-08-13 CRAN (R 3.3.0)
+##  Lahman     * 5.0-0   2016-08-27 CRAN (R 3.3.0)
+##  magrittr     1.5     2014-11-22 CRAN (R 3.3.0)
+##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.0)
+##  munsell      0.4.3   2016-02-13 CRAN (R 3.3.0)
+##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
+##  R6           2.1.3   2016-08-19 CRAN (R 3.3.0)
+##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
+##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
+##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
+##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
+##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.0)
+##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
+##  tibble       1.2     2016-08-26 CRAN (R 3.3.0)
+##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
+##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
 ```
 
 
@@ -120,31 +120,31 @@ head(hof)
 ```
 
 ```
-## # A tibble: 6 x 25
-##      Rk                 X2 Inducted   Yrs  From    To   ASG WAR/pos     G
-##   <int>              <chr>    <int> <int> <int> <int> <int>   <dbl> <int>
-## 1     1     Hank Aaron HOF     1982    23  1954  1976    25   137.3  3298
-## 2     3 Roberto Alomar HOF     2011    17  1988  2004    12    62.9  2379
-## 3     6      Cap Anson HOF     1939    27  1871  1897     0    91.1  2524
-## 4     7  Luis Aparicio HOF     1984    18  1956  1973    13    51.7  2599
-## 5     8   Luke Appling HOF     1964    20  1930  1950     7    69.9  2422
-## 6     9 Richie Ashburn HOF     1995    15  1948  1962     6    60.2  2189
-##      PA    AB     R     H    2B    3B    HR   RBI    SB    CS    BB    SO
+## # A tibble: 6 × 25
+##      Rk                 X2 Inducted   Yrs  From    To   ASG `WAR/pos`
+##   <int>              <chr>    <int> <int> <int> <int> <int>     <dbl>
+## 1     1     Hank Aaron HOF     1982    23  1954  1976    25     137.3
+## 2     3 Roberto Alomar HOF     2011    17  1988  2004    12      62.9
+## 3     6      Cap Anson HOF     1939    27  1871  1897     0      91.1
+## 4     7  Luis Aparicio HOF     1984    18  1956  1973    13      51.7
+## 5     8   Luke Appling HOF     1964    20  1930  1950     7      69.9
+## 6     9 Richie Ashburn HOF     1995    15  1948  1962     6      60.2
+##       G    PA    AB     R     H  `2B`  `3B`    HR   RBI    SB    CS    BB
 ##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
-## 1 13941 12364  2174  3771   624    98   755  2297   240    73  1402  1383
-## 2 10400  9073  1508  2724   504    80   210  1134   474   114  1032  1140
-## 3 11331 10281  1999  3435   582   142    97  2075   277    16   984   330
-## 4 11230 10230  1335  2677   394    92    83   791   506   136   736   742
-## 5 10254  8856  1319  2749   440   102    45  1116   179   108  1302   528
-## 6  9736  8365  1322  2574   317   109    29   586   234    92  1198   571
-##      BA   OBP   SLG   OPS
-##   <dbl> <dbl> <dbl> <dbl>
-## 1 0.305 0.374 0.555 0.928
-## 2 0.300 0.371 0.443 0.814
-## 3 0.334 0.394 0.447 0.841
-## 4 0.262 0.311 0.343 0.653
-## 5 0.310 0.399 0.398 0.798
-## 6 0.308 0.396 0.382 0.778
+## 1  3298 13941 12364  2174  3771   624    98   755  2297   240    73  1402
+## 2  2379 10400  9073  1508  2724   504    80   210  1134   474   114  1032
+## 3  2524 11331 10281  1999  3435   582   142    97  2075   277    16   984
+## 4  2599 11230 10230  1335  2677   394    92    83   791   506   136   736
+## 5  2422 10254  8856  1319  2749   440   102    45  1116   179   108  1302
+## 6  2189  9736  8365  1322  2574   317   109    29   586   234    92  1198
+##      SO    BA   OBP   SLG   OPS
+##   <int> <dbl> <dbl> <dbl> <dbl>
+## 1  1383 0.305 0.374 0.555 0.928
+## 2  1140 0.300 0.371 0.443 0.814
+## 3   330 0.334 0.394 0.447 0.841
+## 4   742 0.262 0.311 0.343 0.653
+## 5   528 0.310 0.399 0.398 0.798
+## 6   571 0.308 0.396 0.382 0.778
 ```
 
 ```r
@@ -163,31 +163,31 @@ head(hof)
 ```
 
 ```
-## # A tibble: 6 x 28
-##      Rk               Name Inducted   Yrs  From    To   ASG WAR/pos     G
-##   <int>              <chr>    <int> <int> <int> <int> <int>   <dbl> <int>
-## 1     1     Hank Aaron HOF     1982    23  1954  1976    25   137.3  3298
-## 2     3 Roberto Alomar HOF     2011    17  1988  2004    12    62.9  2379
-## 3     6      Cap Anson HOF     1939    27  1871  1897     0    91.1  2524
-## 4     7  Luis Aparicio HOF     1984    18  1956  1973    13    51.7  2599
-## 5     8   Luke Appling HOF     1964    20  1930  1950     7    69.9  2422
-## 6     9 Richie Ashburn HOF     1995    15  1948  1962     6    60.2  2189
-##      PA    AB     R     H    2B    3B    HR   RBI    SB    CS    BB    SO
+## # A tibble: 6 × 28
+##      Rk               Name Inducted   Yrs  From    To   ASG `WAR/pos`
+##   <int>              <chr>    <int> <int> <int> <int> <int>     <dbl>
+## 1     1     Hank Aaron HOF     1982    23  1954  1976    25     137.3
+## 2     3 Roberto Alomar HOF     2011    17  1988  2004    12      62.9
+## 3     6      Cap Anson HOF     1939    27  1871  1897     0      91.1
+## 4     7  Luis Aparicio HOF     1984    18  1956  1973    13      51.7
+## 5     8   Luke Appling HOF     1964    20  1930  1950     7      69.9
+## 6     9 Richie Ashburn HOF     1995    15  1948  1962     6      60.2
+##       G    PA    AB     R     H  `2B`  `3B`    HR   RBI    SB    CS    BB
 ##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
-## 1 13941 12364  2174  3771   624    98   755  2297   240    73  1402  1383
-## 2 10400  9073  1508  2724   504    80   210  1134   474   114  1032  1140
-## 3 11331 10281  1999  3435   582   142    97  2075   277    16   984   330
-## 4 11230 10230  1335  2677   394    92    83   791   506   136   736   742
-## 5 10254  8856  1319  2749   440   102    45  1116   179   108  1302   528
-## 6  9736  8365  1322  2574   317   109    29   586   234    92  1198   571
-##      BA   OBP   SLG   OPS MidCareer          Era     HR.Rate
-##   <dbl> <dbl> <dbl> <dbl>     <dbl>       <fctr>       <dbl>
-## 1 0.305 0.374 0.555 0.928    1965.0    Expansion 0.061064380
-## 2 0.300 0.371 0.443 0.814    1996.0    Long Ball 0.023145597
-## 3 0.334 0.394 0.447 0.841    1884.0 19th Century 0.009434880
-## 4 0.262 0.311 0.343 0.653    1964.5    Expansion 0.008113392
-## 5 0.310 0.399 0.398 0.798    1940.0    Dead Ball 0.005081301
-## 6 0.308 0.396 0.382 0.778    1955.0  Integration 0.003466826
+## 1  3298 13941 12364  2174  3771   624    98   755  2297   240    73  1402
+## 2  2379 10400  9073  1508  2724   504    80   210  1134   474   114  1032
+## 3  2524 11331 10281  1999  3435   582   142    97  2075   277    16   984
+## 4  2599 11230 10230  1335  2677   394    92    83   791   506   136   736
+## 5  2422 10254  8856  1319  2749   440   102    45  1116   179   108  1302
+## 6  2189  9736  8365  1322  2574   317   109    29   586   234    92  1198
+##      SO    BA   OBP   SLG   OPS MidCareer          Era     HR.Rate
+##   <int> <dbl> <dbl> <dbl> <dbl>     <dbl>       <fctr>       <dbl>
+## 1  1383 0.305 0.374 0.555 0.928    1965.0    Expansion 0.061064380
+## 2  1140 0.300 0.371 0.443 0.814    1996.0    Long Ball 0.023145597
+## 3   330 0.334 0.394 0.447 0.841    1884.0 19th Century 0.009434880
+## 4   742 0.262 0.311 0.343 0.653    1964.5    Expansion 0.008113392
+## 5   528 0.310 0.399 0.398 0.798    1940.0    Dead Ball 0.005081301
+## 6   571 0.308 0.396 0.382 0.778    1955.0  Integration 0.003466826
 ```
 
 ```r
@@ -197,16 +197,16 @@ head(hof)
 ```
 
 ```
-## # A tibble: 6 x 28
-##      Rk           Name Inducted   Yrs  From    To   ASG WAR/pos     G
-##   <int>          <chr>    <int> <int> <int> <int> <int>   <dbl> <int>
-## 1     1     Hank Aaron     1982    23  1954  1976    25   137.3  3298
-## 2     3 Roberto Alomar     2011    17  1988  2004    12    62.9  2379
-## 3     6      Cap Anson     1939    27  1871  1897     0    91.1  2524
-## 4     7  Luis Aparicio     1984    18  1956  1973    13    51.7  2599
-## 5     8   Luke Appling     1964    20  1930  1950     7    69.9  2422
-## 6     9 Richie Ashburn     1995    15  1948  1962     6    60.2  2189
-##      PA    AB     R     H    2B    3B    HR   RBI    SB    CS    BB    SO
+## # A tibble: 6 × 28
+##      Rk           Name Inducted   Yrs  From    To   ASG `WAR/pos`     G
+##   <int>          <chr>    <int> <int> <int> <int> <int>     <dbl> <int>
+## 1     1     Hank Aaron     1982    23  1954  1976    25     137.3  3298
+## 2     3 Roberto Alomar     2011    17  1988  2004    12      62.9  2379
+## 3     6      Cap Anson     1939    27  1871  1897     0      91.1  2524
+## 4     7  Luis Aparicio     1984    18  1956  1973    13      51.7  2599
+## 5     8   Luke Appling     1964    20  1930  1950     7      69.9  2422
+## 6     9 Richie Ashburn     1995    15  1948  1962     6      60.2  2189
+##      PA    AB     R     H  `2B`  `3B`    HR   RBI    SB    CS    BB    SO
 ##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
 ## 1 13941 12364  2174  3771   624    98   755  2297   240    73  1402  1383
 ## 2 10400  9073  1508  2724   504    80   210  1134   474   114  1032  1140
@@ -384,43 +384,16 @@ ggplot(hof, aes(y = HR.Rate, x = Era)) +
 ![](Chapter_3_files/figure-html/figure_3.13-1.png)<!-- -->
 
 ### This next section requires data from the Lahman database, available here: http://www.seanlahman.com/baseball-archive/statistics/
-I have added the relevant files from the Lahman database to the "Data" directory.
+I have added the relevant files from the Lahman database to the "Data" directory; alternatively you could use the Lahman package from R. 
 
 
 ```r
 ## Section 3.8
-master <- read_csv("Data/Master.csv", col_names = TRUE)
+head(Master)
 ```
 
 ```
-## Parsed with column specification:
-## cols(
-##   .default = col_character(),
-##   birthYear = col_integer(),
-##   birthMonth = col_integer(),
-##   birthDay = col_integer(),
-##   deathYear = col_integer(),
-##   deathMonth = col_integer(),
-##   deathDay = col_integer(),
-##   weight = col_integer(),
-##   height = col_integer(),
-##   debut = col_date(format = ""),
-##   finalGame = col_date(format = "")
-## )
-```
-
-```
-## See spec(...) for full column specifications.
-```
-
-```r
-head(master)
-```
-
-```
-## # A tibble: 6 x 24
 ##    playerID birthYear birthMonth birthDay birthCountry birthState
-##       <chr>     <int>      <int>    <int>        <chr>      <chr>
 ## 1 aardsda01      1981         12       27          USA         CO
 ## 2 aaronha01      1934          2        5          USA         AL
 ## 3 aaronto01      1939          8        5          USA         AL
@@ -428,42 +401,39 @@ head(master)
 ## 5  abadan01      1972          8       25          USA         FL
 ## 6  abadfe01      1985         12       17         D.R.  La Romana
 ##    birthCity deathYear deathMonth deathDay deathCountry deathState
-##        <chr>     <int>      <int>    <int>        <chr>      <chr>
 ## 1     Denver        NA         NA       NA         <NA>       <NA>
 ## 2     Mobile        NA         NA       NA         <NA>       <NA>
 ## 3     Mobile      1984          8       16          USA         GA
 ## 4     Orange        NA         NA       NA         <NA>       <NA>
 ## 5 Palm Beach        NA         NA       NA         <NA>       <NA>
 ## 6  La Romana        NA         NA       NA         <NA>       <NA>
-##   deathCity nameFirst nameLast        nameGiven weight height  bats throws
-##       <chr>     <chr>    <chr>            <chr>  <int>  <int> <chr>  <chr>
-## 1      <NA>     David  Aardsma      David Allan    220     75     R      R
-## 2      <NA>      Hank    Aaron      Henry Louis    180     72     R      R
-## 3   Atlanta    Tommie    Aaron       Tommie Lee    190     75     R      R
-## 4      <NA>       Don     Aase   Donald William    190     75     R      R
-## 5      <NA>      Andy     Abad    Fausto Andres    184     73     L      L
-## 6      <NA>  Fernando     Abad Fernando Antonio    220     73     L      L
-##        debut  finalGame  retroID   bbrefID
-##       <date>     <date>    <chr>     <chr>
-## 1 2004-04-06 2015-08-23 aardd001 aardsda01
-## 2 1954-04-13 1976-10-03 aaroh101 aaronha01
-## 3 1962-04-10 1971-09-26 aarot101 aaronto01
-## 4 1977-07-26 1990-10-03 aased001  aasedo01
-## 5 2001-09-10 2006-04-13 abada001  abadan01
-## 6 2010-07-28 2015-10-03 abadf001  abadfe01
+##   deathCity nameFirst nameLast        nameGiven weight height bats throws
+## 1      <NA>     David  Aardsma      David Allan    220     75    R      R
+## 2      <NA>      Hank    Aaron      Henry Louis    180     72    R      R
+## 3   Atlanta    Tommie    Aaron       Tommie Lee    190     75    R      R
+## 4      <NA>       Don     Aase   Donald William    190     75    R      R
+## 5      <NA>      Andy     Abad    Fausto Andres    184     73    L      L
+## 6      <NA>  Fernando     Abad Fernando Antonio    220     73    L      L
+##        debut  finalGame  retroID   bbrefID  deathDate  birthDate
+## 1 2004-04-06 2015-08-23 aardd001 aardsda01       <NA> 1981-12-27
+## 2 1954-04-13 1976-10-03 aaroh101 aaronha01       <NA> 1934-02-05
+## 3 1962-04-10 1971-09-26 aarot101 aaronto01 1984-08-16 1939-08-05
+## 4 1977-07-26 1990-10-03 aased001  aasedo01       <NA> 1954-09-08
+## 5 2001-09-10 2006-04-13 abada001  abadan01       <NA> 1972-08-25
+## 6 2010-07-28 2015-10-03 abadf001  abadfe01       <NA> 1985-12-17
 ```
 
 ```r
-dim(master)
+dim(Master)
 ```
 
 ```
-## [1] 18846    24
+## [1] 18846    26
 ```
 
 ```r
 getinfo <- function(firstname, lastname){
-	playerline <- subset(master, nameFirst == firstname & nameLast == lastname)
+	playerline <- subset(Master, nameFirst == firstname & nameLast == lastname)
 	name.code <- as.character(playerline$playerID)
 	birthyear <- playerline$birthYear
 	birthmonth <- playerline$birthMonth
@@ -489,24 +459,8 @@ ruth.info
 
 ```r
 # comparing Ruth, Aaron, Bonds, and A-Rod
-batting <- read_csv("Data/Batting.csv", col_names = TRUE)
-```
-
-```
-## Parsed with column specification:
-## cols(
-##   .default = col_integer(),
-##   playerID = col_character(),
-##   teamID = col_character(),
-##   lgID = col_character(),
-##   SF = col_character(),
-##   GIDP = col_character()
-## )
-## See spec(...) for full column specifications.
-```
-
-```r
-dim(batting)
+#Batting <- read_csv("data/batting.csv", col_names = TRUE)
+dim(Batting)
 ```
 
 ```
@@ -515,21 +469,22 @@ dim(batting)
 
 ```r
 # I rewrote this to use dplyr
-ruth.data <- batting %>% 
+ruth.data <- Batting %>% 
   filter(playerID == ruth.info$name.code) %>% 
   mutate(Age = yearID - ruth.info$byear)
 
-aaron.data <- batting %>% 
+aaron.data <- Batting %>% 
   filter(playerID == aaron.info$name.code) %>% 
   mutate(Age = yearID - aaron.info$byear)
 
-bonds.data <- batting %>% 
+bonds.data <- Batting %>% 
   filter(playerID == bonds.info$name.code) %>% 
   mutate(Age = yearID - bonds.info$byear)
 
-arod.data <- batting %>% 
+arod.data <- Batting %>% 
   filter(playerID == arod.info$name.code) %>% 
   mutate(Age = yearID - arod.info$byear)
+
 
 RABA <- rbind(ruth.data, aaron.data, bonds.data, arod.data)
 RABA <- RABA %>% 
@@ -666,7 +621,7 @@ head(sosa.hr); head(mac.hr)
 ```
 
 ```
-## # A tibble: 6 x 2
+## # A tibble: 6 × 2
 ##         Date cumHR
 ##       <date> <dbl>
 ## 1 1998-03-31     0
@@ -678,7 +633,7 @@ head(sosa.hr); head(mac.hr)
 ```
 
 ```
-## # A tibble: 6 x 2
+## # A tibble: 6 × 2
 ##         Date cumHR
 ##       <date> <dbl>
 ## 1 1998-03-31     0
@@ -736,7 +691,7 @@ head(hofpitching)
 ```
 
 ```
-## # A tibble: 6 x 31
+## # A tibble: 6 × 31
 ##      Rk               Name Inducted   Yrs  From    To   ASG   WAR     W
 ##   <int>              <chr>    <int> <int> <int> <int> <int> <dbl> <int>
 ## 1     1 Pete Alexander HOF     1938    20  1911  1930     0 112.8   373
@@ -745,22 +700,30 @@ head(hofpitching)
 ## 4     4 Mordecai Brown HOF     1949    14  1903  1916     0  51.7   239
 ## 5     5    Jim Bunning HOF     1996    17  1955  1971     9  56.7   224
 ## 6     6  Steve Carlton HOF     1994    24  1965  1988    10  78.6   329
-##       L  W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R
-##   <int> <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int>
-## 1   208 0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852
-## 2   127 0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108
-## 3   250 0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029
-## 4   130 0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044
-## 5   184 0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527
-## 6   244 0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130
-##      ER    HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
-##   <int> <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
-## 1  1476   165   951    NA  2198    70     1    38 20893 more than 20000
-## 2   823    40   712    NA  1711   102    10    79 11895  (10000, 15000)
-## 3  1830   430  1322    71  3701   155    19   114 20491 more than 20000
-## 4   725    43   673    NA  1375    61     4    61 12422  (10000, 15000)
-## 5  1366   372  1000    98  2855   160     8    47 15618  (15000, 20000)
-## 6  1864   414  1833   150  4136    53    90   183 21683 more than 20000
+##       L `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H
+##   <int>  <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int>
+## 1   208  0.642  2.56   696   600    80   437    90    32 5190.0  4868
+## 2   127  0.625  2.46   459   334   109   255    40    34 3017.0  2645
+## 3   250  0.534  3.31   692   685     3   242    60     0 4970.0  4632
+## 4   130  0.648  2.06   481   332   138   271    55    49 3172.1  2708
+## 5   184  0.549  3.27   591   519    39   151    40    16 3760.1  3433
+## 6   244  0.574  3.22   741   709    13   254    55     2 5217.2  4672
+##       R    ER    HR    BB   IBB    SO   HBP    BK    WP    BF
+##   <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
+## 1  1852  1476   165   951    NA  2198    70     1    38 20893
+## 2  1108   823    40   712    NA  1711   102    10    79 11895
+## 3  2029  1830   430  1322    71  3701   155    19   114 20491
+## 4  1044   725    43   673    NA  1375    61     4    61 12422
+## 5  1527  1366   372  1000    98  2855   160     8    47 15618
+## 6  2130  1864   414  1833   150  4136    53    90   183 21683
+##          BF.group
+##            <fctr>
+## 1 more than 20000
+## 2  (10000, 15000)
+## 3 more than 20000
+## 4  (10000, 15000)
+## 5  (15000, 20000)
+## 6 more than 20000
 ```
 
 ```r
@@ -769,7 +732,7 @@ head(hofpitching)
 ```
 
 ```
-## # A tibble: 6 x 31
+## # A tibble: 6 × 31
 ##      Rk           Name Inducted   Yrs  From    To   ASG   WAR     W     L
 ##   <int>          <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
 ## 1     1 Pete Alexander     1938    20  1911  1930     0 112.8   373   208
@@ -778,22 +741,22 @@ head(hofpitching)
 ## 4     4 Mordecai Brown     1949    14  1903  1916     0  51.7   239   130
 ## 5     5    Jim Bunning     1996    17  1955  1971     9  56.7   224   184
 ## 6     6  Steve Carlton     1994    24  1965  1988    10  78.6   329   244
-##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
-##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
-## 1 0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852  1476
-## 2 0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108   823
-## 3 0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029  1830
-## 4 0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044   725
-## 5 0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527  1366
-## 6 0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130  1864
-##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
-##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
-## 1   165   951    NA  2198    70     1    38 20893 more than 20000
-## 2    40   712    NA  1711   102    10    79 11895  (10000, 15000)
-## 3   430  1322    71  3701   155    19   114 20491 more than 20000
-## 4    43   673    NA  1375    61     4    61 12422  (10000, 15000)
-## 5   372  1000    98  2855   160     8    47 15618  (15000, 20000)
-## 6   414  1833   150  4136    53    90   183 21683 more than 20000
+##   `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H     R
+##    <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int>
+## 1  0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852
+## 2  0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108
+## 3  0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029
+## 4  0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044
+## 5  0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527
+## 6  0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130
+##      ER    HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1  1476   165   951    NA  2198    70     1    38 20893 more than 20000
+## 2   823    40   712    NA  1711   102    10    79 11895  (10000, 15000)
+## 3  1830   430  1322    71  3701   155    19   114 20491 more than 20000
+## 4   725    43   673    NA  1375    61     4    61 12422  (10000, 15000)
+## 5  1366   372  1000    98  2855   160     8    47 15618  (15000, 20000)
+## 6  1864   414  1833   150  4136    53    90   183 21683 more than 20000
 ```
 
   + Construct a frequency table of BF.group using the table function.
@@ -854,19 +817,19 @@ hofpitching %>% arrange(desc(WAR)) %>% slice(1:2)
 ```
 
 ```
-## # A tibble: 2 x 31
+## # A tibble: 2 × 31
 ##      Rk           Name Inducted   Yrs  From    To   ASG   WAR     W     L
 ##   <int>          <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
 ## 1    69       Cy Young     1937    22  1890  1911     0 162.3   511   316
 ## 2    30 Walter Johnson     1936    21  1907  1927     0 144.7   417   279
-##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
-##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
-## 1 0.618  2.63   906   815    84   749    76    17 7356.0  7092  3167  2147
-## 2 0.599  2.17   802   666   127   531   110    34 5914.1  4913  1902  1424
-##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
-##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
-## 1   138  1217    NA  2803   161     3   156 29565 more than 20000
-## 2    97  1363    NA  3509   205     4   154 23405 more than 20000
+##   `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H     R
+##    <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int>
+## 1  0.618  2.63   906   815    84   749    76    17 7356.0  7092  3167
+## 2  0.599  2.17   802   666   127   531   110    34 5914.1  4913  1902
+##      ER    HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1  2147   138  1217    NA  2803   161     3   156 29565 more than 20000
+## 2  1424    97  1363    NA  3509   205     4   154 23405 more than 20000
 ```
 
 ```r
@@ -882,7 +845,7 @@ head(hofpitching)
 ```
 
 ```
-## # A tibble: 6 x 32
+## # A tibble: 6 × 32
 ##      Rk           Name Inducted   Yrs  From    To   ASG   WAR     W     L
 ##   <int>          <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
 ## 1     1 Pete Alexander     1938    20  1911  1930     0 112.8   373   208
@@ -891,22 +854,22 @@ head(hofpitching)
 ## 4     4 Mordecai Brown     1949    14  1903  1916     0  51.7   239   130
 ## 5     5    Jim Bunning     1996    17  1955  1971     9  56.7   224   184
 ## 6     6  Steve Carlton     1994    24  1965  1988    10  78.6   329   244
-##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
-##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
-## 1 0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852  1476
-## 2 0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108   823
-## 3 0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029  1830
-## 4 0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044   725
-## 5 0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527  1366
-## 6 0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130  1864
-##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
-##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
-## 1   165   951    NA  2198    70     1    38 20893 more than 20000
-## 2    40   712    NA  1711   102    10    79 11895  (10000, 15000)
-## 3   430  1322    71  3701   155    19   114 20491 more than 20000
-## 4    43   673    NA  1375    61     4    61 12422  (10000, 15000)
-## 5   372  1000    98  2855   160     8    47 15618  (15000, 20000)
-## 6   414  1833   150  4136    53    90   183 21683 more than 20000
+##   `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H     R
+##    <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int>
+## 1  0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852
+## 2  0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108
+## 3  0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029
+## 4  0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044
+## 5  0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527
+## 6  0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130
+##      ER    HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1  1476   165   951    NA  2198    70     1    38 20893 more than 20000
+## 2   823    40   712    NA  1711   102    10    79 11895  (10000, 15000)
+## 3  1830   430  1322    71  3701   155    19   114 20491 more than 20000
+## 4   725    43   673    NA  1375    61     4    61 12422  (10000, 15000)
+## 5  1366   372  1000    98  2855   160     8    47 15618  (15000, 20000)
+## 6  1864   414  1833   150  4136    53    90   183 21683 more than 20000
 ##   WAR.Season
 ##        <dbl>
 ## 1   5.640000
@@ -972,7 +935,7 @@ head(hofpitching)
 ```
 
 ```
-## # A tibble: 6 x 33
+## # A tibble: 6 × 33
 ##      Rk           Name Inducted   Yrs  From    To   ASG   WAR     W     L
 ##   <int>          <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
 ## 1     1 Pete Alexander     1938    20  1911  1930     0 112.8   373   208
@@ -981,22 +944,22 @@ head(hofpitching)
 ## 4     4 Mordecai Brown     1949    14  1903  1916     0  51.7   239   130
 ## 5     5    Jim Bunning     1996    17  1955  1971     9  56.7   224   184
 ## 6     6  Steve Carlton     1994    24  1965  1988    10  78.6   329   244
-##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
-##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
-## 1 0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852  1476
-## 2 0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108   823
-## 3 0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029  1830
-## 4 0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044   725
-## 5 0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527  1366
-## 6 0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130  1864
-##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
-##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
-## 1   165   951    NA  2198    70     1    38 20893 more than 20000
-## 2    40   712    NA  1711   102    10    79 11895  (10000, 15000)
-## 3   430  1322    71  3701   155    19   114 20491 more than 20000
-## 4    43   673    NA  1375    61     4    61 12422  (10000, 15000)
-## 5   372  1000    98  2855   160     8    47 15618  (15000, 20000)
-## 6   414  1833   150  4136    53    90   183 21683 more than 20000
+##   `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H     R
+##    <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int>
+## 1  0.642  2.56   696   600    80   437    90    32 5190.0  4868  1852
+## 2  0.625  2.46   459   334   109   255    40    34 3017.0  2645  1108
+## 3  0.534  3.31   692   685     3   242    60     0 4970.0  4632  2029
+## 4  0.648  2.06   481   332   138   271    55    49 3172.1  2708  1044
+## 5  0.549  3.27   591   519    39   151    40    16 3760.1  3433  1527
+## 6  0.574  3.22   741   709    13   254    55     2 5217.2  4672  2130
+##      ER    HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1  1476   165   951    NA  2198    70     1    38 20893 more than 20000
+## 2   823    40   712    NA  1711   102    10    79 11895  (10000, 15000)
+## 3  1830   430  1322    71  3701   155    19   114 20491 more than 20000
+## 4   725    43   673    NA  1375    61     4    61 12422  (10000, 15000)
+## 5  1366   372  1000    98  2855   160     8    47 15618  (15000, 20000)
+## 6  1864   414  1833   150  4136    53    90   183 21683 more than 20000
 ##   WAR.Season MidYear
 ##        <dbl>   <dbl>
 ## 1   5.640000  1920.5
@@ -1024,7 +987,7 @@ hofpitching.recent %>% arrange(desc(WAR.Season))
 ```
 
 ```
-## # A tibble: 20 x 33
+## # A tibble: 20 × 33
 ##       Rk             Name Inducted   Yrs  From    To   ASG   WAR     W
 ##    <int>            <chr>    <int> <int> <int> <int> <int> <dbl> <int>
 ## 1     56       Tom Seaver     1992    20  1967  1986    12 101.1   311
@@ -1047,28 +1010,28 @@ hofpitching.recent %>% arrange(desc(WAR.Season))
 ## 18    59     Bruce Sutter     2006    12  1976  1988     6  23.6    68
 ## 19    21     Rich Gossage     2008    22  1972  1994     9  39.9   124
 ## 20    16   Rollie Fingers     1992    17  1968  1985     7  23.3   114
-##        L  W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H
-##    <int> <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int>
-## 1    205 0.603  2.86   656   647     6   231    61     1 4783.0  3971
-## 2    174 0.591  2.91   528   482    21   255    56     6 3884.1  3279
-## 3     87 0.655  2.76   397   314    44   137    40     9 2324.1  1754
-## 4    250 0.534  3.31   692   685     3   242    60     0 4970.0  4632
-## 5    166 0.557  2.95   518   465    34   167    49     6 3432.0  3084
-## 6    226 0.557  3.34   664   594    37   267    49     7 4500.2  4142
-## 7    265 0.542  3.11   777   690    33   303    53    11 5350.0  4938
-## 8    274 0.537  3.35   864   716    83   245    45    29 5404.0  5044
-## 9    142 0.631  2.89   471   457    11   244    52     2 3507.0  3153
-## 10   184 0.549  3.27   591   519    39   151    40    16 3760.1  3433
-## 11   152 0.638  2.86   558   521    15   211    53     4 3948.0  3349
-## 12   244 0.574  3.22   741   709    13   254    55     2 5217.2  4672
-## 13   292 0.526  3.19   807   773    13   222    61     3 5386.0  3923
-## 14   256 0.559  3.26   774   756    12   178    58     5 5282.1  4692
-## 15   171 0.535  3.50  1071   361   577   100    20   390 3285.2  3076
-## 16   122 0.540  2.52  1070    52   651    20     5   227 2254.1  1757
-## 17   166 0.574  3.26   500   476     6   181    42     1 3449.1  2958
-## 18    71 0.489  2.83   661     0   512     0     0   300 1042.0   879
-## 19   107 0.537  3.01  1002    37   681    16     0   310 1809.1  1497
-## 20   118 0.491  2.90   944    37   709     4     2   341 1701.1  1474
+##        L `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H
+##    <int>  <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int>
+## 1    205  0.603  2.86   656   647     6   231    61     1 4783.0  3971
+## 2    174  0.591  2.91   528   482    21   255    56     6 3884.1  3279
+## 3     87  0.655  2.76   397   314    44   137    40     9 2324.1  1754
+## 4    250  0.534  3.31   692   685     3   242    60     0 4970.0  4632
+## 5    166  0.557  2.95   518   465    34   167    49     6 3432.0  3084
+## 6    226  0.557  3.34   664   594    37   267    49     7 4500.2  4142
+## 7    265  0.542  3.11   777   690    33   303    53    11 5350.0  4938
+## 8    274  0.537  3.35   864   716    83   245    45    29 5404.0  5044
+## 9    142  0.631  2.89   471   457    11   244    52     2 3507.0  3153
+## 10   184  0.549  3.27   591   519    39   151    40    16 3760.1  3433
+## 11   152  0.638  2.86   558   521    15   211    53     4 3948.0  3349
+## 12   244  0.574  3.22   741   709    13   254    55     2 5217.2  4672
+## 13   292  0.526  3.19   807   773    13   222    61     3 5386.0  3923
+## 14   256  0.559  3.26   774   756    12   178    58     5 5282.1  4692
+## 15   171  0.535  3.50  1071   361   577   100    20   390 3285.2  3076
+## 16   122  0.540  2.52  1070    52   651    20     5   227 2254.1  1757
+## 17   166  0.574  3.26   500   476     6   181    42     1 3449.1  2958
+## 18    71  0.489  2.83   661     0   512     0     0   300 1042.0   879
+## 19   107  0.537  3.01  1002    37   681    16     0   310 1809.1  1497
+## 20   118  0.491  2.90   944    37   709     4     2   341 1701.1  1474
 ##        R    ER    HR    BB   IBB    SO   HBP    BK    WP    BF
 ##    <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
 ## 1   1674  1521   380  1390   116  3640    76     8   126 19369
@@ -1162,19 +1125,19 @@ hofpitching %>% filter(WAR.Season < 2 & MidYear < 1900)
 ```
 
 ```
-## # A tibble: 2 x 33
+## # A tibble: 2 × 33
 ##      Rk       Name Inducted   Yrs  From    To   ASG   WAR     W     L
 ##   <int>      <chr>    <int> <int> <int> <int> <int> <dbl> <int> <int>
 ## 1    43 Hank O'Day     2013     7  1884  1890     0   7.1    73   110
 ## 2    64 Monte Ward     1964    17  1878  1894     0  26.0   164   103
-##    W-L%   ERA     G    GS    GF    CG   SHO    SV     IP     H     R    ER
-##   <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int> <int>
-## 1 0.399  3.74   201   192     8   177     5     4 1651.1  1655  1128   687
-## 2 0.614  2.10   293   262    32   245    24     3 2469.2  2324  1185   576
-##      HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
-##   <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
-## 1    65   578    NA   663    81     0   122  7247 Less than 10000
-## 2    26   253    NA   920    NA     0   144 10164  (10000, 15000)
+##   `W-L%`   ERA     G    GS    GF    CG   SHO    SV     IP     H     R
+##    <dbl> <dbl> <int> <int> <int> <int> <int> <int>  <dbl> <int> <int>
+## 1  0.399  3.74   201   192     8   177     5     4 1651.1  1655  1128
+## 2  0.614  2.10   293   262    32   245    24     3 2469.2  2324  1185
+##      ER    HR    BB   IBB    SO   HBP    BK    WP    BF        BF.group
+##   <int> <int> <int> <int> <int> <int> <int> <int> <int>          <fctr>
+## 1   687    65   578    NA   663    81     0   122  7247 Less than 10000
+## 2   576    26   253    NA   920    NA     0   144 10164  (10000, 15000)
 ##   WAR.Season MidYear
 ##        <dbl>   <dbl>
 ## 1   1.014286    1887
@@ -1195,13 +1158,13 @@ Cobb.info <- getinfo("Ty", "Cobb")
 Williams.info <- getinfo("Ted", "Williams")
 Rose.info <- getinfo("Pete", "Rose")
 
-Cobb.data <- batting %>% 
+Cobb.data <- Batting %>% 
   filter(playerID == Cobb.info$name.code) %>% 
   mutate(Age = yearID - Cobb.info$byear)
 
-Williams.data <- batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
+Williams.data <- Batting %>% filter(playerID == Williams.info$name.code) %>% mutate(Age = yearID - Williams.info$byear)
 
-Rose.data <- batting %>% filter(playerID == Rose.info$name.code[1]) %>% mutate(Age = yearID - Rose.info$byear[1])
+Rose.data <- Batting %>% filter(playerID == Rose.info$name.code[1]) %>% mutate(Age = yearID - Rose.info$byear[1])
 
 # We need to do a little manipulation to run ggplot with the three batters.
 CWR <- rbind(Cobb.data, Williams.data, Rose.data)
@@ -1228,6 +1191,7 @@ ggplot(CWR, aes(y = cumH, x = Age)) +
 ```
 
 ![](Chapter_3_files/figure-html/Ch3.Q6e-1.png)<!-- -->
+
   + Write a short paragraph summarizing what you have learned about the hitting pattern of these three players.
   *Nah, I'm good. Thanks*
   
