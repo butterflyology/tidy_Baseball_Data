@@ -11,10 +11,6 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ### Chapter 4 -  The relation between runs and wins
 
 ```{r preliminaries}
@@ -28,20 +24,17 @@ set.seed(8761825)
 session_info()
 ```
 
-
+### Section 4.2 - Teams in Lahman's Database
 ```{r Teams_Table}
-setwd("~/Desktop/Projects/Baseball_R")
+# The Teams table is includedin the Lahman package
 
-teams <- read_csv("2016_core/core/Teams.csv", col_names = TRUE)
+str(Teams)
+tail(Teams)
+dim(Teams)
 
-tail(teams)
-dim(teams)
-
-
-## Section 4.2 - Teams in Lahman's Database
 # run differential is the difference between runs scored and runs allowed. Rather than use the with statements in section 4.2 we will use a dplyr pipeline
 
-myteams <- teams %>% filter(yearID > 2000) %>% 
+myteams <- Teams %>% filter(yearID > 2000) %>% 
   select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
   mutate(RD = R - RA, Wpct = W / (W + L))
 tail(myteams)
@@ -59,9 +52,10 @@ ggplot(myteams, aes(x = RD, y = Wpct)) +
 ```{r linear_regression}
 linfit <- lm(Wpct ~ RD, data = myteams)
 summary(linfit)
-# Wpct = 0.50 + 0.000628*RD
+# Wpct = 0.50 + 0.000628 * RD
 
-myteams <- myteams %>% mutate(linWpct = predict(linfit), linResiduals = residuals(linfit))
+myteams <- myteams %>% 
+  mutate(linWpct = predict(linfit), linResiduals = residuals(linfit))
 tail(myteams)
 min(myteams$linResiduals)
 max(myteams$linResiduals)
@@ -81,25 +75,26 @@ linRMSE
 
 nrow(subset(myteams, abs(linResiduals) < linRMSE)) / nrow(myteams)
 nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
+```
 
-# section 4.4 - the Pythagorean expectation
-myteams <- myteams %>% 
-  mutate(pytWpct = R^2 / (R^2 + RA^2), 
-         pytResiduals = Wpct - pytWpct)
+### Now let's explore the Pythagorean expectation
+```{r Pythagorean}
+# section 4.4
+myteams <- myteams %>% mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)
 sqrt(mean(myteams$pytResiduals^2))
 
-ggplot(myteams, aes(y = pytWpct, x = Wpct)) +
-  theme_bw() + 
-  geom_point(cex = 2, alpha = 0.6) + 
-  ylab("Pythagorean Win %") + 
-  xlab("Win %") + 
-  stat_smooth(method = "lm", color = "black")
+ggplot(myteams, aes(y = pytWpct, x = Wpct)) + 
+	theme_bw() +
+	geom_point(cex = 2, alpha = 0.6) + 
+	ylab("Pythagorean Win %") + 
+	xlab("Win %") + 
+	stat_smooth(method = "lm", color = "black")
 
 lm2 <- lm(pytWpct ~ Wpct, data = myteams)
 summary(lm2) # 0.034 + 0.93*Wpct
 
-# a function to compare the Bill James Pythagorean model with the linear model. RunsSc = Runs Scored, RunsAll = Runs Allowed, N = exponant
+# I hate repeating myself in code so here is a function to compare the Bill James Pythagorean model with the linear model. RunsSc = Runs Scored, RunsAll = Runs Allowed, N = exponant
 Pythag.line <- function(RunsSc, RunsAll, N){
 	linear <- 0.50 + 0.000628 * (RunsSc - RunsAll)
 	Pythag <- RunsSc^N / (RunsSc^N + RunsAll^N)
@@ -108,7 +103,10 @@ Pythag.line <- function(RunsSc, RunsAll, N){
 Pythag.line(1620, 810, N = 2)
 Pythag.line(186, 0, N = 2)
 Pythag.line(100, 100, N = 2)
+```
 
+### Section 4.5
+```{r exponent}
 # Section 4.5 - the exponent of the Pythagorean formula
 myteams <- myteams %>% 
   mutate(logWratio = log(W / L), 
@@ -117,18 +115,18 @@ tail(myteams)
 
 pytFit <- lm(logWratio ~ logRratio, data = myteams)
 summary(pytFit) # suggests a Pythagorean exponent of 1.88 rather than 2.
+```
 
-# Section 4.6 - Good and Bad predictions
+### Section 4.6 - Good and Bad predictions based on the Pythagorean Formula
+```{r Predictions}
 games1 <- Pythag.line(875, 737, N = 2)
 games1 * 162
 games1a <- Pythag.line(875, 757, N = 1.88)
 games1a * 162
 
-
-# Section 4.6 - Good and bad predictions based on the Pythagorean Formula
-gl2011 <- read_delim("baseball_R-master/data/gl2011.txt", delim = ",", col_names = FALSE)
+gl2011 <- read_delim("Data/gl2011.txt", delim = ",", col_names = FALSE)
 head(gl2011) # needs headers
-glheaders <- read_csv("baseball_R-master/data/game_log_header.csv")
+glheaders <- read_csv("Data/game_log_header.csv")
 glheaders
 names(gl2011) <- names(glheaders)
 head(gl2011)
@@ -162,20 +160,25 @@ teams2011 <- merge(teams2011, onerunwins)
 head(teams2011)
 
 # Figure 4.3
-ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) + geom_point(cex = 2) + theme_bw() + xlab("One run wins") + ylab("Pythagorean residuals")
+ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
+  theme_bw() +
+  geom_point(cex = 2) + 
+  xlab("One run wins") + 
+  ylab("Pythagorean residuals")
 
-pit <- read_csv("baseball_R-master/data/pitching.csv", col_names = TRUE)
-head(pit)
+head(Pitching)
 
-top_closers <- pit %>% filter(GF > 50, ERA < 2.5) %>% select(playerID, yearID, teamID)
+top_closers <- Pitching %>% filter(GF > 50, ERA < 2.5) %>% select(playerID, yearID, teamID)
 head(top_closers)
 teams_top_closers <- merge(myteams, top_closers)
 summary(teams_top_closers$pytResiduals)
 mean(teams_top_closers$pytResiduals) * 162 # teams with a top closer will outperform their Pythagorean expectation by 0.8 games
+```
 
+### Section 4.7 -  How many runs for a win?
 
-# Section 4.7 -  How many runs for a win?
-IR <- function(RS, RA){IRtable <- expand
+```{r Runs_for_win}
+IR <- function(RS, RA){
 	round((RS^2 + RA^2)^2 / (2 * RS * RA^2), 1)
 }
 IRtable <- expand.grid(RS = seq(3, 6, 0.5), RA = seq(3, 6, 0.5))
@@ -185,5 +188,107 @@ IRtable <- IRtable %>% mutate(IRW = IR(RS, RA))
 head(IRtable)
 
 xtabs(IRW ~ RS + RA, data = IRtable)
+```
 
+### Chapter 4 exercises
+1. Section 4.3 used a simple linear model to predict a team’s winning percentage based on its run differential. This model was fit using team data since the 2001 season.
++ Refit this linear model using data from the seasons 1961-1970, the seasons 1971-1980, the seasons 1981-1990, and the seasons 1991-2000.
+```{r Ch4.Q1a}
+# I am sure there is a "tidier" way to do this, but this is my first crack:
+yr61_70 <- Teams %>%
+  filter(yearID >= 1961 & yearID <= 1970) %>% 
+  select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L))
+lm61_70 <- lm(Wpct ~ RD, data = yr61_70)
 
+yr71_80 <- Teams %>%
+  filter(yearID >= 1971 & yearID <= 1980) %>% 
+  select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L))
+lm71_80 <- lm(Wpct ~ RD, data = yr71_80)
+
+yr81_90 <- Teams %>%
+  filter(yearID >= 1981 & yearID <= 1990) %>% 
+  select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L))
+lm81_90 <- lm(Wpct ~ RD, data = yr81_90)
+
+yr91_2k <- Teams %>%
+  filter(yearID >= 1991 & yearID <= 2000) %>% 
+  select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L))
+lm91_2k <- lm(Wpct ~ RD, data = yr91_2k)
+```
++ Compare across the five decades the predicted winning percentage for a team with a run differential of 10 runs.
+```{r Ch4.Q1b}
+Q1teams <- Teams %>% 
+  filter(yearID >= 1951 & yearID <= 2000) %>% 
+  select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L))
+
+Q1teams %>% filter(RD == 10) # It looks like only two teams has an RD of 10.
+```
+2. *Pythagorean Residuals for Poor and Great Teams in the 19th Century.* As baseball was evolving into its ultimate form, nineteenth century leagues often featured abysmal teams that did not even succeed in finishing their season, as well as some dominant clubs.
++ Fit a Pythagorean formula model to the run-differential, win-loss data for teams who played in the 19th century.
+```{r Ch4.Q2a}
+C19teams <- Teams %>% 
+  filter(yearID >= 1800 & yearID <= 1900) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L), pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
+head(C19teams)
+```
++ By inspecting the residual plot of your fitted model from (a), did the great and poor teams in the 19th century do better or worse than one would expect on the basis of their run differentials?
+```{r Ch4.Q2b}
+ggplot(C19teams, aes(y = pytWpct, x = Wpct)) +
+  theme_bw() + 
+    geom_abline(slope = 1, color = "red") +
+  geom_point(size = 1.5) + 
+  ylab("Pythagorean residuals") + 
+  xlab("Winning percentage") + 
+  xlim(0, 1) + 
+  ylim(0, 1) + 
+  coord_fixed(ratio = 1)
+ # It would appear that the Pythagorean expectations hold for 19th Century teams as well, but at the lower extremes there is a bit of spread. 
+```
+3. *Exploring the manager effect in baseball*. Retrosheet game logs report, for every game played, the managers of both
+teams.
++ Select a period of your choice (encompassing at least ten years) and fit the Pythagorean formula model to the run-differential, win-loss data.
+```{r Ch4.Q3a}
+# I was at game one of the 1988 World Series and love the Dodgers, so I'll select the 1980's.
+
+Teams80s <- Teams %>%
+  filter(yearID >= 1980 & yearID <= 1989) %>% 
+  mutate(RD = R - RA, Wpct = W / (W + L), pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct) %>% arrange(pytResiduals)
+head(Teams80s)
+
+# For kicks
+Teams80s %>% filter(franchID == "LAD" & yearID == 1988)
+
+ggplot(Teams80s, aes(y = pytWpct, x = Wpct)) +
+  theme_bw() + 
+    geom_abline(slope = 1, color = "red") +
+  geom_point(size = 1.5) + 
+  ylab("Pythagorean residuals") + 
+  xlab("Winning percentage") + 
+  xlim(0.3, 0.7) + 
+  ylim(0.3, 0.7) + 
+  coord_fixed(ratio = 1)
+```
++ On the basis of your fit in part (a) and the list of managers, compile a list of the managers who most overperformed their Pythagorean winning percentage and the managers who most underperformed it.
+```{r Ch4.Q3b}
+# To find the most over- and under-performing managers, I'll use the residuals of the five years that had the largest positive and negative differences between actual winning percentange and Pythagorean WP. 
+
+Bot <- Teams80s %>% slice(1:5)
+Bot$name
+# It gives me a bit of pleasure to see that The The Angels Angels of Anaheim are on this list. 
+Top <- Teams80s %>% slice(256:260)
+Top$name
+
+head(Managers)
+# The most underperforming Pythagorean teams from the 1980s are:
+left_join(Bot, Managers, by = c("teamID", "yearID", "W"))
+# This in interesting. Notet that there is a blank for playerID fot the STL 1980 (they had FOUR managers that year), CAL 1981 (2 managers - note this was a strike year), and MIL 1980 (2 managers)spots. This is beacuse there were muliple managers for these teams. "leylaji99" is Jim Leyland, and "tannech01" was Chuck Tanner. 
+
+# The most overperforming Pythagorean teams from the 1980s are:
+left_join(Top, Managers, by = c("teamID", "yearID", "W"))
+# "rodgebu01" is Buck Rogers, "howear01" is Art Howe, "weaveea99" was Earl Weaver, "johnsda02" is Davey Johnson, and "mcnamjo99" is John McNamara.
+```
