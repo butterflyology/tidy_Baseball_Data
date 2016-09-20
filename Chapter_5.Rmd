@@ -1,0 +1,353 @@
+---
+title: "Chapter_5.Rmd"
+author: "C. A. Hamm"
+date: "`r format(Sys.Date())`"
+output:  
+      html_document:  
+        keep_md: true  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Chapter 5 - *Value of Plays Using Run Expectancy*
+
+```{r preliminaries}
+library("Lahman")
+library("dplyr"); options(dplyr.width = Inf)
+library("ggplot2")
+library("devtools")
+library("readr")
+
+set.seed(8761825)
+session_info()
+```
+
+### Section 5.2 - *Runs scored in the remainder of the inning*
+```{r remainder}
+# This is a 62 Mb file, so I'll download it from the GitHub repo. Note, you'll get a warning message when using read_csv because right here because there are not column headers. We'll add them manually. 
+data2011 <- read.csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/all2011.csv", header = FALSE)
+# I've placed the fields file in the data directory.
+fields <- read.csv("Data/fields.csv")
+names(data2011) <- fields[, "Header"]
+head(data2011)
+dim(data2011)
+
+data2011 <- data2011 %>% 
+  mutate(RUNS = AWAY_SCORE_CT + HOME_SCORE_CT, HALF.INNING = paste(GAME_ID, INN_CT, BAT_HOME_ID), RUNS.SCORED = ((BAT_DEST_ID > 3) + (RUN1_DEST_ID > 3) + (RUN2_DEST_ID > 3) + (RUN3_DEST_ID > 3))) # Please note, I am following the book here and creating the HALF.INNING variable that contains 3 seperate pieces of data in one cell. This is not "tidy" per se but it works.
+head(data2011)
+
+RUNS.SCORED.INNING <- aggregate(data2011$RUNS.SCORED, list(HALF.INNING = data2011$HALF.INNING), sum)
+head(RUNS.SCORED.INNING)
+ 
+RUNS.SCORED.START <- aggregate(data2011$RUNS, list(HALF.INNING = data2011$HALF.INNING), "[", 1)
+head(RUNS.SCORED.START)
+
+MAX <- data.frame(HALF.INNING = RUNS.SCORED.START$HALF.INNING)
+MAX <- MAX %>% 
+  mutate(x = RUNS.SCORED.INNING$x + RUNS.SCORED.START$x)
+head(MAX)
+data2011 <- merge(data2011, MAX)
+N <- ncol(data2011)
+names(data2011)[N] <- "MAX.RUNS"
+data2011 <- data2011 %>% 
+  mutate(RUNS.ROI = MAX.RUNS - RUNS)
+head(data2011)
+```
+
+### Section 5.3 - *Creating the matrix*
+```{r create_matrix}
+RUNNER1 <- ifelse(as.character(data2011[, "BASE1_RUN_ID"]) == "", 0, 1)
+RUNNER2 <- ifelse(as.character(data2011[, "BASE2_RUN_ID"]) == "", 0, 1)
+RUNNER3 <- ifelse(as.character(data2011[, "BASE3_RUN_ID"]) == "", 0, 1)
+
+get.state <- function(runner1, runner2, runner3, outs){
+	runners <- paste(runner1, runner2, runner3, sep = "")
+	paste(runners, outs)
+}
+
+data2011 <- data2011 %>% 
+  mutate(STATE = get.state(RUNNER1, RUNNER2, RUNNER3, OUTS_CT))
+head(data2011)
+head(data2011$STATE)
+
+# Create vectors with 0's and 1's.
+NRUNNER1 <- with(data2011, as.numeric(RUN1_DEST_ID == 1 | BAT_DEST_ID == 1))
+NRUNNER2 <- with(data2011, as.numeric(RUN1_DEST_ID == 2 | RUN2_DEST_ID == 2 | BAT_DEST_ID == 2))
+NRUNNER3 <- with(data2011, as.numeric(RUN1_DEST_ID == 3 | RUN2_DEST_ID == 3 | RUN3_DEST_ID == 3 | BAT_DEST_ID == 3))
+NOUTS <- with(data2011, OUTS_CT + EVENT_OUTS_CT)
+
+data2011$NEW.STATE <- get.state(NRUNNER1, NRUNNER2, NRUNNER3, NOUTS)
+head(data2011)
+
+data2011 <- data2011 %>% 
+  filter((STATE != NEW.STATE) | (RUNS.SCORED > 0))
+head(data2011)
+dim(data2011)
+
+data.outs <- data2011 %>% 
+  group_by(HALF.INNING) %>% 
+  summarize(Outs.Inning = sum(EVENT_OUTS_CT))
+head(data.outs)
+
+data2011 <- inner_join(data2011, data.outs)
+head(data2011)
+dim(data2011)
+data2011C <- data2011 %>% filter(Outs.Inning == 3)
+dim(data2011C)
+
+RUNS <- with(data2011C, aggregate(RUNS.ROI, list(STATE), mean))
+RUNS$Outs <- substr(RUNS$Group, 5, 5)
+RUNS <- RUNS[order(RUNS$Outs), ]
+head(RUNS)
+
+RUNS.out <- matrix(round(RUNS$x, 2), 8, 3)
+dimnames(RUNS.out)[[2]] <- c("0 outs", "1 out", "2 outs")
+dimnames(RUNS.out)[[1]] <- c("000", "001", "010", "011", "100", "101", "110", "111")
+RUNS.out
+
+RUNS.2002 <- matrix(c(0.51, 1.40, 1.14, 1.96, .90, 1.84, 1.51, 2.33, 0.27, 0.94, 0.68, 1.36, 0.54, 1.18, 0.94, 1.51, 0.10, 0.36, 0.32, 0.63, 0.23, 0.52, 0.45, 0.78), 8, 3)
+dimnames(RUNS.2002) <- dimnames(RUNS.out)
+cbind(RUNS.out, RUNS.2002)
+```
+
+### Section 5.4 Measuring success of a batting play
+```{r measuring}
+RUNS.POTENTIAL <- matrix(c(RUNS$x, rep(0, 8)), 32, 1)
+dimnames(RUNS.POTENTIAL)[[1]] <- c(RUNS$Group, "000 3", "001 3", "010 3", "011 3", "100 3", "101 3", "110 3", "111 3")
+data2011$RUNS.STATE <- RUNS.POTENTIAL[data2011$STATE, ]
+data2011$RUNS.NEW.STATE <- RUNS.POTENTIAL[data2011$NEW.STATE, ]
+data2011 <- data2011 %>% 
+  mutate(RUNS.VALUE = RUNS.NEW.STATE - RUNS.STATE + RUNS.SCORED)
+head(data2011)
+```
+
+### Section 5.5 - *José Alberto Pujols Alcántara*
+```{r Pujols}
+Roster <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/roster2011.csv", col_names = TRUE)
+
+albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% select(Player.ID)
+albert.id <- as.character(albert.id[[1]])
+
+albert <- data2011 %>% filter(BAT_ID == albert.id)
+head(albert)
+dim(albert)
+
+albert %>% select(STATE, NEW.STATE, RUNS.VALUE) %>% slice(1:2) 
+
+albert$RUNNERS <- substr(albert$STATE, 1, 3)
+table(albert$RUNNERS)
+
+## Figure 5.1
+with(albert, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1))
+abline(h = 0, lty = 2, lwd = 2)
+
+A.runs <- aggregate(albert$RUNS.VALUE, list(albert$RUNNERS), sum)
+names(A.runs)[2] <- "RUNS"
+A.PA <- aggregate(albert$RUNS.VALUE, list(albert$RUNNERS), length)
+names(A.PA)[2] <- "PA"
+A <- merge(A.PA, A.runs)
+A
+sum(A$RUNS)
+
+data2011b <- data2011 %>% filter(BAT_EVENT_FL == TRUE)
+dim(data2011b)
+```
+
+### Section 5.6 - *Opportunities and success for all hitters*
+```{r opportunities}
+# Rather than use aggretate, I'll continue to use the dplyr pipeline.
+runs.sums <- data2011b %>% 
+  select(Batter = BAT_ID, RUNS.VALUE) %>% 
+  group_by(Batter) %>% 
+  summarize(Runs = sum(RUNS.VALUE))
+head(runs.sums); str(runs.sums)
+
+runs.pa <- data2011b %>% 
+  select(Batter = BAT_ID, RUNS.VALUE) %>% 
+  group_by(Batter) %>% 
+  summarize(PA = length(RUNS.VALUE))
+head(runs.pa) ;str(runs.pa)
+
+runs.start <- data2011b %>% 
+  select(Batter = BAT_ID, RUNS.STATE) %>% 
+  group_by(Batter) %>% 
+  summarize(Runs.Start = sum(RUNS.STATE))
+head(runs.start); str(runs.start)
+
+# We already have the roster2011 data imported
+head(Roster)
+
+# Is there a way to join multiple data frames at once? 
+runs <- inner_join(runs.sums, runs.pa, by = "Batter")
+runs <- inner_join(runs, runs.start, by = "Batter")
+runs <- inner_join(x = runs, y = Roster, by = c("Batter" = "Player.ID"))
+head(runs)
+
+runs400 <- runs %>% filter(PA >= 400)
+head(runs400)
+
+## Figure 5.2
+runs.plot <- ggplot(runs400, aes(y = Runs, x = Runs.Start)) + geom_hline(yintercept = 0) + 
+  theme_bw() + 
+  geom_point(size = 2) + 
+  stat_smooth(method = "loess", col = "black", se = FALSE)
+
+# I don't know how to add the top player labels to this plot
+runs.plot + geom_text(data = (runs %>% filter(PA >= 400 & Runs >= 40)), aes(PA, Runs, label = Last.Name), check_overlap = FALSE) 
+# need to get the names to move over
+
+runs400.top <- runs400 %>% filter(Runs >= 40)
+head(runs400.top)
+
+runs400.top <-  inner_join(x = runs400.top, y = Roster, by = c("Batter" = "Player.ID"))
+runs400.top
+```
+
+### Section 5.7 - *Position in batting lineup*
+```{r Position}
+get.batting.pos <- function(batter){
+	TB <- table(subset(data2011, BAT_ID == batter)$BAT_LINEUP_ID)
+	names(TB)[TB == max(TB)][1]
+}
+position <- sapply(as.character(runs400$Batter), get.batting.pos)
+head(position)
+
+## Figure 5.3
+ggplot(runs400, aes(x = Runs.Start, y = Runs)) + 
+  theme_bw() + 
+  stat_smooth(method = "loess", col = "black", se = FALSE) + 
+  geom_hline(yintercept = 0) + 
+  geom_text(aes(label = position))
+```
+
+### Section 5.8 - *Runs values of different base hits*
+```{r Hit_values}
+d.homerun <- data2011 %>% filter(EVENT_CD == 23)
+dim(d.homerun)
+table(d.homerun$STATE)
+
+# Make a proportion table
+round(prop.table(table(d.homerun$STATE)), 3)
+
+## Figure 5.4
+MASS::truehist(d.homerun$RUNS.VALUE, col = "grey", xlim = c(1, 4), las = 1, xlab = "Runs Value, Home Run", ylab = "Density")
+abline(v = mean(d.homerun$RUNS.VALUE), lwd = 3)
+text(x = 1.5, y = 5, "Mean Runs Value", pos = 4)
+# I don't know of a way to make this easily with ggplot2
+
+subset(d.homerun, RUNS.VALUE == max(RUNS.VALUE))[1, c("STATE", "NEW.STATE", "RUNS.VALUE")] 
+
+(mean.HR <- mean(d.homerun$RUNS.VALUE))
+
+d.single <- data2011 %>% filter(EVENT_CD == 20)
+
+## Figure 5.5
+MASS::truehist(d.single$RUNS.VALUE, col = "grey", xlim = c(-1, 3), las = 1, xlab = "Runs Value, Single", ylab = "Density")
+abline(v = mean(d.single$RUNS.VALUE), lwd = 3)
+text(0.5, 5, "Mean Runs Value", pos = 4)
+mean(d.single$RUNS.VALUE)
+
+table(d.single$STATE)
+round(prop.table(table(d.single$STATE)), 3)
+
+subset(d.single, d.single$RUNS.VALUE == min(d.single$RUNS.VALUE))[, c("STATE", "NEW.STATE", "RUNS.VALUE")]
+```
+
+### Section 5.9 - *value of stolen bases*
+```{r stolen_bases}
+stealing <- data2011 %>% filter(EVENT_CD == 6| EVENT_CD == 4)
+dim(stealing)
+head(stealing)
+
+table(stealing$EVENT_CD)
+table(stealing$STATE)
+
+## Figure 5.6
+MASS::truehist(stealing$RUNS.VALUE, xlim = c(-1.5, 1.5), col = "grey", xlab = "Runs Value, Stealing", las = 1, ylab = "Density")
+abline(v = mean(stealing$RUNS.VALUE), lwd = 3)
+mean(stealing$RUNS.VALUE)
+
+stealing.1001 <- stealing %>% filter(STATE == "100 1")
+table(stealing.1001$EVENT_CD)
+with(stealing.1001, table(NEW.STATE))
+mean(stealing.1001$RUNS.VALUE)
+```
+
+### Chapter 5 exercises
+1. **Runs Values of Hits** - In Section 5.8, we found the average runs value of a home run and a single.
++ Use similar R code as described in Section 5.8 for the 2011 season data to find the mean run values for a double, and for a triple.
+```{r Ch5.Q1a}
+# The event code for a double is '21', and a triple is '22'.
+d.double <- data2011 %>% filter(EVENT_CD == 21)
+mean(d.double$RUNS.VALUE)
+
+d.triple <- data2011 %>% filter(EVENT_CD == 22)
+mean(d.triple$RUNS.VALUE)
+```
++ Albert and Bennett (2001) use a regression approach to obtain the weights 0.46, 0.80, 1.02, and 1.40 for a single, double, triple, and home run, respectively. Compare the results from Section 5.8 and part (a) with the weights of Albert and Bennett.
+
+We estimated: *single* = `r mean(d.single$RUNS.VALUE)`, *double* = `r mean(d.double$RUNS.VALUE)`, *triple* = `r mean(d.triple$RUNS.VALUE)`, and *home run* = `r mean(d.homerun$RUNS.VALUE)`. These values appear to be slightly lower than those estimated via regression. 
+
+2. **Value of Different Ways of Reaching First Base** - 
+There are three different ways for a runner to get on base, a single, walk (BB), or hit-by-pitch (HBP). But these three outcomes have different runs values due to the different advancement of the runners on base. Use runs values based on data from the 2011 season to compare the benefit of a
+walk, a hit-by-pitch, and a single when there is a single runner on first base.
+I consider that there are actually [*seven ways*](http://sabr.org/research/was-there-seven-way-game-seven-ways-reaching-first-base) to get on base, don't forget: 
++ interference
++ dropped third strike
++ fielder's choice / indifference
++ error
+
+```{r Ch5.Q2}
+# Nonetheless... The codes for single is '20', BB is '14', and HBP is '16'.
+
+# Single
+mean(d.single$RUNS.VALUE)
+
+# BB
+d.BB <- data2011 %>% filter(EVENT_CD == 14)
+mean(d.BB$RUNS.VALUE)
+
+# HBP 
+d.HBP <- data2011 %>% filter(EVENT_CD == 16) %>% select(RUNS.VALUE)
+mean(d.HBP$RUNS.VALUE)
+
+# Interference (code 17)
+d.Int <- data2011 %>% filter(EVENT_CD == 17)
+mean(d.Int$RUNS.VALUE)
+
+# A single is most valuable
+```
+
+3. **Comparing Two Players with Similar OBPs.** - Rickie Weeks (batter id “weekr001”) and Michael Bourne (batter id
+“bourm001”) both were leadoff hitters during the 2011 season. They had similar on-base percentages – .350 for Weeks and .349 for Bourne. By exploring the runs values of these two payers, investigate which player was really more valuable to his team. Can you explain the difference in runs values in terms of traditional batting statistics such as AVG, SLG, or OBP?
+
+```{r Ch5.Q3}
+
+Weeks <- data2011 %>% filter(BAT_ID == "weekr001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+
+Bourne <- data2011 %>% filter(BAT_ID == "bourm001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+
+# I wrote a function to calculate the results we need
+Runs <- function(data){
+  t.runs <- aggregate(data$RUNS.VALUE, list(data$RUNNERS), sum)
+  names(t.runs)[2] <- "RUNS"
+  t.PA <- aggregate(data$RUNS.VALUE, list(data$RUNNERS), length)
+  names(t.PA)[2] <- "PA"
+  t.W <- merge(t.PA, t.runs)
+  return(list(t.W,  RUNS = sum(t.W$RUNS)))
+}
+
+Runs(Weeks)
+Runs(Bourne)
+
+# It looks like Ricky Weeks hit more homes as a lead off hitter than Bourne. 
+
+par(mfrow = c(1, 2))
+with(Weeks, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1, main = "Weeks"))
+abline(h = 0, lty = 2, lwd = 2)
+with(Bourne, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1, main = "Bourne"))
+abline(h = 0, lty = 2, lwd = 2)
+```
+

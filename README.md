@@ -14,3 +14,4 @@ I will be downloading the data remotely so the repo is not filled with large fil
 2. 7 August - Updated Ch. 2 file to include exercises
 3. 9 August - Completed Ch. 2 & 3 questions at the end of the chapter. 
 4. 16 August - Completed Ch. 4 and three end of chapter questions.
+5. 19 August - Uploaded Ch. 5 and the first three exercises. 
