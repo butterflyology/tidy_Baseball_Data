@@ -130,13 +130,12 @@ Roster <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/
 albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% select(Player.ID)
 albert.id <- as.character(albert.id[[1]])
 
-albert <- data2011 %>% filter(BAT_ID == albert.id)
+albert <- data2011 %>% filter(BAT_ID == albert.id) %>% mutate(RUNNERS = substr(STATE, 1, 3))
 head(albert)
 dim(albert)
 
 albert %>% select(STATE, NEW.STATE, RUNS.VALUE) %>% slice(1:2) 
 
-albert$RUNNERS <- substr(albert$STATE, 1, 3)
 table(albert$RUNNERS)
 
 ## Figure 5.1
@@ -223,6 +222,8 @@ ggplot(runs400, aes(x = Runs.Start, y = Runs)) +
 ```
 
 ### Section 5.8 - *Runs values of different base hits*
+
+#### I made a table of the 24 different *EVENT_CD* codes and placed it in the repo. 
 ```{r Hit_values}
 d.homerun <- data2011 %>% filter(EVENT_CD == 23)
 dim(d.homerun)
@@ -345,9 +346,63 @@ Runs(Bourne)
 # It looks like Ricky Weeks hit more homes as a lead off hitter than Bourne. 
 
 par(mfrow = c(1, 2))
-with(Weeks, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1, main = "Weeks"))
+with(Weeks, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, main = "Weeks"))
 abline(h = 0, lty = 2, lwd = 2)
-with(Bourne, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1, main = "Bourne"))
+with(Bourne, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, main = "Bourne"))
+abline(h = 0, lty = 2, lwd = 2)
+par(mfrow = c(1, 1))
+```
+4. **Create Probability of Scoring a Run Matrix** - In Section 5.3, the construction of the runs expectancy matrix from 2011 season data was illustrated. Suppose instead that one was interested in computing the proportion of times when at least one run was scored for each of the 24 possible bases/outs situations. Use R to construct this
+probability of scoring matrix.
+```{r Ch5.Q4}
+# Here we just want to percentage of times a run was scored under each of the 24 conditions. We will need the RUNS.SCORED and STATE columns. 
+dim(data2011)
+table(data2011$STATE)
+sum(data2011$RUNS.SCORED) # Sanity check, I recall that about 21,000 runs are scored each year in MLB.
+
+# Here is the dplyr code that sums the runs created in each of the 24 different states. 
+data2011 %>% group_by(STATE) %>% summarize(percentage = (sum(RUNS.SCORED) / sum(data2011$RUNS.SCORED)) * 100)  %>% print(n = 24)
+# Thinking about this, I believe that my code answers the question but perhaps it isn't the most interesting thing. This Gives the percentage of total runs and says that 5.89% of all runs come with no one on and no outs, and that 5.56% of all runs come with the bases loaded and two outs. The latter condition is likely to drive in more more runs because runners are on, but I think the more interesting question is how often do these situations occur. Come to think of it, that is the question asked in the exercise and I misunderstood it. I'll get back to it later after I think about how to answer it. 
+```
+5. **Runner Advancement with a Single** - Suppose one is interested in studying how runners move with a single. 
++ Using the subset function, select the plays when a single was hit. (The value of EVENT CD for a single is 20.) Call the new data frame d.single.
+```{r Ch5.Q5a}
+# We already created this object
+```
++ Use the table function with the data frame d.single to construct a table of frequencies of the variables STATE (the beginning runners/outs state) and NEW.STATE (the final runners/outs state).
+```{r Ch5.Q5b}
+table(d.single$STATE)
+table(d.single$NEW.STATE)
+```
++ Suppose there is a single runner on first base. Using the table from part (b), explore where runners move with a single. Is it more likely for the lead runner to move to second, or to third base?
+```{r Ch5.Q5c}
+# It appears that a runner on first is most likely to move to second. 
+```
++ Suppose instead there are runners on first and second. Explore where runners move with a single. Estimate the probability a run is scored on the play.
+```{r CH5.Q5d}
+```
+6. **Hitting Evaluation of Players by Runs Values** - Choose several players who were good hitters in the 2011 season. For each player, find the runs values and the runners on base for all plate appearances. As in Figure 5.1, construct a graph of the runs values against the runners on base. Was this particular batter successful when there were runners in scoring position?
+```{r CH5.Q6}
+# I'll pick three totally random players from 2011 that have nothing to do wtih me being a Dodgers : Matt Kemp, Adrian Gonzalez, and AJ Pierzynski.
+
+Kemp <- data2011 %>% 
+  filter(BAT_ID == "kempm001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
+dim(Kemp)
+with(Kemp, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, , main = "Kemp"))
+abline(h = 0, lty = 2, lwd = 2)
+
+Gonzalez <- data2011 %>% 
+  filter(BAT_ID == "gonza003") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
+dim(Gonzalez)
+with(Gonzalez, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, , main = "Gonzalez"))
+abline(h = 0, lty = 2, lwd = 2)
+
+Pierzynski <- data2011 %>% 
+  filter(BAT_ID == "piera001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
+dim(Pierzynski)
+with(Pierzynski, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, , main = "Pierzynski"))
 abline(h = 0, lty = 2, lwd = 2)
 ```
-

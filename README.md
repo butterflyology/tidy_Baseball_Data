@@ -6,7 +6,9 @@ The "tidy" paradigm (aka "tidy-verse" formerly the "Hadley-verse") is just one w
 
 All data (and the original code) are available on github here: **https://github.com/maxtoki/baseball_R**
 
-I will be downloading the data remotely so the repo is not filled with large files. If you are following along at home you may want to clone the repo or download the data locally. 
+I will be downloading the data remotely or using the Lahman package so the repo is not filled with large files. If you are following along at home you may want to clone the repo or download the data locally. 
+
+*If there are errors or you found a better way for me to do something, please submit a PR*.
 
 **Commits:**
 

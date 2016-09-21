@@ -1,0 +1,43 @@
+---
+title: "EVENT_CD"
+author: "C. A. Hamm"
+date: "`r format(Sys.Date())`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### A table with the various codes for EVENT_CD (so you don't have to google them all the time)
+
+These data are from [retrosheet](http://www.retrosheet.org/datause.txt):
+
+| EVENT_CD | Event |
+|:--------:|:-----:|
+|0 | Unknown event |
+|1 | No event |
+|2 | Generic out |
+|3 | Strikeout |
+|4 | Stolen base|
+|5 | Defensive indifference|
+|6 | Caught stealing|
+|7 | Pickoff error |
+|8 | Pickoff|
+|9 | Wild pitch|
+|10 | Passed ball|
+|11 | Balk|
+|12 | Other advance|
+|13 | Foul error|
+|14 | Walk|
+|15 | Intentional walk|
+|16 | Hit by pitch|
+|17 | Interference|
+|18 | Error|
+|19 | Fielder's choice|
+|20 | Single|
+|21 | Double|
+|22 | Triple|
+|23 | Home run|
+|24 | Missing play|
+

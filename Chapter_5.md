@@ -50,7 +50,7 @@ session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-09-19
+##  date     2016-09-21
 ```
 
 ```
@@ -1400,7 +1400,7 @@ Roster <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/
 albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% select(Player.ID)
 albert.id <- as.character(albert.id[[1]])
 
-albert <- data2011 %>% filter(BAT_ID == albert.id)
+albert <- data2011 %>% filter(BAT_ID == albert.id) %>% mutate(RUNNERS = substr(STATE, 1, 3))
 head(albert)
 ```
 
@@ -1531,13 +1531,13 @@ head(albert)
 ## 4       59    5           0        6        1 000 0     000 1           3
 ## 5       76    7           0       10        3 000 1     100 1           3
 ## 6        3    0           0        0        0 000 2     100 2           3
-##   RUNS.STATE RUNS.NEW.STATE RUNS.VALUE
-## 1 0.49604923      0.0000000 -0.4960492
-## 2 0.31739130      0.0000000 -0.3173913
-## 3 0.76100940      0.0000000 -0.7610094
-## 4 0.47116494      0.2546956 -0.2164694
-## 5 0.25469556      0.4960492  0.2413537
-## 6 0.09718452      0.2179536  0.1207691
+##   RUNS.STATE RUNS.NEW.STATE RUNS.VALUE RUNNERS
+## 1 0.49604923      0.0000000 -0.4960492     100
+## 2 0.31739130      0.0000000 -0.3173913     001
+## 3 0.76100940      0.0000000 -0.7610094     111
+## 4 0.47116494      0.2546956 -0.2164694     000
+## 5 0.25469556      0.4960492  0.2413537     000
+## 6 0.09718452      0.2179536  0.1207691     000
 ```
 
 ```r
@@ -1545,7 +1545,7 @@ dim(albert)
 ```
 
 ```
-## [1] 666 108
+## [1] 666 109
 ```
 
 ```r
@@ -1559,7 +1559,6 @@ albert %>% select(STATE, NEW.STATE, RUNS.VALUE) %>% slice(1:2)
 ```
 
 ```r
-albert$RUNNERS <- substr(albert$STATE, 1, 3)
 table(albert$RUNNERS)
 ```
 
@@ -1896,6 +1895,8 @@ ggplot(runs400, aes(x = Runs.Start, y = Runs)) +
 ![](Chapter_5_files/figure-html/Position-1.png)<!-- -->
 
 ### Section 5.8 - *Runs values of different base hits*
+
+#### I made a table of the 24 different *EVENT_CD* codes and placed it in the repo. 
 
 ```r
 d.homerun <- data2011 %>% filter(EVENT_CD == 23)
@@ -2260,7 +2261,7 @@ We estimated: *single* = 0.4424186, *double* = 0.7359337, *triple* = 1.0644537, 
 There are three different ways for a runner to get on base, a single, walk (BB), or hit-by-pitch (HBP). But these three outcomes have different runs values due to the different advancement of the runners on base. Use runs values based on data from the 2011 season to compare the benefit of a
 walk, a hit-by-pitch, and a single when there is a single runner on first base.
 I consider that there are actually [*seven ways*](http://sabr.org/research/was-there-seven-way-game-seven-ways-reaching-first-base) to get on base, don't forget: 
-+ hit by pitch
++ interference
 + dropped third strike
 + fielder's choice / indifference
 + error
@@ -2306,3 +2307,248 @@ mean(d.Int$RUNS.VALUE)
 ```
 ## [1] 0.3137751
 ```
+
+```r
+# A single is most valuable
+```
+
+3. **Comparing Two Players with Similar OBPs.** - Rickie Weeks (batter id “weekr001”) and Michael Bourne (batter id
+“bourm001”) both were leadoff hitters during the 2011 season. They had similar on-base percentages – .350 for Weeks and .349 for Bourne. By exploring the runs values of these two payers, investigate which player was really more valuable to his team. Can you explain the difference in runs values in terms of traditional batting statistics such as AVG, SLG, or OBP?
+
+
+```r
+Weeks <- data2011 %>% filter(BAT_ID == "weekr001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+
+Bourne <- data2011 %>% filter(BAT_ID == "bourm001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+
+# I wrote a function to calculate the results we need
+Runs <- function(data){
+  t.runs <- aggregate(data$RUNS.VALUE, list(data$RUNNERS), sum)
+  names(t.runs)[2] <- "RUNS"
+  t.PA <- aggregate(data$RUNS.VALUE, list(data$RUNNERS), length)
+  names(t.PA)[2] <- "PA"
+  t.W <- merge(t.PA, t.runs)
+  return(list(t.W,  RUNS = sum(t.W$RUNS)))
+}
+
+Runs(Weeks)
+```
+
+```
+## [[1]]
+##   Group.1  PA       RUNS
+## 1     000 355 10.6667651
+## 2     001   7  0.9338301
+## 3     010  47  3.5723206
+## 4     011   6  0.9991548
+## 5     100  68  1.2252245
+## 6     101  16 -0.8441498
+## 7     110  20 -0.6798701
+## 8     111   7 -5.2158642
+## 
+## $RUNS
+## [1] 10.65741
+```
+
+```r
+Runs(Bourne)
+```
+
+```
+## [[1]]
+##   Group.1  PA       RUNS
+## 1     000 488  1.4531156
+## 2     001  16  4.0204368
+## 3     010  59  0.8059828
+## 4     011  20  4.2138527
+## 5     100  92 -0.4692739
+## 6     101  18 -4.3715347
+## 7     110  34  1.9992826
+## 8     111  14  1.6050216
+## 
+## $RUNS
+## [1] 9.256884
+```
+
+```r
+# It looks like Ricky Weeks hit more homes as a lead off hitter than Bourne. 
+
+par(mfrow = c(1, 2))
+with(Weeks, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, main = "Weeks"))
+abline(h = 0, lty = 2, lwd = 2)
+with(Bourne, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, main = "Bourne"))
+abline(h = 0, lty = 2, lwd = 2)
+```
+
+![](Chapter_5_files/figure-html/Ch5.Q3-1.png)<!-- -->
+
+```r
+par(mfrow = c(1, 1))
+```
+4. **Create Probability of Scoring a Run Matrix** - In Section 5.3, the construction of the runs expectancy matrix from 2011 season data was illustrated. Suppose instead that one was interested in computing the proportion of times when at least one run was scored for each of the 24 possible bases/outs situations. Use R to construct this
+probability of scoring matrix.
+
+```r
+# Here we just want to percentage of times a run was scored under each of the 24 conditions. We will need the RUNS.SCORED and STATE columns. 
+dim(data2011)
+```
+
+```
+## [1] 191825    108
+```
+
+```r
+table(data2011$STATE)
+```
+
+```
+## 
+## 000 0 000 1 000 2 001 0 001 1 001 2 010 0 010 1 010 2 011 0 011 1 011 2 
+## 45331 32689 25814   485  1970  3005  3501  6127  7643   638  1593  1902 
+## 100 0 100 1 100 2 101 0 101 1 101 2 110 0 110 1 110 2 111 0 111 1 111 2 
+## 11139 13237 13172   941  2241  2910  2487  4792  5801   667  1693  2047
+```
+
+```r
+sum(data2011$RUNS.SCORED) # Sanity check, I recall that about 21,000 runs are scored each year in MLB.
+```
+
+```
+## [1] 20808
+```
+
+```r
+# Here is the dplyr code that sums the runs created in each of the 24 different states. 
+data2011 %>% group_by(STATE) %>% summarize(percentage = (sum(RUNS.SCORED) / sum(data2011$RUNS.SCORED)) * 100)  %>% print(n = 24)
+```
+
+```
+## # A tibble: 24 × 2
+##    STATE percentage
+##    <chr>      <dbl>
+## 1  000 0   5.896770
+## 2  000 1   3.911957
+## 3  000 2   3.037293
+## 4  001 0   1.302384
+## 5  001 1   4.704921
+## 6  001 2   3.162245
+## 7  010 0   2.306805
+## 8  010 1   4.224337
+## 9  010 2   6.665705
+## 10 011 0   1.970396
+## 11 011 1   4.440600
+## 12 011 2   3.147828
+## 13 100 0   3.493849
+## 14 100 1   4.248366
+## 15 100 2   4.579969
+## 16 101 0   2.883506
+## 17 101 1   6.199539
+## 18 101 2   4.190696
+## 19 110 0   2.450980
+## 20 110 1   5.603614
+## 21 110 2   6.987697
+## 22 111 0   2.609573
+## 23 111 1   6.415802
+## 24 111 2   5.565167
+```
+
+```r
+# Thinking about this, I believe that my code answers the question but perhaps it isn't the most interesting thing. This Gives the percentage of total runs and says that 5.89% of all runs come with no one on and no outs, and that 5.56% of all runs come with the bases loaded and two outs. The latter condition is likely to drive in more more runs because runners are on, but I think the more interesting question is how often do these situations occur. Come to think of it, that is the question asked in the exercise and I misunderstood it. I'll get back to it later after I think about how to answer it. 
+```
+5. **Runner Advancement with a Single** - Suppose one is interested in studying how runners move with a single. 
++ Using the subset function, select the plays when a single was hit. (The value of EVENT CD for a single is 20.) Call the new data frame d.single.
+
+```r
+# We already created this object
+```
++ Use the table function with the data frame d.single to construct a table of frequencies of the variables STATE (the beginning runners/outs state) and NEW.STATE (the final runners/outs state).
+
+```r
+table(d.single$STATE)
+```
+
+```
+## 
+## 000 0 000 1 000 2 001 0 001 1 001 2 010 0 010 1 010 2 011 0 011 1 011 2 
+##  7078  5067  3814    85   315   356   502   844   959    87   225   216 
+## 100 0 100 1 100 2 101 0 101 1 101 2 110 0 110 1 110 2 111 0 111 1 111 2 
+##  1593  2063  1826   154   344   385   346   728   770   100   284   277
+```
+
+```r
+table(d.single$NEW.STATE)
+```
+
+```
+## 
+## 000 1 000 2 000 3 001 0 001 1 001 2 001 3 010 0 010 1 010 2 010 3 011 0 
+##    57    67    88    17    16    37    13   100   143   217     3    49 
+## 011 1 011 2 011 3 100 0 100 1 100 2 100 3 101 0 101 1 101 2 101 3 110 0 
+##    82   108     1  7216  5701  4843    95   804  1288  1212     7  1400 
+## 110 1 110 2 110 3 111 0 111 1 111 2 
+##  2075  1840    40   264   436   199
+```
++ Suppose there is a single runner on first base. Using the table from part (b), explore where runners move with a single. Is it more likely for the lead runner to move to second, or to third base?
+
+```r
+# It appears that a runner on first is most likely to move to second. 
+```
++ Suppose instead there are runners on first and second. Explore where runners move with a single. Estimate the probability a run is scored on the play.
+
+6. **Hitting Evaluation of Players by Runs Values** - Choose several players who were good hitters in the 2011 season. For each player, find the runs values and the runners on base for all plate appearances. As in Figure 5.1, construct a graph of the runs values against the runners on base. Was this particular batter successful when there were runners in scoring position?
+
+```r
+# I'll pick three totally random players from 2011 that have nothing to do wtih me being a Dodgers : Matt Kemp, Adrian Gonzalez, and AJ Pierzynski.
+
+Kemp <- data2011 %>% 
+  filter(BAT_ID == "kempm001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
+dim(Kemp)
+```
+
+```
+## [1] 704 109
+```
+
+```r
+with(Kemp, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, , main = "Kemp"))
+abline(h = 0, lty = 2, lwd = 2)
+```
+
+![](Chapter_5_files/figure-html/CH5.Q6-1.png)<!-- -->
+
+```r
+Gonzalez <- data2011 %>% 
+  filter(BAT_ID == "gonza003") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
+dim(Gonzalez)
+```
+
+```
+## [1] 755 109
+```
+
+```r
+with(Gonzalez, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, , main = "Gonzalez"))
+abline(h = 0, lty = 2, lwd = 2)
+```
+
+![](Chapter_5_files/figure-html/CH5.Q6-2.png)<!-- -->
+
+```r
+Pierzynski <- data2011 %>% 
+  filter(BAT_ID == "piera001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
+dim(Pierzynski)
+```
+
+```
+## [1] 512 109
+```
+
+```r
+with(Pierzynski, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 2, , main = "Pierzynski"))
+abline(h = 0, lty = 2, lwd = 2)
+```
+
+![](Chapter_5_files/figure-html/CH5.Q6-3.png)<!-- -->
