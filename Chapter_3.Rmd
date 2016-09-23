@@ -135,7 +135,7 @@ stripchart(HR.Rate ~ Era, data = hof, pch = 19, ylab = "", method = "jitter", la
 ## Figure 3.13
 ggplot(hof, aes(y = HR.Rate, x = Era)) + 
   theme_bw() + 
-  geom_boxplot(outlier.size = 2, stat = "boxplot") + 
+  geom_boxplot(outlier.size = 2, stat = "boxplot", fill = "grey") + 
   coord_flip() + 
   xlab("") + 
   ylab("HR Rate")

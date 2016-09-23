@@ -10,10 +10,11 @@ I will be downloading the data remotely or using the Lahman package so the repo 
 
 *If there are errors or you found a better way for me to do something, please submit a PR*.
 
-**Commits:**
+**2016 Commits:**
 
 1. 31 July - Initial commit (README.md)
 2. 7 August - Updated Ch. 2 file to include exercises
 3. 9 August - Completed Ch. 2 & 3 questions at the end of the chapter. 
 4. 16 August - Completed Ch. 4 and three end of chapter questions.
 5. 20 August - Uploaded Ch. 5, exercises, and added a table with EVENT_CD codes explained. 
+6. 22 August - Uploaded Ch. 6 code and exercises.
