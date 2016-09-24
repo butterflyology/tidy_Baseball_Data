@@ -49,8 +49,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/New_York            
-##  date     2016-09-16
+##  tz       America/Los_Angeles         
+##  date     2016-09-24
 ```
 
 ```
@@ -201,7 +201,8 @@ dim(Teams)
 ```r
 # run differential is the difference between runs scored and runs allowed. Rather than use the with statements in section 4.2 we will use a dplyr pipeline
 
-myteams <- Teams %>% filter(yearID > 2000) %>% 
+myteams <- Teams %>% 
+  filter(yearID > 2000) %>% 
   select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
   mutate(RD = R - RA, Wpct = W / (W + L))
 tail(myteams)
@@ -227,7 +228,7 @@ ggplot(myteams, aes(x = RD, y = Wpct)) +
   ylab("Winning percentage")
 ```
 
-![](Chapter_4_files/figure-html/Teams_Table-1.png)<!-- -->
+<img src="Chapter_4_files/figure-html/Teams_Table-1.png" style="display: block; margin: auto;" />
 
 
 
@@ -309,7 +310,7 @@ ggplot(myteams, aes(x = RD, y = linResiduals)) +
   scale_x_continuous(limits = c(-400, 400)) 
 ```
 
-![](Chapter_4_files/figure-html/linear_regression-1.png)<!-- -->
+<img src="Chapter_4_files/figure-html/linear_regression-1.png" style="display: block; margin: auto;" />
 
 ```r
 mean(myteams$linResiduals)
@@ -348,7 +349,8 @@ nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
 
 ```r
 # section 4.4
-myteams <- myteams %>% mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
+myteams <- myteams %>% 
+  mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)
 ```
 
@@ -386,7 +388,7 @@ ggplot(myteams, aes(y = pytWpct, x = Wpct)) +
 	stat_smooth(method = "lm", color = "black")
 ```
 
-![](Chapter_4_files/figure-html/Pythagorean-1.png)<!-- -->
+<img src="Chapter_4_files/figure-html/Pythagorean-1.png" style="display: block; margin: auto;" />
 
 ```r
 lm2 <- lm(pytWpct ~ Wpct, data = myteams)
@@ -1214,7 +1216,7 @@ ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
   ylab("Pythagorean residuals")
 ```
 
-![](Chapter_4_files/figure-html/Predictions-1.png)<!-- -->
+<img src="Chapter_4_files/figure-html/Predictions-1.png" style="display: block; margin: auto;" />
 
 ```r
 head(Pitching)
@@ -1238,7 +1240,9 @@ head(Pitching)
 ```
 
 ```r
-top_closers <- Pitching %>% filter(GF > 50, ERA < 2.5) %>% select(playerID, yearID, teamID)
+top_closers <- Pitching %>% 
+  filter(GF > 50, ERA < 2.5) %>% 
+  select(playerID, yearID, teamID)
 head(top_closers)
 ```
 
@@ -1443,13 +1447,12 @@ ggplot(C19teams, aes(y = pytWpct, x = Wpct)) +
   coord_fixed(ratio = 1)
 ```
 
-![](Chapter_4_files/figure-html/Ch4.Q2b-1.png)<!-- -->
+<img src="Chapter_4_files/figure-html/Ch4.Q2b-1.png" style="display: block; margin: auto;" />
 
 ```r
  # It would appear that the Pythagorean expectations hold for 19th Century teams as well, but at the lower extremes there is a bit of spread. 
 ```
-3. *Exploring the manager effect in baseball*. Retrosheet game logs report, for every game played, the managers of both
-teams.
+3. *Exploring the manager effect in baseball*. Retrosheet game logs report, for every game played, the managers of both teams.
 + Select a period of your choice (encompassing at least ten years) and fit the Pythagorean formula model to the run-differential, win-loss data.
 
 ```r
@@ -1529,7 +1532,7 @@ ggplot(Teams80s, aes(y = pytWpct, x = Wpct)) +
   coord_fixed(ratio = 1)
 ```
 
-![](Chapter_4_files/figure-html/Ch4.Q3a-1.png)<!-- -->
+<img src="Chapter_4_files/figure-html/Ch4.Q3a-1.png" style="display: block; margin: auto;" />
 + On the basis of your fit in part (a) and the list of managers, compile a list of the managers who most overperformed their Pythagorean winning percentage and the managers who most underperformed it.
 
 ```r

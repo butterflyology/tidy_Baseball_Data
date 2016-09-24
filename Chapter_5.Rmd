@@ -4,7 +4,7 @@ author: "C. A. Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
-        keep_md: true  
+        keep_md: TRUE  
 ---
 
 ```{r setup, include = FALSE}
@@ -94,7 +94,8 @@ head(data.outs)
 data2011 <- inner_join(data2011, data.outs)
 head(data2011)
 dim(data2011)
-data2011C <- data2011 %>% filter(Outs.Inning == 3)
+data2011C <- data2011 %>% 
+  filter(Outs.Inning == 3)
 dim(data2011C)
 
 RUNS <- with(data2011C, aggregate(RUNS.ROI, list(STATE), mean))
@@ -124,17 +125,20 @@ head(data2011)
 ```
 
 ### Section 5.5 - *José Alberto Pujols Alcántara*
-```{r Pujols}
+```{r Pujols, fig.align = "center"}
 Roster <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/roster2011.csv", col_names = TRUE)
 
-albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% select(Player.ID)
+albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% 
+  select(Player.ID)
 albert.id <- as.character(albert.id[[1]])
 
 albert <- data2011 %>% filter(BAT_ID == albert.id) %>% mutate(RUNNERS = substr(STATE, 1, 3))
 head(albert)
 dim(albert)
 
-albert %>% select(STATE, NEW.STATE, RUNS.VALUE) %>% slice(1:2) 
+albert %>% 
+  select(STATE, NEW.STATE, RUNS.VALUE) %>% 
+  slice(1:2) 
 
 table(albert$RUNNERS)
 
@@ -150,12 +154,13 @@ A <- merge(A.PA, A.runs)
 A
 sum(A$RUNS)
 
-data2011b <- data2011 %>% filter(BAT_EVENT_FL == TRUE)
+data2011b <- data2011 %>% 
+  filter(BAT_EVENT_FL == TRUE)
 dim(data2011b)
 ```
 
 ### Section 5.6 - *Opportunities and success for all hitters*
-```{r opportunities}
+```{r opportunities, fig.align = "center"}
 # Rather than use aggretate, I'll continue to use the dplyr pipeline.
 runs.sums <- data2011b %>% 
   select(Batter = BAT_ID, RUNS.VALUE) %>% 
@@ -205,7 +210,7 @@ runs400.top
 ```
 
 ### Section 5.7 - *Position in batting lineup*
-```{r Position}
+```{r Position, fig.align = "center"}
 get.batting.pos <- function(batter){
 	TB <- table(subset(data2011, BAT_ID == batter)$BAT_LINEUP_ID)
 	names(TB)[TB == max(TB)][1]
@@ -224,8 +229,9 @@ ggplot(runs400, aes(x = Runs.Start, y = Runs)) +
 ### Section 5.8 - *Runs values of different base hits*
 
 #### I made a table of the 24 different *EVENT_CD* codes and placed it in the repo. 
-```{r Hit_values}
-d.homerun <- data2011 %>% filter(EVENT_CD == 23)
+```{r Hit_values, fig.align = "center"}
+d.homerun <- data2011 %>% 
+  filter(EVENT_CD == 23)
 dim(d.homerun)
 table(d.homerun$STATE)
 
@@ -257,8 +263,9 @@ subset(d.single, d.single$RUNS.VALUE == min(d.single$RUNS.VALUE))[, c("STATE", "
 ```
 
 ### Section 5.9 - *value of stolen bases*
-```{r stolen_bases}
-stealing <- data2011 %>% filter(EVENT_CD == 6| EVENT_CD == 4)
+```{r stolen_bases, fig.align = "center"}
+stealing <- data2011 %>% 
+  filter(EVENT_CD == 6| EVENT_CD == 4)
 dim(stealing)
 head(stealing)
 
@@ -270,7 +277,8 @@ MASS::truehist(stealing$RUNS.VALUE, xlim = c(-1.5, 1.5), col = "grey", xlab = "R
 abline(v = mean(stealing$RUNS.VALUE), lwd = 3)
 mean(stealing$RUNS.VALUE)
 
-stealing.1001 <- stealing %>% filter(STATE == "100 1")
+stealing.1001 <- stealing %>% 
+  filter(STATE == "100 1")
 table(stealing.1001$EVENT_CD)
 with(stealing.1001, table(NEW.STATE))
 mean(stealing.1001$RUNS.VALUE)
@@ -281,10 +289,12 @@ mean(stealing.1001$RUNS.VALUE)
 + Use similar R code as described in Section 5.8 for the 2011 season data to find the mean run values for a double, and for a triple.
 ```{r Ch5.Q1a}
 # The event code for a double is '21', and a triple is '22'.
-d.double <- data2011 %>% filter(EVENT_CD == 21)
+d.double <- data2011 %>% 
+  filter(EVENT_CD == 21)
 mean(d.double$RUNS.VALUE)
 
-d.triple <- data2011 %>% filter(EVENT_CD == 22)
+d.triple <- data2011 %>% 
+  filter(EVENT_CD == 22)
 mean(d.triple$RUNS.VALUE)
 ```
 + Albert and Bennett (2001) use a regression approach to obtain the weights 0.46, 0.80, 1.02, and 1.40 for a single, double, triple, and home run, respectively. Compare the results from Section 5.8 and part (a) with the weights of Albert and Bennett.
@@ -307,15 +317,19 @@ I consider that there are actually [*seven ways*](http://sabr.org/research/was-t
 mean(d.single$RUNS.VALUE)
 
 # BB
-d.BB <- data2011 %>% filter(EVENT_CD == 14)
+d.BB <- data2011 %>% 
+  filter(EVENT_CD == 14)
 mean(d.BB$RUNS.VALUE)
 
 # HBP 
-d.HBP <- data2011 %>% filter(EVENT_CD == 16) %>% select(RUNS.VALUE)
+d.HBP <- data2011 %>% 
+  filter(EVENT_CD == 16) %>% 
+  select(RUNS.VALUE)
 mean(d.HBP$RUNS.VALUE)
 
 # Interference (code 17)
-d.Int <- data2011 %>% filter(EVENT_CD == 17)
+d.Int <- data2011 %>% 
+  filter(EVENT_CD == 17)
 mean(d.Int$RUNS.VALUE)
 
 # A single is most valuable
@@ -324,11 +338,15 @@ mean(d.Int$RUNS.VALUE)
 3. **Comparing Two Players with Similar OBPs.** - Rickie Weeks (batter id “weekr001”) and Michael Bourne (batter id
 “bourm001”) both were leadoff hitters during the 2011 season. They had similar on-base percentages – .350 for Weeks and .349 for Bourne. By exploring the runs values of these two payers, investigate which player was really more valuable to his team. Can you explain the difference in runs values in terms of traditional batting statistics such as AVG, SLG, or OBP?
 
-```{r Ch5.Q3}
+```{r Ch5.Q3, fig.align = "center"}
 
-Weeks <- data2011 %>% filter(BAT_ID == "weekr001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+Weeks <- data2011 %>% 
+  filter(BAT_ID == "weekr001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
 
-Bourne <- data2011 %>% filter(BAT_ID == "bourm001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+Bourne <- data2011 %>% 
+  filter(BAT_ID == "bourm001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
 
 # I wrote a function to calculate the results we need
 Runs <- function(data){
@@ -361,7 +379,9 @@ table(data2011$STATE)
 sum(data2011$RUNS.SCORED) # Sanity check, I recall that about 21,000 runs are scored each year in MLB.
 
 # Here is the dplyr code that sums the runs created in each of the 24 different states. 
-data2011 %>% group_by(STATE) %>% summarize(percentage = (sum(RUNS.SCORED) / sum(data2011$RUNS.SCORED)) * 100)  %>% print(n = 24)
+data2011 %>% group_by(STATE) %>% 
+  summarize(percentage = (sum(RUNS.SCORED) / sum(data2011$RUNS.SCORED)) * 100)  %>% 
+  print(n = 24)
 # Thinking about this, I believe that my code answers the question but perhaps it isn't the most interesting thing. This Gives the percentage of total runs and says that 5.89% of all runs come with no one on and no outs, and that 5.56% of all runs come with the bases loaded and two outs. The latter condition is likely to drive in more more runs because runners are on, but I think the more interesting question is how often do these situations occur. Come to think of it, that is the question asked in the exercise and I misunderstood it. I'll get back to it later after I think about how to answer it. 
 ```
 5. **Runner Advancement with a Single** - Suppose one is interested in studying how runners move with a single. 
@@ -382,7 +402,7 @@ table(d.single$NEW.STATE)
 ```{r CH5.Q5d}
 ```
 6. **Hitting Evaluation of Players by Runs Values** - Choose several players who were good hitters in the 2011 season. For each player, find the runs values and the runners on base for all plate appearances. As in Figure 5.1, construct a graph of the runs values against the runners on base. Was this particular batter successful when there were runners in scoring position?
-```{r CH5.Q6}
+```{r CH5.Q6, fig.align = "center"}
 # I'll pick three totally random players from 2011 that have nothing to do wtih me being a Dodgers : Matt Kemp, Adrian Gonzalez, and AJ Pierzynski.
 
 Kemp <- data2011 %>% 

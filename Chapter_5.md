@@ -49,8 +49,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/New_York            
-##  date     2016-09-21
+##  tz       America/Los_Angeles         
+##  date     2016-09-24
 ```
 
 ```
@@ -1162,7 +1162,8 @@ dim(data2011)
 ```
 
 ```r
-data2011C <- data2011 %>% filter(Outs.Inning == 3)
+data2011C <- data2011 %>% 
+  filter(Outs.Inning == 3)
 dim(data2011C)
 ```
 
@@ -1397,7 +1398,8 @@ Roster <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/
 ```
 
 ```r
-albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% select(Player.ID)
+albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% 
+  select(Player.ID)
 albert.id <- as.character(albert.id[[1]])
 
 albert <- data2011 %>% filter(BAT_ID == albert.id) %>% mutate(RUNNERS = substr(STATE, 1, 3))
@@ -1549,7 +1551,9 @@ dim(albert)
 ```
 
 ```r
-albert %>% select(STATE, NEW.STATE, RUNS.VALUE) %>% slice(1:2) 
+albert %>% 
+  select(STATE, NEW.STATE, RUNS.VALUE) %>% 
+  slice(1:2) 
 ```
 
 ```
@@ -1574,7 +1578,7 @@ with(albert, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xla
 abline(h = 0, lty = 2, lwd = 2)
 ```
 
-![](Chapter_5_files/figure-html/Pujols-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/Pujols-1.png" style="display: block; margin: auto;" />
 
 ```r
 A.runs <- aggregate(albert$RUNS.VALUE, list(albert$RUNNERS), sum)
@@ -1606,7 +1610,8 @@ sum(A$RUNS)
 ```
 
 ```r
-data2011b <- data2011 %>% filter(BAT_EVENT_FL == TRUE)
+data2011b <- data2011 %>% 
+  filter(BAT_EVENT_FL == TRUE)
 dim(data2011b)
 ```
 
@@ -1784,7 +1789,7 @@ runs.plot <- ggplot(runs400, aes(y = Runs, x = Runs.Start)) + geom_hline(yinterc
 runs.plot + geom_text(data = (runs %>% filter(PA >= 400 & Runs >= 40)), aes(PA, Runs, label = Last.Name), check_overlap = FALSE) 
 ```
 
-![](Chapter_5_files/figure-html/opportunities-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/opportunities-1.png" style="display: block; margin: auto;" />
 
 ```r
 # need to get the names to move over
@@ -1892,14 +1897,15 @@ ggplot(runs400, aes(x = Runs.Start, y = Runs)) +
   geom_text(aes(label = position))
 ```
 
-![](Chapter_5_files/figure-html/Position-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/Position-1.png" style="display: block; margin: auto;" />
 
 ### Section 5.8 - *Runs values of different base hits*
 
 #### I made a table of the 24 different *EVENT_CD* codes and placed it in the repo. 
 
 ```r
-d.homerun <- data2011 %>% filter(EVENT_CD == 23)
+d.homerun <- data2011 %>% 
+  filter(EVENT_CD == 23)
 dim(d.homerun)
 ```
 
@@ -1939,7 +1945,7 @@ abline(v = mean(d.homerun$RUNS.VALUE), lwd = 3)
 text(x = 1.5, y = 5, "Mean Runs Value", pos = 4)
 ```
 
-![](Chapter_5_files/figure-html/Hit_values-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/Hit_values-1.png" style="display: block; margin: auto;" />
 
 ```r
 # I don't know of a way to make this easily with ggplot2
@@ -1969,7 +1975,7 @@ abline(v = mean(d.single$RUNS.VALUE), lwd = 3)
 text(0.5, 5, "Mean Runs Value", pos = 4)
 ```
 
-![](Chapter_5_files/figure-html/Hit_values-2.png)<!-- -->
+<img src="Chapter_5_files/figure-html/Hit_values-2.png" style="display: block; margin: auto;" />
 
 ```r
 mean(d.single$RUNS.VALUE)
@@ -2016,7 +2022,8 @@ subset(d.single, d.single$RUNS.VALUE == min(d.single$RUNS.VALUE))[, c("STATE", "
 ### Section 5.9 - *value of stolen bases*
 
 ```r
-stealing <- data2011 %>% filter(EVENT_CD == 6| EVENT_CD == 4)
+stealing <- data2011 %>% 
+  filter(EVENT_CD == 6| EVENT_CD == 4)
 dim(stealing)
 ```
 
@@ -2192,7 +2199,7 @@ MASS::truehist(stealing$RUNS.VALUE, xlim = c(-1.5, 1.5), col = "grey", xlab = "R
 abline(v = mean(stealing$RUNS.VALUE), lwd = 3)
 ```
 
-![](Chapter_5_files/figure-html/stolen_bases-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/stolen_bases-1.png" style="display: block; margin: auto;" />
 
 ```r
 mean(stealing$RUNS.VALUE)
@@ -2203,7 +2210,8 @@ mean(stealing$RUNS.VALUE)
 ```
 
 ```r
-stealing.1001 <- stealing %>% filter(STATE == "100 1")
+stealing.1001 <- stealing %>% 
+  filter(STATE == "100 1")
 table(stealing.1001$EVENT_CD)
 ```
 
@@ -2237,7 +2245,8 @@ mean(stealing.1001$RUNS.VALUE)
 
 ```r
 # The event code for a double is '21', and a triple is '22'.
-d.double <- data2011 %>% filter(EVENT_CD == 21)
+d.double <- data2011 %>% 
+  filter(EVENT_CD == 21)
 mean(d.double$RUNS.VALUE)
 ```
 
@@ -2246,7 +2255,8 @@ mean(d.double$RUNS.VALUE)
 ```
 
 ```r
-d.triple <- data2011 %>% filter(EVENT_CD == 22)
+d.triple <- data2011 %>% 
+  filter(EVENT_CD == 22)
 mean(d.triple$RUNS.VALUE)
 ```
 
@@ -2280,7 +2290,8 @@ mean(d.single$RUNS.VALUE)
 
 ```r
 # BB
-d.BB <- data2011 %>% filter(EVENT_CD == 14)
+d.BB <- data2011 %>% 
+  filter(EVENT_CD == 14)
 mean(d.BB$RUNS.VALUE)
 ```
 
@@ -2290,7 +2301,9 @@ mean(d.BB$RUNS.VALUE)
 
 ```r
 # HBP 
-d.HBP <- data2011 %>% filter(EVENT_CD == 16) %>% select(RUNS.VALUE)
+d.HBP <- data2011 %>% 
+  filter(EVENT_CD == 16) %>% 
+  select(RUNS.VALUE)
 mean(d.HBP$RUNS.VALUE)
 ```
 
@@ -2300,7 +2313,8 @@ mean(d.HBP$RUNS.VALUE)
 
 ```r
 # Interference (code 17)
-d.Int <- data2011 %>% filter(EVENT_CD == 17)
+d.Int <- data2011 %>% 
+  filter(EVENT_CD == 17)
 mean(d.Int$RUNS.VALUE)
 ```
 
@@ -2317,9 +2331,13 @@ mean(d.Int$RUNS.VALUE)
 
 
 ```r
-Weeks <- data2011 %>% filter(BAT_ID == "weekr001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+Weeks <- data2011 %>% 
+  filter(BAT_ID == "weekr001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
 
-Bourne <- data2011 %>% filter(BAT_ID == "bourm001") %>% mutate(RUNNERS = substr(STATE, 1, 3))
+Bourne <- data2011 %>% 
+  filter(BAT_ID == "bourm001") %>% 
+  mutate(RUNNERS = substr(STATE, 1, 3))
 
 # I wrote a function to calculate the results we need
 Runs <- function(data){
@@ -2380,7 +2398,7 @@ with(Bourne, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xla
 abline(h = 0, lty = 2, lwd = 2)
 ```
 
-![](Chapter_5_files/figure-html/Ch5.Q3-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/Ch5.Q3-1.png" style="display: block; margin: auto;" />
 
 ```r
 par(mfrow = c(1, 1))
@@ -2419,7 +2437,9 @@ sum(data2011$RUNS.SCORED) # Sanity check, I recall that about 21,000 runs are sc
 
 ```r
 # Here is the dplyr code that sums the runs created in each of the 24 different states. 
-data2011 %>% group_by(STATE) %>% summarize(percentage = (sum(RUNS.SCORED) / sum(data2011$RUNS.SCORED)) * 100)  %>% print(n = 24)
+data2011 %>% group_by(STATE) %>% 
+  summarize(percentage = (sum(RUNS.SCORED) / sum(data2011$RUNS.SCORED)) * 100)  %>% 
+  print(n = 24)
 ```
 
 ```
@@ -2515,7 +2535,7 @@ with(Kemp, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab 
 abline(h = 0, lty = 2, lwd = 2)
 ```
 
-![](Chapter_5_files/figure-html/CH5.Q6-1.png)<!-- -->
+<img src="Chapter_5_files/figure-html/CH5.Q6-1.png" style="display: block; margin: auto;" />
 
 ```r
 Gonzalez <- data2011 %>% 
@@ -2533,7 +2553,7 @@ with(Gonzalez, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, x
 abline(h = 0, lty = 2, lwd = 2)
 ```
 
-![](Chapter_5_files/figure-html/CH5.Q6-2.png)<!-- -->
+<img src="Chapter_5_files/figure-html/CH5.Q6-2.png" style="display: block; margin: auto;" />
 
 ```r
 Pierzynski <- data2011 %>% 
@@ -2551,4 +2571,4 @@ with(Pierzynski, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2,
 abline(h = 0, lty = 2, lwd = 2)
 ```
 
-![](Chapter_5_files/figure-html/CH5.Q6-3.png)<!-- -->
+<img src="Chapter_5_files/figure-html/CH5.Q6-3.png" style="display: block; margin: auto;" />

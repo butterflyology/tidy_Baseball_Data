@@ -4,7 +4,7 @@ author: "C. A. Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
-        keep_md: true  
+        keep_md: TRUE  
 ---
 
 ```{r setup, include = FALSE}
@@ -25,7 +25,7 @@ session_info()
 ```
 
 ### Section 4.2 - Teams in Lahman's Database
-```{r Teams_Table}
+```{r Teams_Table, fig.align = "center"}
 # The Teams table is includedin the Lahman package
 
 str(Teams)
@@ -34,7 +34,8 @@ dim(Teams)
 
 # run differential is the difference between runs scored and runs allowed. Rather than use the with statements in section 4.2 we will use a dplyr pipeline
 
-myteams <- Teams %>% filter(yearID > 2000) %>% 
+myteams <- Teams %>% 
+  filter(yearID > 2000) %>% 
   select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
   mutate(RD = R - RA, Wpct = W / (W + L))
 tail(myteams)
@@ -49,7 +50,7 @@ ggplot(myteams, aes(x = RD, y = Wpct)) +
 ```
 
 
-```{r linear_regression}
+```{r linear_regression, fig.align = "center"}
 linfit <- lm(Wpct ~ RD, data = myteams)
 summary(linfit)
 # Wpct = 0.50 + 0.000628 * RD
@@ -78,9 +79,10 @@ nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
 ```
 
 ### Now let's explore the Pythagorean expectation
-```{r Pythagorean}
+```{r Pythagorean, fig.align = "center"}
 # section 4.4
-myteams <- myteams %>% mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
+myteams <- myteams %>% 
+  mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)
 sqrt(mean(myteams$pytResiduals^2))
 
@@ -118,7 +120,7 @@ summary(pytFit) # suggests a Pythagorean exponent of 1.88 rather than 2.
 ```
 
 ### Section 4.6 - Good and Bad predictions based on the Pythagorean Formula
-```{r Predictions}
+```{r Predictions, fig.align = "center"}
 games1 <- Pythag.line(875, 737, N = 2)
 games1 * 162
 games1a <- Pythag.line(875, 757, N = 1.88)
@@ -168,7 +170,9 @@ ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
 
 head(Pitching)
 
-top_closers <- Pitching %>% filter(GF > 50, ERA < 2.5) %>% select(playerID, yearID, teamID)
+top_closers <- Pitching %>% 
+  filter(GF > 50, ERA < 2.5) %>% 
+  select(playerID, yearID, teamID)
 head(top_closers)
 teams_top_closers <- merge(myteams, top_closers)
 summary(teams_top_closers$pytResiduals)
@@ -237,7 +241,7 @@ C19teams <- Teams %>%
 head(C19teams)
 ```
 + By inspecting the residual plot of your fitted model from (a), did the great and poor teams in the 19th century do better or worse than one would expect on the basis of their run differentials?
-```{r Ch4.Q2b}
+```{r Ch4.Q2b, fig.align = "center"}
 ggplot(C19teams, aes(y = pytWpct, x = Wpct)) +
   theme_bw() + 
     geom_abline(slope = 1, color = "red") +
@@ -249,10 +253,9 @@ ggplot(C19teams, aes(y = pytWpct, x = Wpct)) +
   coord_fixed(ratio = 1)
  # It would appear that the Pythagorean expectations hold for 19th Century teams as well, but at the lower extremes there is a bit of spread. 
 ```
-3. *Exploring the manager effect in baseball*. Retrosheet game logs report, for every game played, the managers of both
-teams.
+3. *Exploring the manager effect in baseball*. Retrosheet game logs report, for every game played, the managers of both teams.
 + Select a period of your choice (encompassing at least ten years) and fit the Pythagorean formula model to the run-differential, win-loss data.
-```{r Ch4.Q3a}
+```{r Ch4.Q3a, fig.align = "center"}
 # I was at game one of the 1988 World Series and love the Dodgers, so I'll select the 1980's.
 
 Teams80s <- Teams %>%

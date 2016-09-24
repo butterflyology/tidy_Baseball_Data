@@ -51,7 +51,7 @@ session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Los_Angeles         
-##  date     2016-09-22
+##  date     2016-09-24
 ```
 
 ```
@@ -181,7 +181,7 @@ ggplot(verlander, aes(speed)) +
   ylab("Count")
 ```
 
-![](Chapter_6_files/figure-html/Verlander-1.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.1-1.png" style="display: block; margin: auto;" />
 
 ```r
 ggplot(verlander, aes(speed)) + 
@@ -191,10 +191,11 @@ ggplot(verlander, aes(speed)) +
   xlab("Speed")
 ```
 
-![](Chapter_6_files/figure-html/Verlander-2.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.1-2.png" style="display: block; margin: auto;" />
+
 
 ```r
-## Figure 6.2 - facets!!!!
+## facets!!!!
 ggplot(verlander, aes(speed)) + 
   theme_bw() + 
   geom_line(stat = "density") + 
@@ -203,7 +204,8 @@ ggplot(verlander, aes(speed)) +
   facet_wrap(~ pitch_type, nrow = 5)
 ```
 
-![](Chapter_6_files/figure-html/Verlander-3.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.2-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ## Figure 6.3
@@ -214,7 +216,8 @@ ggplot(verlander, aes(speed, lty = pitch_type)) +
   xlab("Speed")
 ```
 
-![](Chapter_6_files/figure-html/Verlander-4.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.3-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ## Figure 6.4
@@ -289,7 +292,8 @@ ggplot(dailySpeed, aes(y = speed, x = gameDay)) +
   xlab("Day of Year")
 ```
 
-![](Chapter_6_files/figure-html/Verlander-5.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.4-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ## Figure 6.5
@@ -347,7 +351,8 @@ ggplot(avgspeedFC, aes(y = season, x = speed)) +
   xlab("Speed")
 ```
 
-![](Chapter_6_files/figure-html/Verlander-6.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.5-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ## Figure 6.6
@@ -380,7 +385,8 @@ ggplot(avgSpeed, aes(y = speed, x = pitches)) +
   geom_hline(aes(yintercept = mean(speed))) 
 ```
 
-![](Chapter_6_files/figure-html/Verlander-7.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.6-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ## Figure 6.7
@@ -422,7 +428,8 @@ f6.7 <- ggplot(NoHit, aes(x = px, y = pz)) +
 f6.7
 ```
 
-![](Chapter_6_files/figure-html/Verlander-8.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.7-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.8
@@ -434,7 +441,8 @@ f6.8 <- ggplot(NoHit, aes(x = px, y = pz)) +
 f6.8
 ```
 
-![](Chapter_6_files/figure-html/Verlander-9.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.8-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.9
@@ -450,7 +458,8 @@ f6.9 <- ggplot(NoHit, aes(x = px, y = pz)) +
 f6.9
 ```
 
-![](Chapter_6_files/figure-html/Verlander-10.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.9-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.10
@@ -472,7 +481,7 @@ f6.10 <- ggplot(NoHit, aes(x = px, y = pz)) +
 f6.10
 ```
 
-![](Chapter_6_files/figure-html/Verlander-11.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.10-1.png" style="display: block; margin: auto;" />
 
 
 ```r
@@ -514,20 +523,15 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 ## Warning: Removed 4284 rows containing missing values (geom_point).
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-1.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Cabrera-1.png" style="display: block; margin: auto;" />
 
-```r
+```fig
 ### Figure 6.12
 ggplot(cabrera, aes(x = hitx, y = hity)) + 
   geom_point(aes(color = hit_outcome)) + 
   coord_equal()
 ```
 
-```
-## Warning: Removed 4284 rows containing missing values (geom_point).
-```
-
-![](Chapter_6_files/figure-html/Cabrera-2.png)<!-- -->
 
 ```r
 ### Figure 6.13
@@ -541,11 +545,14 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 ## Warning: Removed 4284 rows containing missing values (geom_point).
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-3.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.13-1.png" style="display: block; margin: auto;" />
 
 ```r
 bases <- data.frame(x = c(0, 90 / sqrt(2), 0, -90 / sqrt(2), 0), y = c(0, 90 / sqrt(2), 2 * 90 / sqrt(2), 90 / sqrt(2), 0))
+```
 
+
+```r
 ### Figure 6.14
 ggplot(cabrera, aes(x = hitx, y = hity)) + 
   geom_point(aes(color = hit_outcome)) + 
@@ -560,7 +567,8 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 ## Warning: Removed 4284 rows containing missing values (geom_point).
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-4.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.14-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.15
@@ -580,7 +588,8 @@ ggplot(cabreraStretch, aes(x = hitx, y = hity)) +
 ## Warning: Removed 211 rows containing missing values (geom_point).
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-5.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.15-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.16 Note that recent ggplot2 versions use geom_hline 
@@ -592,7 +601,8 @@ ggplot(F4verl, aes(x = pitches, y = speed)) +
   geom_vline(aes(xintercept = 100), col = "black", lty = 2)
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-6.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.16-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.17
@@ -618,7 +628,8 @@ ggplot(F4verl, aes(x = px, y = pz)) +
   geom_path(aes(x, y), data = kZone, lwd = 2, col = "white")
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-7.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.17-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.18
@@ -629,7 +640,8 @@ ggplot(F4verl, aes(x = px, y = pz)) +
   geom_path(aes(x, y), data = kZone, lwd = 2, col = "white", alpha = 0.3)
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-8.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.18-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 ### Figure 6.19
@@ -649,7 +661,7 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 ## Warning: Removed 4284 rows containing non-finite values (stat_binhex).
 ```
 
-![](Chapter_6_files/figure-html/Cabrera-9.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Fig_6.19-1.png" style="display: block; margin: auto;" />
 
 ### Chapter 6 exercises
 1. **Location of Pitches for Left- and Right-Handed Batters** - Use a density plot to display the horizontal location of Justin Verlander’s pitchers by opponent’s handedness. Choose the conditioning and grouping variables so that one can easily detect the differences in location by handedness. Add a legend (if necessary) and vertical reference lines indicating the borders of the strike zone.
@@ -665,7 +677,7 @@ ggplot(verlander, aes(x = px)) +
   geom_vline(xintercept = 0.95, linetype = 2, size = 1.5)
 ```
 
-![](Chapter_6_files/figure-html/CH6.Q1-1.png)<!-- -->
+<img src="Chapter_6_files/figure-html/CH6.Q1-1.png" style="display: block; margin: auto;" />
 2. **Comparing Pitch Locations for Two Pitchers** - The sanchez data frame contains 2008-2012 PITCHf/x data for pitcher Jonathan Sanchez. The structure of this data frame is similar to the verlander data frame described in the chapter. Use a graphical display to compare the ability of Sanchez and Verlander in maintaining their fast-ball speed through the game. (See Sections 6.2.7 and 6.3.8.) Use either the lattice or ggplot2 graphics package and display the data either as a multipanel plot or a superposed lines plot
 
 Use the following function to plot multiple images on one pane. [Link to source of code](www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/)
@@ -749,7 +761,7 @@ V_FF <- ggplot(F4verl, aes(x = pitches, y = speed)) +
 multiplot(S_FF, V_FF, cols = 2)
 ```
 
-![](Chapter_6_files/figure-html/Ch6.Q2-1.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Ch6.Q2-1.png" style="display: block; margin: auto;" />
 
 ```r
 # Cool. Verlander's fastbal speed increases the more he throws and Sanchez's velocity decreases.
@@ -836,7 +848,7 @@ ggplot(VC, aes(y = speed, x = pitch_bin)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-![](Chapter_6_files/figure-html/Ch5.Q3b-1.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Ch5.Q3b-1.png" style="display: block; margin: auto;" />
 
 ```r
 # You can really see that he dialed up the spped in his final pitches
@@ -945,7 +957,7 @@ ggplot(cabrera, aes(x = gameDay, y = distance)) +
 ## Warning: Removed 4308 rows containing missing values (geom_point).
 ```
 
-![](Chapter_6_files/figure-html/Ch6.Q4d-1.png)<!-- -->
+<img src="Chapter_6_files/figure-html/Ch6.Q4d-1.png" style="display: block; margin: auto;" />
 
 ```r
 # Looks like a slight decline in distance but I highly doubt it is statistically significant let alone means anything in reality.

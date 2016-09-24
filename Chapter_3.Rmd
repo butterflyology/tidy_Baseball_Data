@@ -4,7 +4,7 @@ author: "C. A. Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
-        keep_md: true  
+        keep_md: TRUE  
 ---
 
 ```{r setup, include=FALSE}
@@ -33,25 +33,33 @@ dim(hof)
 
 ```{r Chapter_3.Section_2}
 # Rather than multiple additions to the data, lets create all of the variables we are interested in all at once. 
-hof <- hof %>% mutate(MidCareer = ((From + To) / 2), Era = cut(MidCareer, breaks = c(1800, 1900, 1919, 1941, 1960, 1976, 1993, 2050), labels = c("19th Century", "Lively Ball", "Dead Ball", "Integration", "Expansion", "Free Agency", "Long Ball")), HR.Rate = (HR / AB)) %>% rename(Name = X2)
+hof <- hof %>% 
+  mutate(MidCareer = ((From + To) / 2), 
+         Era = cut(MidCareer, 
+         breaks = c(1800, 1900, 1919, 1941, 1960, 1976, 1993, 2050), 
+         labels = c("19th Century", "Lively Ball", "Dead Ball", "Integration", "Expansion", "Free Agency", "Long Ball")), 
+         HR.Rate = (HR / AB)) %>% 
+  rename(Name = X2)
 head(hof)
 # Let's get rid of the " HOF" in the name column
 hof[, 2] <- gsub(" HOF", "", hof$Name)
 head(hof)
 ```
 
-```{r Figure_3.1}
+```{r Figure_3.1, fig.align = "center"}
 # Using ggplot we don't need to create a table
 ## Figure 3.1
 ggplot(hof, aes(x = Era)) + 
-  theme_bw() + geom_bar() + 
-  ylab("Frequency") + xlab("Era") + 
+  theme_bw() + 
+  geom_bar() + 
+  ylab("Frequency") + 
+  xlab("Era") + 
   ggtitle("Era of the Nonpitching Hall of Famers")
 ```
 
 ### Skipping Figure 3.2
 
-```{r Figure_3.3}
+```{r Figure_3.3, fig.align = "center"}
 ## Figure 3.3, a Clevelnd dot plot of HoFers by Era. I am having trouble with this. This may be the first time I haven't been able to get ggplot to do what I want.
 T.era <- table(hof$Era)
 T.era
@@ -60,20 +68,22 @@ dotchart(as.numeric(T.era), labels = names(T.era), xlab = "Frequency", ylab = ""
 # ggplot(hof, aes(y = Era, x = )) + geom_point(size = 2) # can't get ggplot to count the frequency of occurance. It can do that with a bar chart but not with geom_points(), to the best of my knowledge.
 ```
 
-```{r Figure_3.4}
+```{r Figure_3.4, fig.align = "center"}
 ## Figure 3.4 - No need to subset priot to plotting, we can do it inline with the plot call. 
 ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) + 
-  geom_point(size = 3) + theme_bw() + 
-  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + ylab("") + 
+  geom_point(size = 3) + 
+  theme_bw() + 
+  theme(panel.grid.major.x = element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.y = element_line(color = "grey60", linetype = "dashed")) + 
+  ylab("") + 
   xlab("OPS")
 ```
 
-```{r Figure_3.5}
+```{r Figure_3.5, fig.align = "center"}
 ## Figure 3.5 - I can't seem to do make this figure with ggplot.
 stripchart(hof$MidCareer, method = "jitter", pch = 19, xlab = "Mid Career")
 ```
 
-```{r Figure_3.6}
+```{r Figure_3.6, fig.align = "center"}
 ## Figure 3.6
 ggplot(hof, aes(x = MidCareer)) + 
   theme_bw() + 
@@ -81,7 +91,7 @@ ggplot(hof, aes(x = MidCareer)) +
   ylab("Frequency")
 ```
 
-```{r Figure_3.7}
+```{r Figure_3.7, fig.align = "center"}
 ## Figure 3.7
 ggplot(hof, aes(x = MidCareer, y = OPS)) + 
   theme_bw() + 
@@ -89,7 +99,7 @@ ggplot(hof, aes(x = MidCareer, y = OPS)) +
   stat_smooth(method = "loess", col = "black", se = FALSE)
 ```
 
-```{r Figure_3.8}
+```{r Figure_3.8, fig.align = "center"}
 ## Figure 3.8
 ggplot(hof, aes(x = OBP, y = SLG)) + 
    theme_bw() + 
@@ -98,7 +108,7 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   ylab("Slugging Percentage")
 ```
 
-```{r Figure_3.9}
+```{r Figure_3.9, fig.align = "center"}
 ## Figure 3.9 (Changing the axes limits)
 ggplot(hof, aes(x = OBP, y = SLG)) + 
   theme_bw() + 
@@ -109,7 +119,7 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   ylab("Slugging Percentage")
 ```
 
-```{r Figure_3.10}
+```{r Figure_3.10, fig.align = "center"}
 ## Figure 3.10 (with lines delimiting OPS)
 ggplot(hof, aes(x = OBP, y = SLG)) + 
   theme_bw() + 
@@ -125,13 +135,13 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   annotate("text", x = 0.27, y = c(0.42, 0.52, 0.62, 0.72), label = c("OPS = 0.7", "OPS = 0.8", "OPS = 0.9", "OPS = 1.0"))
 ```
 
-```{r Figure_3.12}
+```{r Figure_3.12, fig.align = "center"}
 ## Figure 3.12
 par(plt = c(0.2, 0.95, 0.145, 0.883))
 stripchart(HR.Rate ~ Era, data = hof, pch = 19, ylab = "", method = "jitter", las = 1)
 ```
 
-```{r figure_3.13}
+```{r figure_3.13, fig.align = "center"}
 ## Figure 3.13
 ggplot(hof, aes(y = HR.Rate, x = Era)) + 
   theme_bw() + 
@@ -144,7 +154,7 @@ ggplot(hof, aes(y = HR.Rate, x = Era)) +
 ### This next section requires data from the Lahman database, available here: http://www.seanlahman.com/baseball-archive/statistics/
 I have added the relevant files from the Lahman database to the "Data" directory; alternatively you could use the Lahman package from R. 
 
-```{r Section_3.8}
+```{r Section_3.8, fig.align = "center"}
 ## Section 3.8
 head(Master)
 dim(Master)
@@ -202,7 +212,7 @@ ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) +
   scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
 ```
 
-```{r Section_3.9}
+```{r Section_3.9, fig.align = "center"}
 ### Section 3.9 - The 1998 home run race
 # Look at how f-ing fast readr is!!!
 data1998 <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/all1998.csv", col_names = FALSE)
@@ -214,12 +224,18 @@ names(data1998) <- fields[, "Header"]
 retro.ids <- read.csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/retrosheetIDs.csv", header = TRUE)
 head(retro.ids)
 
-retro.ids %>% filter(FIRST == "Sammy" & LAST == "Sosa") %>% select(ID)
+retro.ids %>% 
+  filter(FIRST == "Sammy" & LAST == "Sosa") %>% 
+  select(ID)
   
-retro.ids %>% filter(FIRST == "Mark" & LAST == "McGwire") %>% select(ID)
+retro.ids %>% 
+  filter(FIRST == "Mark" & LAST == "McGwire") %>% 
+  select(ID)
 
-sosa.data <- data1998 %>% filter(BAT_ID == "sosas001")
-mac.data <- data1998 %>% filter(BAT_ID == "mcgwm001")
+sosa.data <- data1998 %>% 
+  filter(BAT_ID == "sosas001")
+mac.data <- data1998 %>% 
+  filter(BAT_ID == "mcgwm001")
 dim(sosa.data); dim(mac.data)
 
 # write function to extract variables
@@ -265,7 +281,7 @@ table(hofpitching$BF.group)
   
   + Construct a bar graph of the output from table. How many HOF pitchers faced more than 20,000 *pitchers* in their career?
 
-```{r Ch3.Q1b}
+```{r Ch3.Q1b, fig.align = "center"}
 # I think there was a typo in the above question. I propose that BF means "Batters Faced" and that we should replace "pitchers" with "batters." 
 # 14 pitchers faced over 20,000 batters
 ggplot(hofpitching, aes(BF.group)) + 
@@ -277,21 +293,21 @@ ggplot(hofpitching, aes(BF.group)) +
 
   + Construct a pie graph of the BF.group variable. Compare the effec-tiveness of the bar graph and pie graph in comparing the frequencies in the four intervals.
 
-```{r Ch3.Q1c}
+```{r Ch3.Q1c, fig.align = "center"}
 pie(table(hofpitching$BF.group), col = c("dark grey", "white", "light grey", "black"))
 ```
 
 2. Question 2 - HoF pitching continued (WAR)
-  + Using the hist function, construct a histogram of WAR for the pitchers in the Hall of Fame dataset.
++ Using the hist function, construct a histogram of WAR for the pitchers in the Hall of Fame dataset.
 
-```{r Ch3.Q2a}
+```{r Ch3.Q2a, fig.align = "center"}
 ggplot(hofpitching, aes(WAR)) + 
   theme_bw() + 
   geom_histogram(bins = 15) + 
   ylab("Count")
 ```
 
-  + There are two pitchers who stand out among all of the Hall of Famers on the total WAR variable. Identify these two pitchers.
++ There are two pitchers who stand out among all of the Hall of Famers on the total WAR variable. Identify these two pitchers.
 
 ```{r Ch3.Q2b}
 hofpitching %>% arrange(desc(WAR)) %>% slice(1:2) 
@@ -304,9 +320,9 @@ hofpitching %>% arrange(desc(WAR)) %>% slice(1:2)
 hofpitching <- hofpitching %>% mutate(WAR.Season = (WAR / Yrs))
 head(hofpitching)
 ```
-  + Use the stripchart function to construct parallel stripcharts of WAR.Season for the different levels of BF.group.
++ Use the stripchart function to construct parallel stripcharts of WAR.Season for the different levels of BF.group.
   
-```{r Ch3.Q3a}
+```{r Ch3.Q3a, fig.align = "center"}
 ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + 
   theme_bw() + 
   geom_point(size = 2)  + 
@@ -315,18 +331,18 @@ ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) +
   xlab("Batters Faced")
 ```
 
-  + Use the boxplot function to construct parallel boxplots of WAR.Season across BP.group.
++ Use the boxplot function to construct parallel boxplots of WAR.Season across BP.group.
 
-```{r Ch3.Q3b}
+```{r Ch3.Q3b, fig.align = "center"}
 ggplot(hofpitching, aes(y = WAR.Season, x = BF.group)) + 
   theme_bw() + 
   geom_boxplot(fill = "grey") + 
   ylab("WAR / Years") + 
   xlab("Batters Faced")
 ```
-  + Based on your graphs, how does the wins above replacement per season depend on the number of batters faced?
++ Based on your graphs, how does the wins above replacement per season depend on the number of batters faced?
 
-```{r Ch3.Q3c}
+```{r Ch3.Q3c, fig.align = "center"}
 ggplot(hofpitching, aes(x = BF, y = WAR.Season)) + 
   theme_bw() + 
   ylim(0, 8) + 
@@ -350,14 +366,14 @@ hofpitching.recent <- hofpitching %>%
 min(hofpitching.recent$MidYear)
 ```
 
-  + By use of the order function, order the rows of the data frame by the value of WAR.Season.
++ By use of the order function, order the rows of the data frame by the value of WAR.Season.
 ```{r Ch3.Q4a}
 hofpitching.recent %>% arrange(desc(WAR.Season))
 ```
 
-  + Construct a dot plot of the values of WAR.Season where the labels are the pitcher names.
++ Construct a dot plot of the values of WAR.Season where the labels are the pitcher names.
 
-```{r Ch3.Q4b}
+```{r Ch3.Q4b, fig.align = "center"}
 ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) + 
   theme_bw() + 
   geom_point(size = 2) + 
@@ -366,15 +382,15 @@ ggplot(hofpitching.recent, aes(x = WAR.Season, y = reorder(Name, WAR.Season))) +
   ylab("Name") + 
   xlab("War / Season")
 ```
-  + Which two 1960+ pitchers stand out with respect to wins above replacement per season?
++ Which two 1960+ pitchers stand out with respect to wins above replacement per season?
 ```{r Ch3.Q4c}
 # Tough question. To me, Tom Seaver is nearly a full WAR point above Koufax, which blows my mind. Rollie Fingers has a rather low WAR at ~1.5.  
 ```
 
-  5. Question 5 - The variables MidYear and WAR.Season are defined in the previous exercises.
-  + Construct a scatterplot of MidYear (horizontal) against WAR.Season (vertical).
+5. Question 5 - The variables MidYear and WAR.Season are defined in the previous exercises.
++ Construct a scatterplot of MidYear (horizontal) against WAR.Season (vertical).
 + Is there a general pattern in this scatterplot? Explain.
-```{r Ch3.Q5ab}
+```{r Ch3.Q5ab, fig.align = "center"}
 ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) + 
   theme_bw() + 
   geom_point(size = 2) + 
@@ -384,7 +400,7 @@ ggplot(hofpitching, aes(x = MidYear, y = WAR.Season)) +
 # I see a negative association between WAR.Season and mid year of career.
 ```
 
-  + There are two pitchers whose mid careers were in the 1800s who had relatively low WAR.Season values. Use the identify function with the scatterplot to find the names of these two pitchers.
++ There are two pitchers whose mid careers were in the 1800s who had relatively low WAR.Season values. Use the identify function with the scatterplot to find the names of these two pitchers.
 
 ```{r Ch3.Q5c}
 hofpitching %>% filter(WAR.Season < 2 & MidYear < 1900)
@@ -392,8 +408,8 @@ hofpitching %>% filter(WAR.Season < 2 & MidYear < 1900)
 ```
 
 6. Question 6 - The Lahman data set
-  + Read the Lahman “Master.csv” and “batting.csv” data files into R. *Already done*
-  + Use the *getinfo* to obtain three data frames for the season batting statistics for the great hitters Ty Cobb, Ted Williams, and Pete Rose.
++ Read the Lahman “Master.csv” and “batting.csv” data files into R. *Already done*
++ Use the *getinfo* to obtain three data frames for the season batting statistics for the great hitters Ty Cobb, Ted Williams, and Pete Rose.
     + Add the variable Age to each data frame corresponding to the ages of the three players.
 ```{r Ch3.Q6b}
 Cobb.info <- getinfo("Ty", "Cobb")
@@ -413,27 +429,27 @@ CWR <- rbind(Cobb.data, Williams.data, Rose.data)
 CWR <- CWR %>% select(playerID, H, Age) %>% group_by(playerID) %>% mutate(cumH = cumsum(H))
 
 ```
-  + Using the plot function, construct a line graph of the cumulative hit totals against age for Pete Rose.
++ Using the plot function, construct a line graph of the cumulative hit totals against age for Pete Rose.
   
-```{r Ch3.Q6d}
+```{r Ch3.Q6d, fig.align = "center"}
 ggplot(Rose.data, aes(y = cumsum(H), x = Age)) + 
   theme_bw() + 
   geom_line(size = 1.25) + 
   ylab("Hits")
 ```
-  + Using the lines function, overlay the cumulative hit totals for Cobb and Williams.
++ Using the lines function, overlay the cumulative hit totals for Cobb and Williams.
   
-```{r Ch3.Q6e}  
+```{r Ch3.Q6e, fig.align = "center"}  
 ggplot(CWR, aes(y = cumH, x = Age)) + 
   theme_bw() + 
   geom_line(size = 1.25, aes(color = playerID)) 
 ```
 
-  + Write a short paragraph summarizing what you have learned about the hitting pattern of these three players.
++ Write a short paragraph summarizing what you have learned about the hitting pattern of these three players.
   *Nah, I'm good. Thanks*
   
 7. Question 7 - Retrosheet play-by-play data
-  + Following the work in Section 3.9, create the two data frames mac.data and sosa.data containing the batting data for the two players.
++ Following the work in Section 3.9, create the two data frames mac.data and sosa.data containing the batting data for the two players.
   + Use the following R commands to restrict the two data frames to the plays where a batting event occurred. (The relevant variable BAT EVENT FL is either TRUE or FALSE.)
 mac.data <- subset(mac.data, BAT_EVENT_FL == TRUE)
 sosa.data <- subset(sosa.data, BAT_EVENT_FL == TRUE)
@@ -450,22 +466,23 @@ mac.data <- mac.data %>% mutate(PA = 1:nrow(mac.data))
 sosa.data <- sosa.data %>% mutate(PA = 1:nrow(sosa.data))
 ```
 
-  + The following commands will return the numbers of the plate appearances when the players hit home runs.
-  + Using the R function diff, the following commands compute the spacings between the occurrences of home runs.
++ The following commands will return the numbers of the plate appearances when the players hit home runs.
++ Using the R function diff, the following commands compute the spacings between the occurrences of home runs.
 
 ```{r Ch3.Q7de}
 mac.HR.PA <- mac.data %>% 
   filter(EVENT_CD == 23) %>% 
   select(PA) %>% 
   mutate(spacings = diff(c(0, PA)))
-sosa.HR.PA <- sosa.data %>% filter(EVENT_CD == 23) %>% select(PA) %>% 
+sosa.HR.PA <- sosa.data %>% 
+  filter(EVENT_CD == 23) %>% select(PA) %>% 
   mutate(spacings = diff(c(0, PA)))
 ```
 
-  + By use of the summary and hist functions on the vectors
++ By use of the summary and hist functions on the vectors
 mac.spacings and sosa.spacings, compare the home run spacings of the two players.
 
-```{r Ch3.Q7f}
+```{r Ch3.Q7f, fig.align = "center"}
 summary(mac.HR.PA$spacings); summary(sosa.HR.PA$spacings)
 ggplot(mac.HR.PA, aes(spacings)) + 
   theme_bw() + 
