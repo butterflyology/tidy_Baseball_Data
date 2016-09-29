@@ -24,9 +24,59 @@ library("readr")
 set.seed(8761825)
 session_info()
 ```
+### Section 2.3 - **Vectors and Warren Spahn**
+```{r Sec_2.3}
+W <- c(8, 21, 15, 21, 21, 22, 14)
+L <- c(5, 10, 12, 14, 17, 14, 19)
+Win.Pct <- 100 * W / (W + L)
+Win.Pct
+
+Year <- seq(1946, 1952)
+Year <- 1946 : 1952
+Age <- Year - 1921
+
+# We need to make a data frame to work with the ggplot2 package, so I will do that here.
+WaSp <- as.data.frame(cbind(Age, Year, Win.Pct))
+WaSp
+```
+#### Figure 2.4
+```{r Fig_2.4, fig.align = "center"}
+ggplot(WaSp, aes(y = Win.Pct, x = Age)) +
+  theme_bw() + 
+  geom_point(size = 3) + 
+  ylab("Win %") + 
+  xlab("Age") +
+  ylim(20, 75)
+```
+
+### Section 2.4 - **Objects and containers in R**s
+```{r Sec_2.4}
+NL <- c("FLA", "STL", "HOU", "STL", "COL", "PHI", "PHI", "SFG", "STL", "SFG")
+AL <- c("NYY", "BOS", "CHW", "DET", "BOS", "TBR", "NYY", "TEX", "TEX", "DET")
+Winner <- c("NL", "AL", "AL", "NL", "NL", "NL", "AL", "NL", "NL", "NL")
+N.Games <- c(6, 4, 4, 5, 4, 5, 6, 5, 7, 4)
+Year <- 2003 : 2012
+
+results <- matrix(c(NL, AL), 10, 2)
+results
+
+dimnames(results)[[1]] <- Year
+dimnames(results)[[2]] <- c("NL Team", "AL Team")
+results
+Winner <- as.data.frame(Winner) # Note that ggplot2 only works with data frames, so we need to convert the object. 
+table(Winner)
+```
+#### Figure 2.5
+```{r Fig_2.5, fig.align = "center"}
+ggplot(Winner, aes(x = Winner)) +
+  theme_bw() + 
+  geom_bar() + 
+  ylab("WS wins")
+```
+
 
 ```{r Spahn}
-Spahn <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/spahn.csv", col_names = TRUE) # Note the "raw." to get the unformatted .csv
+Spahn <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/spahn.csv", col_names = TRUE) # Note the "raw." filepath to get the unformatted .csv
 
 # create the FIP stat
 Spahn <- Spahn %>% 
@@ -102,6 +152,7 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
             SO = sum(AB, na.rm = TRUE))
 ```
 
+#### Figure 2.8
 ```{r Fig_2.8, fig.align = "center"}
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
 ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 

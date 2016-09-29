@@ -19,3 +19,4 @@ I will be downloading the data remotely or using the Lahman package so the repo 
 5. 20 August - Uploaded Ch. 5, exercises, and added a table with EVENT_CD codes explained. 
 6. 22 August - Uploaded Ch. 6 code and exercises.
 7. 24 August - Cleaned code and centered figures.
+8. 28 August - Fixed figures in Ch.2, began work on Ch.7 

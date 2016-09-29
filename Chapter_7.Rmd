@@ -1,0 +1,236 @@
+---
+title: "Chapter_7.Rmd"
+author: "C. A. Hamm"
+date: "`r format(Sys.Date())`"
+output:  
+      html_document:  
+        keep_md: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Chapter 7 - **Balls and strikes effects**.
+
+
+```{r preliminaries}
+library("Lahman")
+library("dplyr"); options(dplyr.width = Inf)
+library("ggplot2")
+library("devtools")
+library("readr")
+library("plotrix")
+
+set.seed(8761825)
+session_info()
+```
+
+```{r Fig_7.1, fig.align = "center"}
+### Figure 7.1 - This is essentially a plot of a contingency table
+mussina <- expand.grid(balls = 0:3, strikes = 0:2)
+mussina$value <- c(100, 118, 157, 207, 72, 82, 114, 171, 30, 38, 64, 122)
+mussina
+
+countmap <- function(data){
+  data <- xtabs(value ~ ., data)
+  color2D.matplot(data, show.values = 2, axes = FALSE
+, xlab = "", ylab = "")
+  axis(side = 2, at = 3.5:0.5, labels = rownames(data), las = 1)
+  axis(side = 3, at = 0.5:2.5, labels = colnames(data))
+  mtext(text = "Balls", side = 2, line = 2, cex.lab = 1)
+  mtext(text = "Strikes", side = 3, line = 2, cex.lab = 1)
+}
+countmap(mussina)
+```
+
+```{r String_manipulation}
+## Functions for string manipulation
+sequences <- c("BBX", "C11BBC1S", "1X")
+grep("1", sequences)
+grepl("1", sequences)
+grepl("11", sequences)
+gsub("1", "", sequences)
+
+pbp2011 <- read_csv("baseball_R-master/data/all2011.csv", col_names = FALSE)
+headers <- read_csv("baseball_R-master/data/fields.csv")
+names(pbp2011) <- headers$Header
+head(pbp2011)
+dim(pbp2011)
+
+pbp2011 <- pbp2011 %>% 
+  mutate(pseq = gsub("[.>123N+*]", "", PITCH_SEQ_TX), 
+    c10 = grepl("^[BIPV]", pseq), 
+    c01 = grepl("^[CFKLMOQRST]", pseq))
+
+pbp2011[1:10, c("PITCH_SEQ_TX", "c10", "c01")]
+
+## Expect run value by count
+pbp11rc <- read.csv("baseball_R-master/data/pbp11rc.csv", header = TRUE) # using read_csv results in 198 parsing errors
+pbp11rc[1:5, c("GAME_ID", "EVENT_ID", "c00", "c10", "c20", "c11", "c01", "c30", "c21", "c31", "c02", "c12", "c22", "c32", "RUNS.VALUE")]
+
+ab10 <- pbp11rc %>% filter(c10 == 1)
+ab01 <- pbp11rc %>% filter(c01 == 1)
+c(mean(ab10$RUNS.VALUE), mean(ab01$RUNS.VALUE))
+
+runs.by.count <- expand.grid(balls = 0:3, strikes = 0:2)
+runs.by.count$value <- 0
+
+bs.count.run.value <- function(b, s){
+	column.name <- paste("c", b, s, sep = "")
+	mean(pbp11rc[pbp11rc[, column.name] == 1, "RUNS.VALUE"])
+}
+
+runs.by.count$value <- mapply(FUN = bs.count.run.value, 
+	b = runs.by.count$balls,
+	s = runs.by.count$strikes)
+```
+
+### Figure 7.2
+```{r Fig_7.2, fig.align = "center"}
+countmap(runs.by.count)
+```
+
+```{r count_data}
+count22 <- pbp11rc %>% filter(c22 == 1)
+mean(count22$RUNS.VALUE) # This was also in figure 7.2
+
+count22 <- count22 %>% mutate(after2 = ifelse(c20 == 1, "2-0", ifelse(c02 == 1, "0-2", "1-1")))
+head(count22)
+
+# Using dplyr pipes rather than aggregate, because they are more intuitive to me.  
+count22 %>% group_by(after2) %>% summarize(RUNS.VALUE = mean(RUNS.VALUE)) # Note the excellent point made by the authors about this seemingly odd result. 
+
+count11 <- pbp11rc %>% filter(c11 == 1) %>% mutate(after1 = ifelse(c10 == 1, "1-0", "0-1"))
+count11 %>% group_by(after1) %>% summarize(RUNS.VALUE = mean(RUNS.VALUE))
+```
+
+### Figure 7.3
+```{r Fig_7.3}
+load("Data/balls_strikes_count.Rdata")
+
+sampCabrera <- cabrera %>% sample_n(500, replace = FALSE)
+str(sampCabrera$swung) #swung is an integer but should be a factor
+sampCabrera$swung <- as.factor(sampCabrera$swung)
+
+ggplot(sampCabrera, aes(x = px, y = pz, shape = swung)) + 
+  theme_bw() + 
+  geom_point(size = 3) + 
+  xlim(-3, 3) + 
+  ylim(-0, 5) + 
+  ylab("Vertical Location (ft.)") + 
+  xlab("Horizontal Location(ft.)") + 
+  annotate("rect", xmin = -0.95, xmax = 0.95, ymin = 1.6, ymax = 3.5, fill = "dodgerblue", alpha = 0.3) # I think that shading in the strike zone is WAY prettier than a dashed line box.
+```
+
+
+```{r Cabrera_loess}
+miggy.loess <- loess(swung ~ px + pz, data = cabrera, control = loess.control(surface = "direct"))
+pred.area <- expand.grid(px = seq(-2, 2, 0.1), pz = seq(0, 6, 0.1))
+pred.area$fit <- c(predict(miggy.loess, pred.area))
+
+pred.area %>% filter(px == 0 & pz == 2.5)
+pred.area %>% filter(px == 0 & pz == 0)
+pred.area %>% filter(px == 2 & pz == 2.5)
+```
+
+### Figure 7.4 - contour plot - I don't know how to make the countourplot exactly as it is from the lattice package
+```{r Fig_7.4}
+ggplot(cabrera, aes(x = px, y = pz)) + 
+  theme_bw() + ylim(0.5, 4.5) + 
+  xlim(-1.5, 1.5) + 
+  stat_density2d(aes(color = ..level..), n = 100, h = c(2, 2)) + 
+  annotate("rect", xmin = -0.95, xmax = 0.95, ymin = 1.6, ymax = 3.5, fill = "dodgerblue", alpha = 0.3)
+```
+
+cabrera <- cabrera %>% mutate(bscount = paste(balls, strikes, sep = "-"))
+head(cabrera)
+
+# I don't see how to do this section following the tidy principle. Lots of small steps. Need to think on it. 
+miggy00 <- cabrera %>% filter(bscount == "0-0")
+miggy00loess <- loess(swung ~ px + pz, data = miggy00, control = loess.control(surface = "direct"))
+
+pred.area$fit00 <- c(predict(miggy00loess, pred.area))
+head(pred.area)
+
+
+table(verlander$pitch_type)
+round(100 * prop.table(table(verlander$pitch_type)))
+
+# type_verlander_hand <- verlander %>% select(batter_hand, pitch_type) %>% group_by(batter_hand, pitch_type) %>% table(pitch_type, batter_hand)
+
+type_verlander_hand <- with(verlander, table(pitch_type, batter_hand))
+round(100 * prop.table(type_verlander_hand, margin = 2))
+
+
+verlander <- verlander %>% mutate(bscount = paste(balls, strikes, sep = "-"))
+head(verlander)
+verl_RHB <- verlander %>% filter(batter_hand == "R")
+head(verl_RHB)
+verl_type_cnt_R <- table(verl_RHB$bscount, verl_RHB$pitch_type)
+round(100 * prop.table(verl_type_cnt_R, margin = 1))
+
+# This needs to be made into a function
+umpiresRHB <- umpires %>% filter(batter_hand == "R")
+head(umpiresRHB)
+
+
+ump_func <- function(int1, int2, data){
+	ump_temp <- filter(data, balls == int1 & strikes == int2)
+	ump_smp <- ump_temp %>% sample_n(3000, replace = FALSE)
+	return(ump_smp)
+}
+
+ump_00 <- ump_func(int1 = 0, int2 = 0, data = umpiresRHB)
+dim(ump_00)
+head(ump_00)
+
+ump_30 <- ump_func(int1 = 3, int2 = 0, data = umpiresRHB)
+head(ump_30)
+dim(ump_30)
+
+ump_02 <- ump_func(int1 = 0, int2 = 2, data = umpiresRHB)
+dim(ump_02)
+head(ump_02)
+
+
+ump_loess <- function(data){
+	ump.loess <- loess(called_strike ~ px + pz, data = data, control = loess.control(surface = "direct"))
+	return(ump.loess)
+}
+
+ump00.loess <- ump_loess(data = ump_00)
+ump30.loess <- ump_loess(data = ump_30)
+ump02.loess <- ump_loess(data = ump_02)
+
+ump_contours <- function(data){
+	ump_tours <- contourLines(x = seq(-2, 2, 0.1), y = seq(0, 6, 0.1), z = predict(data, pred.area), levels = c(0.5))
+	return(ump_tours)
+}
+
+ump00contour <- ump_contours(data = ump00.loess)
+ump30contour <- ump_contours(data = ump30.loess)
+ump02contour <- ump_contours(data = ump02.loess)
+
+
+ump00df <- as.data.frame(ump30contour)
+ump00df$bscount <- "0-0"
+head(ump00df)
+
+ump30df <- as.data.frame(ump30contour)
+ump30df$bscount <- "3-0"
+head(ump30df)
+
+ump02df <- as.data.frame(ump02contour)
+ump02df$bscount <- "0-2"
+head(ump02df)
+
+umpireContours <- rbind(ump00df, ump02df, ump30df)
+
+# Work on this some more
+ggplot(umpireContours, aes(x = x, y = y)) + 
+  theme_bw() + 
+  stat_density2d(aes(color = bscount))
+
+
+

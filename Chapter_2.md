@@ -51,7 +51,7 @@ session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Los_Angeles         
-##  date     2016-09-24
+##  date     2016-09-28
 ```
 
 ```
@@ -88,10 +88,124 @@ session_info()
 ##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
 ```
+### Section 2.3 - **Vectors and Warren Spahn**
+
+```r
+W <- c(8, 21, 15, 21, 21, 22, 14)
+L <- c(5, 10, 12, 14, 17, 14, 19)
+Win.Pct <- 100 * W / (W + L)
+Win.Pct
+```
+
+```
+## [1] 61.53846 67.74194 55.55556 60.00000 55.26316 61.11111 42.42424
+```
+
+```r
+Year <- seq(1946, 1952)
+Year <- 1946 : 1952
+Age <- Year - 1921
+
+# We need to make a data frame to work with the ggplot2 package, so I will do that here.
+WaSp <- as.data.frame(cbind(Age, Year, Win.Pct))
+WaSp
+```
+
+```
+##   Age Year  Win.Pct
+## 1  25 1946 61.53846
+## 2  26 1947 67.74194
+## 3  27 1948 55.55556
+## 4  28 1949 60.00000
+## 5  29 1950 55.26316
+## 6  30 1951 61.11111
+## 7  31 1952 42.42424
+```
+#### Figure 2.4
+
+```r
+ggplot(WaSp, aes(y = Win.Pct, x = Age)) +
+  theme_bw() + 
+  geom_point(size = 3) + 
+  ylab("Win %") + 
+  xlab("Age") +
+  ylim(20, 75)
+```
+
+<img src="Chapter_2_files/figure-html/Fig_2.4-1.png" style="display: block; margin: auto;" />
+
+### Section 2.4 - **Objects and containers in R**s
+
+```r
+NL <- c("FLA", "STL", "HOU", "STL", "COL", "PHI", "PHI", "SFG", "STL", "SFG")
+AL <- c("NYY", "BOS", "CHW", "DET", "BOS", "TBR", "NYY", "TEX", "TEX", "DET")
+Winner <- c("NL", "AL", "AL", "NL", "NL", "NL", "AL", "NL", "NL", "NL")
+N.Games <- c(6, 4, 4, 5, 4, 5, 6, 5, 7, 4)
+Year <- 2003 : 2012
+
+results <- matrix(c(NL, AL), 10, 2)
+results
+```
+
+```
+##       [,1]  [,2] 
+##  [1,] "FLA" "NYY"
+##  [2,] "STL" "BOS"
+##  [3,] "HOU" "CHW"
+##  [4,] "STL" "DET"
+##  [5,] "COL" "BOS"
+##  [6,] "PHI" "TBR"
+##  [7,] "PHI" "NYY"
+##  [8,] "SFG" "TEX"
+##  [9,] "STL" "TEX"
+## [10,] "SFG" "DET"
+```
+
+```r
+dimnames(results)[[1]] <- Year
+dimnames(results)[[2]] <- c("NL Team", "AL Team")
+results
+```
+
+```
+##      NL Team AL Team
+## 2003 "FLA"   "NYY"  
+## 2004 "STL"   "BOS"  
+## 2005 "HOU"   "CHW"  
+## 2006 "STL"   "DET"  
+## 2007 "COL"   "BOS"  
+## 2008 "PHI"   "TBR"  
+## 2009 "PHI"   "NYY"  
+## 2010 "SFG"   "TEX"  
+## 2011 "STL"   "TEX"  
+## 2012 "SFG"   "DET"
+```
+
+```r
+Winner <- as.data.frame(Winner) # Note that ggplot2 only works with data frames, so we need to convert the object. 
+table(Winner)
+```
+
+```
+## Winner
+## AL NL 
+##  3  7
+```
+#### Figure 2.5
+
+```r
+ggplot(Winner, aes(x = Winner)) +
+  theme_bw() + 
+  geom_bar() + 
+  ylab("WS wins")
+```
+
+<img src="Chapter_2_files/figure-html/Fig_2.5-1.png" style="display: block; margin: auto;" />
+
 
 
 ```r
-Spahn <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/spahn.csv", col_names = TRUE) # Note the "raw." to get the unformatted .csv
+Spahn <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/spahn.csv", col_names = TRUE) # Note the "raw." filepath to get the unformatted .csv
 ```
 
 ```
@@ -337,7 +451,7 @@ system.time(S <- sapply(players, compute.hr))
 
 ```
 ##    user  system elapsed 
-##   2.036   0.009   2.045
+##   2.229   0.009   2.240
 ```
 
 ```r
@@ -496,6 +610,7 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
 ## 1 12364   755 12364
 ```
 
+#### Figure 2.8
 
 ```r
 # Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
