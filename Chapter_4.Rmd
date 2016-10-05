@@ -1,6 +1,6 @@
 ---
 title: "tidy Baseball Chapter 4"
-author: "C. A. Hamm"
+author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Chapter 4 -  The relation between runs and wins
+## Chapter 4 - *The relation between runs and wins*
 
 ```{r preliminaries}
 library("Lahman")
@@ -25,7 +25,7 @@ session_info()
 ```
 
 ### Section 4.2 - Teams in Lahman's Database
-```{r Teams_Table, fig.align = "center"}
+```{r Sec_4.2, fig.align = "center"}
 # The Teams table is includedin the Lahman package
 
 str(Teams)
@@ -39,8 +39,10 @@ myteams <- Teams %>%
   select(teamID, yearID, lgID, G, W, L, R, RA) %>% 
   mutate(RD = R - RA, Wpct = W / (W + L))
 tail(myteams)
+```
 
-# Figure 4.1
+#### Figure 4.1
+```{r Fig_4.1, fig.align = "center"}
 ggplot(myteams, aes(x = RD, y = Wpct)) + 
   geom_point(cex = 2, alpha = 0.6) + 
   theme_bw() + 
@@ -50,7 +52,7 @@ ggplot(myteams, aes(x = RD, y = Wpct)) +
 ```
 
 
-```{r linear_regression, fig.align = "center"}
+```{r Sec_4.2b, fig.align = "center"}
 linfit <- lm(Wpct ~ RD, data = myteams)
 summary(linfit)
 # Wpct = 0.50 + 0.000628 * RD
@@ -60,8 +62,10 @@ myteams <- myteams %>%
 tail(myteams)
 min(myteams$linResiduals)
 max(myteams$linResiduals)
+```
 
-# Figure 4.2
+#### Figure 4.2
+```{r Fig_4.2, fig.align = "center"}
 ggplot(myteams, aes(x = RD, y = linResiduals)) + 
   geom_point(size = 2) + 
   theme_bw() + 
@@ -69,7 +73,9 @@ ggplot(myteams, aes(x = RD, y = linResiduals)) +
   xlab("Run differential") + 
   scale_y_continuous(limits = c(-0.09, 0.09)) + 
   scale_x_continuous(limits = c(-400, 400)) 
+```
 
+```{r Sec_4.4c}
 mean(myteams$linResiduals)
 linRMSE <- sqrt(mean(myteams$linResiduals^2))
 linRMSE
@@ -78,9 +84,8 @@ nrow(subset(myteams, abs(linResiduals) < linRMSE)) / nrow(myteams)
 nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
 ```
 
-### Now let's explore the Pythagorean expectation
-```{r Pythagorean, fig.align = "center"}
-# section 4.4
+### Section 4.4 - Now let's explore the Pythagorean expectation
+```{r Sec_4.4, fig.align = "center"}
 myteams <- myteams %>% 
   mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)
@@ -108,7 +113,7 @@ Pythag.line(100, 100, N = 2)
 ```
 
 ### Section 4.5
-```{r exponent}
+```{r Sec_4.5}
 # Section 4.5 - the exponent of the Pythagorean formula
 myteams <- myteams %>% 
   mutate(logWratio = log(W / L), 
@@ -120,7 +125,7 @@ summary(pytFit) # suggests a Pythagorean exponent of 1.88 rather than 2.
 ```
 
 ### Section 4.6 - Good and Bad predictions based on the Pythagorean Formula
-```{r Predictions, fig.align = "center"}
+```{r Sec_4.6, fig.align = "center"}
 games1 <- Pythag.line(875, 737, N = 2)
 games1 * 162
 games1a <- Pythag.line(875, 757, N = 1.88)
@@ -160,14 +165,18 @@ teams2011 <- myteams %>% filter(yearID == 2011)
 teams2011[teams2011$teamID == "LAA", "teamID"] <- "ANA"
 teams2011 <- merge(teams2011, onerunwins)
 head(teams2011)
+```
 
-# Figure 4.3
+#### Figure 4.3
+```{r Fig_4.3, fig.align = "center"}
 ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
   theme_bw() +
   geom_point(cex = 2) + 
   xlab("One run wins") + 
   ylab("Pythagorean residuals")
+```
 
+```{r Code}
 head(Pitching)
 
 top_closers <- Pitching %>% 
@@ -180,8 +189,7 @@ mean(teams_top_closers$pytResiduals) * 162 # teams with a top closer will outper
 ```
 
 ### Section 4.7 -  How many runs for a win?
-
-```{r Runs_for_win}
+```{r Sec_4.7}
 IR <- function(RS, RA){
 	round((RS^2 + RA^2)^2 / (2 * RS * RA^2), 1)
 }

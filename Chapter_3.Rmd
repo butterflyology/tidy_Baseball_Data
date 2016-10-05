@@ -1,6 +1,6 @@
 ---
 title: "tidy Baseball Chapter 3"
-author: "C. A. Hamm"
+author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Chapter 3
+## Chapter 3 - *Traditional graphics*
 
 ```{r preliminaries}
 library("Lahman")
@@ -24,14 +24,14 @@ set.seed(8761825)
 session_info()
 ```
 
-```{r Ch3.S1}
-# Section 3.1
+### Section 3.1
+```{r Sec_3.1}
 hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
 head(hof)
 dim(hof)
 ```
 
-```{r Chapter_3.Section_2}
+```{r Sec_3.2}
 # Rather than multiple additions to the data, lets create all of the variables we are interested in all at once. 
 hof <- hof %>% 
   mutate(MidCareer = ((From + To) / 2), 
@@ -46,7 +46,8 @@ hof[, 2] <- gsub(" HOF", "", hof$Name)
 head(hof)
 ```
 
-```{r Figure_3.1, fig.align = "center"}
+#### Figure 3.1
+```{r Fig_3.1, fig.align = "center"}
 # Using ggplot we don't need to create a table
 ## Figure 3.1
 ggplot(hof, aes(x = Era)) + 
@@ -57,9 +58,8 @@ ggplot(hof, aes(x = Era)) +
   ggtitle("Era of the Nonpitching Hall of Famers")
 ```
 
-### Skipping Figure 3.2
-
-```{r Figure_3.3, fig.align = "center"}
+#### Figure 3.2
+```{r Fig_3.3, fig.align = "center"}
 ## Figure 3.3, a Clevelnd dot plot of HoFers by Era. I am having trouble with this. This may be the first time I haven't been able to get ggplot to do what I want.
 T.era <- table(hof$Era)
 T.era
@@ -68,7 +68,8 @@ dotchart(as.numeric(T.era), labels = names(T.era), xlab = "Frequency", ylab = ""
 # ggplot(hof, aes(y = Era, x = )) + geom_point(size = 2) # can't get ggplot to count the frequency of occurance. It can do that with a bar chart but not with geom_points(), to the best of my knowledge.
 ```
 
-```{r Figure_3.4, fig.align = "center"}
+#### Figure 3.4
+```{r Fig_3.4, fig.align = "center"}
 ## Figure 3.4 - No need to subset priot to plotting, we can do it inline with the plot call. 
 ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) + 
   geom_point(size = 3) + 
@@ -78,12 +79,13 @@ ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) +
   xlab("OPS")
 ```
 
-```{r Figure_3.5, fig.align = "center"}
-## Figure 3.5 - I can't seem to do make this figure with ggplot.
+#### Figure 3.5 - I can't seem to do make this figure with ggplot.
+```{r Fig_3.5, fig.align = "center"}
 stripchart(hof$MidCareer, method = "jitter", pch = 19, xlab = "Mid Career")
 ```
 
-```{r Figure_3.6, fig.align = "center"}
+#### Figure 3.6
+```{r Fig_3.6, fig.align = "center"}
 ## Figure 3.6
 ggplot(hof, aes(x = MidCareer)) + 
   theme_bw() + 
@@ -91,16 +93,16 @@ ggplot(hof, aes(x = MidCareer)) +
   ylab("Frequency")
 ```
 
-```{r Figure_3.7, fig.align = "center"}
-## Figure 3.7
+#### Figure 3.7
+```{r Fig_3.7, fig.align = "center"}
 ggplot(hof, aes(x = MidCareer, y = OPS)) + 
   theme_bw() + 
   geom_point(size = 2) + 
   stat_smooth(method = "loess", col = "black", se = FALSE)
 ```
 
-```{r Figure_3.8, fig.align = "center"}
-## Figure 3.8
+#### Figure 3.8
+```{r Fig_3.8, fig.align = "center"}
 ggplot(hof, aes(x = OBP, y = SLG)) + 
    theme_bw() + 
   geom_point(size = 2.5) + 
@@ -108,8 +110,8 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   ylab("Slugging Percentage")
 ```
 
-```{r Figure_3.9, fig.align = "center"}
-## Figure 3.9 (Changing the axes limits)
+#### Figure 3.9 (Changing the axes limits)
+```{r Fig_3.9, fig.align = "center"}
 ggplot(hof, aes(x = OBP, y = SLG)) + 
   theme_bw() + 
   geom_point(size = 2.5) + 
@@ -119,8 +121,8 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   ylab("Slugging Percentage")
 ```
 
-```{r Figure_3.10, fig.align = "center"}
-## Figure 3.10 (with lines delimiting OPS)
+#### Figure 3.10 (with lines delimiting OPS)
+```{r Fig_3.10, fig.align = "center"}
 ggplot(hof, aes(x = OBP, y = SLG)) + 
   theme_bw() + 
   geom_point(size = 2.5) + 
@@ -135,14 +137,14 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   annotate("text", x = 0.27, y = c(0.42, 0.52, 0.62, 0.72), label = c("OPS = 0.7", "OPS = 0.8", "OPS = 0.9", "OPS = 1.0"))
 ```
 
-```{r Figure_3.12, fig.align = "center"}
-## Figure 3.12
+#### Figure 3.12
+```{r Fig_3.12, fig.align = "center"}
 par(plt = c(0.2, 0.95, 0.145, 0.883))
 stripchart(HR.Rate ~ Era, data = hof, pch = 19, ylab = "", method = "jitter", las = 1)
 ```
 
-```{r figure_3.13, fig.align = "center"}
-## Figure 3.13
+#### Figure 3.13
+```{r Fig_3.13, fig.align = "center"}
 ggplot(hof, aes(y = HR.Rate, x = Era)) + 
   theme_bw() + 
   geom_boxplot(outlier.size = 2, stat = "boxplot", fill = "grey") + 
@@ -154,7 +156,7 @@ ggplot(hof, aes(y = HR.Rate, x = Era)) +
 ### This next section requires data from the Lahman database, available here: http://www.seanlahman.com/baseball-archive/statistics/
 I have added the relevant files from the Lahman database to the "Data" directory; alternatively you could use the Lahman package from R. 
 
-```{r Section_3.8, fig.align = "center"}
+```{r Sec_3.8, fig.align = "center"}
 ## Section 3.8
 head(Master)
 dim(Master)

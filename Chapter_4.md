@@ -1,10 +1,10 @@
 # tidy Baseball Chapter 4
-C. A. Hamm  
+Chris Hamm  
 `r format(Sys.Date())`  
 
 
 
-### Chapter 4 -  The relation between runs and wins
+## Chapter 4 - *The relation between runs and wins*
 
 
 ```r
@@ -49,8 +49,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/Los_Angeles         
-##  date     2016-09-24
+##  tz       America/New_York            
+##  date     2016-10-04
 ```
 
 ```
@@ -218,8 +218,9 @@ tail(myteams)
 ## 450    COL   2015   NL 162 68 94 737 844 -107 0.4197531
 ```
 
+#### Figure 4.1
+
 ```r
-# Figure 4.1
 ggplot(myteams, aes(x = RD, y = Wpct)) + 
   geom_point(cex = 2, alpha = 0.6) + 
   theme_bw() + 
@@ -228,7 +229,7 @@ ggplot(myteams, aes(x = RD, y = Wpct)) +
   ylab("Winning percentage")
 ```
 
-<img src="Chapter_4_files/figure-html/Teams_Table-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_4_files/figure-html/Fig_4.1-1.png" style="display: block; margin: auto;" />
 
 
 
@@ -299,8 +300,9 @@ max(myteams$linResiduals)
 ## [1] 0.07591445
 ```
 
+#### Figure 4.2
+
 ```r
-# Figure 4.2
 ggplot(myteams, aes(x = RD, y = linResiduals)) + 
   geom_point(size = 2) + 
   theme_bw() + 
@@ -310,7 +312,8 @@ ggplot(myteams, aes(x = RD, y = linResiduals)) +
   scale_x_continuous(limits = c(-400, 400)) 
 ```
 
-<img src="Chapter_4_files/figure-html/linear_regression-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_4_files/figure-html/Fig_4.2-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 mean(myteams$linResiduals)
@@ -345,10 +348,9 @@ nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
 ## [1] 0.9555556
 ```
 
-### Now let's explore the Pythagorean expectation
+### Section 4.4 - Now let's explore the Pythagorean expectation
 
 ```r
-# section 4.4
 myteams <- myteams %>% 
   mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)
@@ -388,7 +390,7 @@ ggplot(myteams, aes(y = pytWpct, x = Wpct)) +
 	stat_smooth(method = "lm", color = "black")
 ```
 
-<img src="Chapter_4_files/figure-html/Pythagorean-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_4_files/figure-html/Sec_4.4-1.png" style="display: block; margin: auto;" />
 
 ```r
 lm2 <- lm(pytWpct ~ Wpct, data = myteams)
@@ -1207,8 +1209,9 @@ head(teams2011)
 ## 6  0.020356718 0.4618205  0.025833799 -0.04939276 -0.07650789      24
 ```
 
+#### Figure 4.3
+
 ```r
-# Figure 4.3
 ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
   theme_bw() +
   geom_point(cex = 2) + 
@@ -1216,7 +1219,8 @@ ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
   ylab("Pythagorean residuals")
 ```
 
-<img src="Chapter_4_files/figure-html/Predictions-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_4_files/figure-html/Fig_4.3-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 head(Pitching)
@@ -1275,7 +1279,6 @@ mean(teams_top_closers$pytResiduals) * 162 # teams with a top closer will outper
 ```
 
 ### Section 4.7 -  How many runs for a win?
-
 
 ```r
 IR <- function(RS, RA){

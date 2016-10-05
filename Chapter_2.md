@@ -1,9 +1,10 @@
 # tidy Baseball Chapter 2
-C. A. Hamm  
+Chris Hamm  
 `r format(Sys.Date())`  
 
 
-### Beginning with Chapter 2, because Chapter 1 doesn't have much for us. 
+## Chapter 2 - *Introduction to R*
+#### Starting here because Chapter 1 doesn't have much for us. 
 
 
 ### Load packages, set seed, and note which package versions we will use.
@@ -50,8 +51,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/Los_Angeles         
-##  date     2016-09-28
+##  tz       America/New_York            
+##  date     2016-10-04
 ```
 
 ```
@@ -451,7 +452,7 @@ system.time(S <- sapply(players, compute.hr))
 
 ```
 ##    user  system elapsed 
-##   2.229   0.009   2.240
+##   2.047   0.008   2.056
 ```
 
 ```r
@@ -610,10 +611,9 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
 ## 1 12364   755 12364
 ```
 
-#### Figure 2.8
+#### Figure 2.8 - where we want to plot the SO/AB (Y) against the HR/AB (X)
 
 ```r
-# Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
 ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
   theme_bw() + 
   xlim(0, 0.08) + 
@@ -755,7 +755,6 @@ head(Success.Rate)
 ## 5    0.9814815
 ## 6    0.9655172
 ```
-
 + Compute the number of stolen bases per game SB.Game = SB / Game.
 
 ```ch

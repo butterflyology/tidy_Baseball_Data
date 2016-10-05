@@ -1,10 +1,10 @@
 # tidy Baseball Chapter 3
-C. A. Hamm  
+Chris Hamm  
 `r format(Sys.Date())`  
 
 
 
-### Chapter 3
+## Chapter 3 - *Traditional graphics*
 
 
 ```r
@@ -49,8 +49,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/Los_Angeles         
-##  date     2016-09-24
+##  tz       America/New_York            
+##  date     2016-10-04
 ```
 
 ```
@@ -88,9 +88,9 @@ session_info()
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
 ```
 
+### Section 3.1
 
 ```r
-# Section 3.1
 hof <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/hofbatting.csv", col_names = TRUE)
 ```
 
@@ -230,6 +230,7 @@ head(hof)
 ## 6 0.308 0.396 0.382 0.778    1955.0  Integration 0.003466826
 ```
 
+#### Figure 3.1
 
 ```r
 # Using ggplot we don't need to create a table
@@ -242,10 +243,9 @@ ggplot(hof, aes(x = Era)) +
   ggtitle("Era of the Nonpitching Hall of Famers")
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.1-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.1-1.png" style="display: block; margin: auto;" />
 
-### Skipping Figure 3.2
-
+#### Figure 3.2
 
 ```r
 ## Figure 3.3, a Clevelnd dot plot of HoFers by Era. I am having trouble with this. This may be the first time I haven't been able to get ggplot to do what I want.
@@ -265,12 +265,13 @@ T.era
 dotchart(as.numeric(T.era), labels = names(T.era), xlab = "Frequency", ylab = "", pt.cex = 2, pch = 19) # note that there is a discrepency int the code on page 64 (naming the object "T.Era"), in previous example it is called "T.era."
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.3-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.3-1.png" style="display: block; margin: auto;" />
 
 ```r
 # ggplot(hof, aes(y = Era, x = )) + geom_point(size = 2) # can't get ggplot to count the frequency of occurance. It can do that with a bar chart but not with geom_points(), to the best of my knowledge.
 ```
 
+#### Figure 3.4
 
 ```r
 ## Figure 3.4 - No need to subset priot to plotting, we can do it inline with the plot call. 
@@ -282,16 +283,17 @@ ggplot(hof %>% filter(HR >= 500), aes(y = reorder(Name, OPS), x = OPS)) +
   xlab("OPS")
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.4-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.4-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.5 - I can't seem to do make this figure with ggplot.
 
 ```r
-## Figure 3.5 - I can't seem to do make this figure with ggplot.
 stripchart(hof$MidCareer, method = "jitter", pch = 19, xlab = "Mid Career")
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.5-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.5-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.6
 
 ```r
 ## Figure 3.6
@@ -301,22 +303,22 @@ ggplot(hof, aes(x = MidCareer)) +
   ylab("Frequency")
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.6-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.6-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.7
 
 ```r
-## Figure 3.7
 ggplot(hof, aes(x = MidCareer, y = OPS)) + 
   theme_bw() + 
   geom_point(size = 2) + 
   stat_smooth(method = "loess", col = "black", se = FALSE)
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.7-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.7-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.8
 
 ```r
-## Figure 3.8
 ggplot(hof, aes(x = OBP, y = SLG)) + 
    theme_bw() + 
   geom_point(size = 2.5) + 
@@ -324,11 +326,11 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
   ylab("Slugging Percentage")
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.8-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.8-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.9 (Changing the axes limits)
 
 ```r
-## Figure 3.9 (Changing the axes limits)
 ggplot(hof, aes(x = OBP, y = SLG)) + 
   theme_bw() + 
   geom_point(size = 2.5) + 
@@ -342,11 +344,11 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
 ## Warning: Removed 1 rows containing missing values (geom_point).
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.9-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.9-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.10 (with lines delimiting OPS)
 
 ```r
-## Figure 3.10 (with lines delimiting OPS)
 ggplot(hof, aes(x = OBP, y = SLG)) + 
   theme_bw() + 
   geom_point(size = 2.5) + 
@@ -369,20 +371,20 @@ ggplot(hof, aes(x = OBP, y = SLG)) +
 ## Warning: Removed 33 rows containing missing values (geom_path).
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.10-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.10-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.12
 
 ```r
-## Figure 3.12
 par(plt = c(0.2, 0.95, 0.145, 0.883))
 stripchart(HR.Rate ~ Era, data = hof, pch = 19, ylab = "", method = "jitter", las = 1)
 ```
 
-<img src="Chapter_3_files/figure-html/Figure_3.12-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.12-1.png" style="display: block; margin: auto;" />
 
+#### Figure 3.13
 
 ```r
-## Figure 3.13
 ggplot(hof, aes(y = HR.Rate, x = Era)) + 
   theme_bw() + 
   geom_boxplot(outlier.size = 2, stat = "boxplot", fill = "grey") + 
@@ -391,7 +393,7 @@ ggplot(hof, aes(y = HR.Rate, x = Era)) +
   ylab("HR Rate")
 ```
 
-<img src="Chapter_3_files/figure-html/figure_3.13-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Fig_3.13-1.png" style="display: block; margin: auto;" />
 
 ### This next section requires data from the Lahman database, available here: http://www.seanlahman.com/baseball-archive/statistics/
 I have added the relevant files from the Lahman database to the "Data" directory; alternatively you could use the Lahman package from R. 
@@ -511,7 +513,7 @@ ggplot(RABA, aes(x = Age, y = cumHR, color = playerID)) +
   scale_color_discrete(labels = c("Hank Aaron", "Barry Bonds", "Alex Rodriguez", "Babe Ruth"))
 ```
 
-<img src="Chapter_3_files/figure-html/Section_3.8-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_3_files/figure-html/Sec_3.8-1.png" style="display: block; margin: auto;" />
 
 
 ```r

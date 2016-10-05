@@ -1,6 +1,6 @@
 ---
 title: "tidy Baseball Chapter 2"
-author: "C. A. Hamm"
+author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
@@ -10,7 +10,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-### Beginning with Chapter 2, because Chapter 1 doesn't have much for us. 
+## Chapter 2 - *Introduction to R*
+#### Starting here because Chapter 1 doesn't have much for us. 
 
 
 ### Load packages, set seed, and note which package versions we will use.
@@ -25,7 +26,7 @@ set.seed(8761825)
 session_info()
 ```
 ### Section 2.3 - **Vectors and Warren Spahn**
-```{r Sec_2.3}
+```{r Ch2.S3}
 W <- c(8, 21, 15, 21, 21, 22, 14)
 L <- c(5, 10, 12, 14, 17, 14, 19)
 Win.Pct <- 100 * W / (W + L)
@@ -152,9 +153,8 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
             SO = sum(AB, na.rm = TRUE))
 ```
 
-#### Figure 2.8
+#### Figure 2.8 - where we want to plot the SO/AB (Y) against the HR/AB (X)
 ```{r Fig_2.8, fig.align = "center"}
-# Figure 2.8, where we want to plot the SO/AB (Y) against the HR/AB (X)
 ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
   theme_bw() + 
   xlim(0, 0.08) + 
@@ -190,7 +190,6 @@ head(SB.Attempt)
 Success.Rate <- hof %>% select(SB, CS) %>% transmute(Success.Rate = SB / (SB + CS)) %>% arrange(desc(Success.Rate))
 head(Success.Rate)
 ```
-
 + Compute the number of stolen bases per game SB.Game = SB / Game.
 ```{Ch2.Q1d}
 SB.Game <- hof %>% select(SB, G) %>% transmute(SB.Game = SB / G) %>% arrange(desc(SB.Game))

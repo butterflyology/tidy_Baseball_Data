@@ -9,9 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="C. A. Hamm" />
+<meta name="author" content="Chris Hamm" />
 
-<meta name="date" content="2016-09-24" />
+<meta name="date" content="2016-10-04" />
 
 <title>tidy Baseball Chapter 4</title>
 
@@ -117,14 +117,14 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">tidy Baseball Chapter 4</h1>
-<h4 class="author"><em>C. A. Hamm</em></h4>
-<h4 class="date"><em>2016-09-24</em></h4>
+<h4 class="author"><em>Chris Hamm</em></h4>
+<h4 class="date"><em>2016-10-04</em></h4>
 
 </div>
 
 
-<div id="chapter-4---the-relation-between-runs-and-wins" class="section level3">
-<h3>Chapter 4 - The relation between runs and wins</h3>
+<div id="chapter-4---the-relation-between-runs-and-wins" class="section level2">
+<h2>Chapter 4 - <em>The relation between runs and wins</em></h2>
 <pre class="r"><code>library(&quot;Lahman&quot;)
 library(&quot;dplyr&quot;); options(dplyr.width = Inf)</code></pre>
 <pre><code>## 
@@ -148,8 +148,8 @@ session_info()</code></pre>
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/Los_Angeles         
-##  date     2016-09-24</code></pre>
+##  tz       America/New_York            
+##  date     2016-10-04</code></pre>
 <pre><code>## Packages ------------------------------------------------------------------</code></pre>
 <pre><code>##  package    * version date       source        
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
@@ -179,7 +179,6 @@ session_info()</code></pre>
 ##  tibble       1.2     2016-08-26 CRAN (R 3.3.0)
 ##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)</code></pre>
-</div>
 <div id="section-4.2---teams-in-lahmans-database" class="section level3">
 <h3>Section 4.2 - Teams in Lahman’s Database</h3>
 <pre class="r"><code># The Teams table is includedin the Lahman package
@@ -286,8 +285,9 @@ tail(myteams)</code></pre>
 ## 448    ARI   2015   NL 162 79 83 720 713    7 0.4876543
 ## 449    SDN   2015   NL 162 74 88 650 731  -81 0.4567901
 ## 450    COL   2015   NL 162 68 94 737 844 -107 0.4197531</code></pre>
-<pre class="r"><code># Figure 4.1
-ggplot(myteams, aes(x = RD, y = Wpct)) + 
+<div id="figure-4.1" class="section level4">
+<h4>Figure 4.1</h4>
+<pre class="r"><code>ggplot(myteams, aes(x = RD, y = Wpct)) + 
   geom_point(cex = 2, alpha = 0.6) + 
   theme_bw() + 
   stat_smooth(method = lm, colour = &quot;black&quot;) + 
@@ -337,8 +337,10 @@ tail(myteams)</code></pre>
 <pre><code>## [1] -0.07383906</code></pre>
 <pre class="r"><code>max(myteams$linResiduals)</code></pre>
 <pre><code>## [1] 0.07591445</code></pre>
-<pre class="r"><code># Figure 4.2
-ggplot(myteams, aes(x = RD, y = linResiduals)) + 
+</div>
+<div id="figure-4.2" class="section level4">
+<h4>Figure 4.2</h4>
+<pre class="r"><code>ggplot(myteams, aes(x = RD, y = linResiduals)) + 
   geom_point(size = 2) + 
   theme_bw() + 
   ylab(&quot;Residuals&quot;) + 
@@ -356,10 +358,10 @@ linRMSE</code></pre>
 <pre class="r"><code>nrow(subset(myteams, abs(linResiduals) &lt; 2 * linRMSE)) / nrow(myteams)</code></pre>
 <pre><code>## [1] 0.9555556</code></pre>
 </div>
-<div id="now-lets-explore-the-pythagorean-expectation" class="section level3">
-<h3>Now let’s explore the Pythagorean expectation</h3>
-<pre class="r"><code># section 4.4
-myteams &lt;- myteams %&gt;% 
+</div>
+<div id="section-4.4---now-lets-explore-the-pythagorean-expectation" class="section level3">
+<h3>Section 4.4 - Now let’s explore the Pythagorean expectation</h3>
+<pre class="r"><code>myteams &lt;- myteams %&gt;% 
   mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)</code></pre>
 <pre><code>##     teamID yearID lgID   G  W  L   R  RA   RD      Wpct   linWpct
@@ -1087,8 +1089,9 @@ head(teams2011)</code></pre>
 ## 4  0.021501849 0.4039637  0.021962236 -0.29849299 -0.19448830      22
 ## 5 -0.031201747 0.5849851 -0.029429553  0.22314355  0.17163599      19
 ## 6  0.020356718 0.4618205  0.025833799 -0.04939276 -0.07650789      24</code></pre>
-<pre class="r"><code># Figure 4.3
-ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
+<div id="figure-4.3" class="section level4">
+<h4>Figure 4.3</h4>
+<pre class="r"><code>ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
   theme_bw() +
   geom_point(cex = 2) + 
   xlab(&quot;One run wins&quot;) + 
@@ -1126,6 +1129,7 @@ summary(teams_top_closers$pytResiduals)</code></pre>
 ## -0.048690 -0.011560  0.002544  0.004925  0.023090  0.071400</code></pre>
 <pre class="r"><code>mean(teams_top_closers$pytResiduals) * 162 # teams with a top closer will outperform their Pythagorean expectation by 0.8 games</code></pre>
 <pre><code>## [1] 0.797916</code></pre>
+</div>
 </div>
 <div id="section-4.7---how-many-runs-for-a-win" class="section level3">
 <h3>Section 4.7 - How many runs for a win?</h3>
@@ -1439,6 +1443,7 @@ left_join(Top, Managers, by = c(&quot;teamID&quot;, &quot;yearID&quot;, &quot;W&
 ## 4        1 162  72    2       N
 ## 5        1 108  42    2       N</code></pre>
 <pre class="r"><code># &quot;rodgebu01&quot; is Buck Rogers, &quot;howear01&quot; is Art Howe, &quot;weaveea99&quot; was Earl Weaver, &quot;johnsda02&quot; is Davey Johnson, and &quot;mcnamjo99&quot; is John McNamara.</code></pre>
+</div>
 </div>
 
 

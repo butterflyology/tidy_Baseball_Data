@@ -6,6 +6,10 @@ The "tidy" paradigm (aka "tidy-verse" formerly the "Hadley-verse") is just one w
 
 All data (and the original code) are available on github here: **https://github.com/maxtoki/baseball_R**
 
+I hope that you are following along with the book, otherwise this may not make a lot of sense. 
+
+I've tried to name the code chunks in a way that makes sense. For example, the code for Section 5.2 is labelled Sec_5.2. Similarly, the code for Figure 6.4 is labelled Fig_6.4.
+
 I will be downloading the data remotely or using the Lahman package so the repo is not filled with large files. If you are following along at home you may want to clone the repo or download the data locally. 
 
 *If there are errors or you found a better way for me to do something, please submit a PR*.
@@ -20,3 +24,4 @@ I will be downloading the data remotely or using the Lahman package so the repo 
 6. 22 August - Uploaded Ch. 6 code and exercises.
 7. 24 August - Cleaned code and centered figures.
 8. 28 August - Fixed figures in Ch.2, began work on Ch.7 
+9. 4 October - Found error in code for Figure 5.2, updated Ch.7 

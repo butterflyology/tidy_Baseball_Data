@@ -1,10 +1,10 @@
 # Chapter_5.Rmd
-C. A. Hamm  
+Chris Hamm  
 `r format(Sys.Date())`  
 
 
 
-### Chapter 5 - *Value of Plays Using Run Expectancy*
+## Chapter 5 - *Value of Plays Using Run Expectancy*
 
 
 ```r
@@ -49,8 +49,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/Los_Angeles         
-##  date     2016-09-24
+##  tz       America/New_York            
+##  date     2016-10-04
 ```
 
 ```
@@ -91,7 +91,7 @@ session_info()
 ### Section 5.2 - *Runs scored in the remainder of the inning*
 
 ```r
-# This is a 62 Mb file, so I'll download it from the GitHub repo. Note, you'll get a warning message when using read_csv because right here because there are not column headers. We'll add them manually. 
+# This is a 62 Mb file, so I'll download it from the GitHub repo. Note, you'll get a warning message when using read_csv because right here because there are no column headers. We'll add them manually. 
 data2011 <- read.csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/all2011.csv", header = FALSE)
 # I've placed the fields file in the data directory.
 fields <- read.csv("Data/fields.csv")
@@ -1572,13 +1572,15 @@ table(albert$RUNNERS)
 ## 354  27  61   7 147  20  37  13
 ```
 
+#### Figure 5.1
+
 ```r
-## Figure 5.1
 with(albert, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1))
 abline(h = 0, lty = 2, lwd = 2)
 ```
 
-<img src="Chapter_5_files/figure-html/Pujols-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_5_files/figure-html/Fig_5.1-1.png" style="display: block; margin: auto;" />
+
 
 ```r
 A.runs <- aggregate(albert$RUNS.VALUE, list(albert$RUNNERS), sum)
@@ -1778,22 +1780,21 @@ head(runs400)
 ## 6       R   DET     C
 ```
 
+#### Figure 5.2
+
 ```r
-## Figure 5.2
 runs.plot <- ggplot(runs400, aes(y = Runs, x = Runs.Start)) + geom_hline(yintercept = 0) + 
   theme_bw() + 
   geom_point(size = 2) + 
   stat_smooth(method = "loess", col = "black", se = FALSE)
 
-# I don't know how to add the top player labels to this plot
-runs.plot + geom_text(data = (runs %>% filter(PA >= 400 & Runs >= 40)), aes(PA, Runs, label = Last.Name), check_overlap = FALSE) 
+runs.plot + geom_text(data = (runs %>% filter(PA >= 400 & Runs >= 40)), aes(y = Runs, x = Runs.Start, label = Last.Name), vjust = -0.5, check_overlap = FALSE)
 ```
 
-<img src="Chapter_5_files/figure-html/opportunities-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_5_files/figure-html/Fig_5.2-1.png" style="display: block; margin: auto;" />
+
 
 ```r
-# need to get the names to move over
-
 runs400.top <- runs400 %>% filter(Runs >= 40)
 head(runs400.top)
 ```
@@ -1888,8 +1889,9 @@ head(position)
 ##      "3"      "9"      "2"      "2"      "8"      "8"
 ```
 
+#### Figure 5.3
+
 ```r
-## Figure 5.3
 ggplot(runs400, aes(x = Runs.Start, y = Runs)) + 
   theme_bw() + 
   stat_smooth(method = "loess", col = "black", se = FALSE) + 
@@ -1897,7 +1899,7 @@ ggplot(runs400, aes(x = Runs.Start, y = Runs)) +
   geom_text(aes(label = position))
 ```
 
-<img src="Chapter_5_files/figure-html/Position-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_5_files/figure-html/Fig_5.3-1.png" style="display: block; margin: auto;" />
 
 ### Section 5.8 - *Runs values of different base hits*
 
@@ -1938,14 +1940,15 @@ round(prop.table(table(d.homerun$STATE)), 3)
 ## 0.058 0.066 0.063 0.007 0.011 0.013 0.013 0.025 0.028 0.003 0.009 0.009
 ```
 
+#### Figure 5.4
+
 ```r
-## Figure 5.4
 MASS::truehist(d.homerun$RUNS.VALUE, col = "grey", xlim = c(1, 4), las = 1, xlab = "Runs Value, Home Run", ylab = "Density")
 abline(v = mean(d.homerun$RUNS.VALUE), lwd = 3)
 text(x = 1.5, y = 5, "Mean Runs Value", pos = 4)
 ```
 
-<img src="Chapter_5_files/figure-html/Hit_values-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_5_files/figure-html/Fig_5.4-1.png" style="display: block; margin: auto;" />
 
 ```r
 # I don't know of a way to make this easily with ggplot2
@@ -1968,14 +1971,17 @@ subset(d.homerun, RUNS.VALUE == max(RUNS.VALUE))[1, c("STATE", "NEW.STATE", "RUN
 
 ```r
 d.single <- data2011 %>% filter(EVENT_CD == 20)
+```
 
-## Figure 5.5
+#### Figure 5.5
+
+```r
 MASS::truehist(d.single$RUNS.VALUE, col = "grey", xlim = c(-1, 3), las = 1, xlab = "Runs Value, Single", ylab = "Density")
 abline(v = mean(d.single$RUNS.VALUE), lwd = 3)
 text(0.5, 5, "Mean Runs Value", pos = 4)
 ```
 
-<img src="Chapter_5_files/figure-html/Hit_values-2.png" style="display: block; margin: auto;" />
+<img src="Chapter_5_files/figure-html/Fig_5.5-1.png" style="display: block; margin: auto;" />
 
 ```r
 mean(d.single$RUNS.VALUE)
@@ -2193,13 +2199,14 @@ table(stealing$STATE)
 ##    27   102    89     1
 ```
 
+#### Figure 5.6
+
 ```r
-## Figure 5.6
 MASS::truehist(stealing$RUNS.VALUE, xlim = c(-1.5, 1.5), col = "grey", xlab = "Runs Value, Stealing", las = 1, ylab = "Density")
 abline(v = mean(stealing$RUNS.VALUE), lwd = 3)
 ```
 
-<img src="Chapter_5_files/figure-html/stolen_bases-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_5_files/figure-html/Fig_5.6-1.png" style="display: block; margin: auto;" />
 
 ```r
 mean(stealing$RUNS.VALUE)

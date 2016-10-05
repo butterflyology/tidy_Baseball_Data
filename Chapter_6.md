@@ -1,10 +1,10 @@
 # Chapter_6.Rmd
-C. A. Hamm  
+Chris Hamm  
 `r format(Sys.Date())`  
 
 
 
-### Chapter 6 - **Advanced graphics**.
+## Chapter 6 - *Advanced graphics*
 ####I'll be the first to confess that my re-write of the chapter on advanced graphics may be redundant, but what the heck. 
 
 
@@ -50,8 +50,8 @@ session_info()
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
-##  tz       America/Los_Angeles         
-##  date     2016-09-24
+##  tz       America/New_York            
+##  date     2016-10-04
 ```
 
 ```
@@ -172,8 +172,9 @@ sampleRows
 ## 5251   -6.77  8.95           L
 ```
 
+#### Figure_6.1
+
 ```r
-## Figure 6.1
 ggplot(verlander, aes(speed)) + 
   theme_bw() + 
   geom_histogram(bins = 30) + 
@@ -193,9 +194,9 @@ ggplot(verlander, aes(speed)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.1-2.png" style="display: block; margin: auto;" />
 
+#### Figure 6.2 - **facets!!!!**
 
 ```r
-## facets!!!!
 ggplot(verlander, aes(speed)) + 
   theme_bw() + 
   geom_line(stat = "density") + 
@@ -206,9 +207,9 @@ ggplot(verlander, aes(speed)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.2-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.3
 
 ```r
-## Figure 6.3
 ggplot(verlander, aes(speed, lty = pitch_type)) + 
   theme_bw() + 
   geom_line(stat = "density") + 
@@ -218,9 +219,9 @@ ggplot(verlander, aes(speed, lty = pitch_type)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.3-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.4
 
 ```r
-## Figure 6.4
 F4verl <- verlander %>% 
   filter(pitch_type == "FF") %>% 
   mutate(gameDay = as.integer(format(gamedate, format = "%j")))
@@ -294,9 +295,9 @@ ggplot(dailySpeed, aes(y = speed, x = gameDay)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.4-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.5
 
 ```r
-## Figure 6.5
 speedFC <- verlander %>% 
   filter(pitch_type %in% c("FF", "CH"))
 head(speedFC)
@@ -353,9 +354,9 @@ ggplot(avgspeedFC, aes(y = season, x = speed)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.5-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.6
 
 ```r
-## Figure 6.6
 avgSpeed <- F4verl %>% 
   select(pitches, season, speed) %>% 
   group_by(pitches, season) %>% 
@@ -387,9 +388,9 @@ ggplot(avgSpeed, aes(y = speed, x = pitches)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.6-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.7
 
 ```r
-## Figure 6.7
 NoHit <- verlander %>% 
   filter(gamedate == "2011-05-07")
 dim(NoHit)
@@ -430,9 +431,9 @@ f6.7
 
 <img src="Chapter_6_files/figure-html/Fig_6.7-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.8
 
 ```r
-### Figure 6.8
 f6.8 <- ggplot(NoHit, aes(x = px, y = pz)) + 
   theme_bw() + 
   facet_wrap(~ batter_hand, ncol = 1) + 
@@ -443,9 +444,9 @@ f6.8
 
 <img src="Chapter_6_files/figure-html/Fig_6.8-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.9
 
 ```r
-### Figure 6.9
 f6.9 <- ggplot(NoHit, aes(x = px, y = pz)) + 
   theme_bw() + 
   facet_wrap(~ batter_hand, nrow = 1) + 
@@ -460,9 +461,9 @@ f6.9
 
 <img src="Chapter_6_files/figure-html/Fig_6.9-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.10
 
 ```r
-### Figure 6.10
 topKzone <- 3.5
 botKzone <- 1.6
 inKzone <- -0.95
@@ -483,9 +484,9 @@ f6.10
 
 <img src="Chapter_6_files/figure-html/Fig_6.10-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.11
 
 ```r
-### Figure 6.11
 head(cabrera)
 ```
 
@@ -523,18 +524,19 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 ## Warning: Removed 4284 rows containing missing values (geom_point).
 ```
 
-<img src="Chapter_6_files/figure-html/Cabrera-1.png" style="display: block; margin: auto;" />
+<img src="Chapter_6_files/figure-html/Fig_6.11-1.png" style="display: block; margin: auto;" />
+
+#### Figure 6.12
 
 ```fig
-### Figure 6.12
 ggplot(cabrera, aes(x = hitx, y = hity)) + 
   geom_point(aes(color = hit_outcome)) + 
   coord_equal()
 ```
 
+#### Figure 6.13
 
 ```r
-### Figure 6.13
 ggplot(cabrera, aes(x = hitx, y = hity)) + 
   geom_point(aes(color = hit_outcome)) + 
   coord_equal() + 
@@ -551,9 +553,9 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 bases <- data.frame(x = c(0, 90 / sqrt(2), 0, -90 / sqrt(2), 0), y = c(0, 90 / sqrt(2), 2 * 90 / sqrt(2), 90 / sqrt(2), 0))
 ```
 
+#### Figure 6.14
 
 ```r
-### Figure 6.14
 ggplot(cabrera, aes(x = hitx, y = hity)) + 
   geom_point(aes(color = hit_outcome)) + 
   coord_equal() + 
@@ -569,9 +571,9 @@ ggplot(cabrera, aes(x = hitx, y = hity)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.14-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.15
 
 ```r
-### Figure 6.15
 cabreraStretch <- cabrera %>% 
   filter(gamedate > "2012-08-31")
 
@@ -590,9 +592,9 @@ ggplot(cabreraStretch, aes(x = hitx, y = hity)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.15-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.16 **Note that recent ggplot2 versions use geom_hline**
 
 ```r
-### Figure 6.16 Note that recent ggplot2 versions use geom_hline 
 ggplot(F4verl, aes(x = pitches, y = speed)) + 
   facet_wrap(~ season) + 
   geom_hline(aes(yintercept = mean(speed)), lty = 3) + 
@@ -603,9 +605,9 @@ ggplot(F4verl, aes(x = pitches, y = speed)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.16-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.17
 
 ```r
-### Figure 6.17
 kZone <- data.frame(x = c(inKzone, inKzone, outKzone, outKzone, inKzone), y = c(botKzone, topKzone, topKzone, botKzone, botKzone))
 kZone
 ```
@@ -630,9 +632,9 @@ ggplot(F4verl, aes(x = px, y = pz)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.17-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.18
 
 ```r
-### Figure 6.18
 ggplot(F4verl, aes(x = px, y = pz)) + 
   facet_wrap(~ batter_hand) + 
   stat_binhex() + 
@@ -642,9 +644,9 @@ ggplot(F4verl, aes(x = px, y = pz)) +
 
 <img src="Chapter_6_files/figure-html/Fig_6.18-1.png" style="display: block; margin: auto;" />
 
+#### Figure 6.19
 
 ```r
-### Figure 6.19
 Comerica <- jpeg::readJPEG("Data/Comerica.jpg")
 
 ggplot(cabrera, aes(x = hitx, y = hity)) + 

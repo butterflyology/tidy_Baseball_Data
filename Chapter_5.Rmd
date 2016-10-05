@@ -1,6 +1,6 @@
 ---
 title: "Chapter_5.Rmd"
-author: "C. A. Hamm"
+author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document:  
@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Chapter 5 - *Value of Plays Using Run Expectancy*
+## Chapter 5 - *Value of Plays Using Run Expectancy*
 
 ```{r preliminaries}
 library("Lahman")
@@ -25,8 +25,8 @@ session_info()
 ```
 
 ### Section 5.2 - *Runs scored in the remainder of the inning*
-```{r remainder}
-# This is a 62 Mb file, so I'll download it from the GitHub repo. Note, you'll get a warning message when using read_csv because right here because there are not column headers. We'll add them manually. 
+```{r Sec_5.2}
+# This is a 62 Mb file, so I'll download it from the GitHub repo. Note, you'll get a warning message when using read_csv because right here because there are no column headers. We'll add them manually. 
 data2011 <- read.csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/all2011.csv", header = FALSE)
 # I've placed the fields file in the data directory.
 fields <- read.csv("Data/fields.csv")
@@ -57,7 +57,7 @@ head(data2011)
 ```
 
 ### Section 5.3 - *Creating the matrix*
-```{r create_matrix}
+```{r Sec_5.3}
 RUNNER1 <- ifelse(as.character(data2011[, "BASE1_RUN_ID"]) == "", 0, 1)
 RUNNER2 <- ifelse(as.character(data2011[, "BASE2_RUN_ID"]) == "", 0, 1)
 RUNNER3 <- ifelse(as.character(data2011[, "BASE3_RUN_ID"]) == "", 0, 1)
@@ -114,7 +114,7 @@ cbind(RUNS.out, RUNS.2002)
 ```
 
 ### Section 5.4 Measuring success of a batting play
-```{r measuring}
+```{r Sec_5.4}
 RUNS.POTENTIAL <- matrix(c(RUNS$x, rep(0, 8)), 32, 1)
 dimnames(RUNS.POTENTIAL)[[1]] <- c(RUNS$Group, "000 3", "001 3", "010 3", "011 3", "100 3", "101 3", "110 3", "111 3")
 data2011$RUNS.STATE <- RUNS.POTENTIAL[data2011$STATE, ]
@@ -125,7 +125,7 @@ head(data2011)
 ```
 
 ### Section 5.5 - *José Alberto Pujols Alcántara*
-```{r Pujols, fig.align = "center"}
+```{r Sec_5.5}
 Roster <- read_csv("https://raw.githubusercontent.com/maxtoki/baseball_R/master/data/roster2011.csv", col_names = TRUE)
 
 albert.id <- Roster %>% filter(First.Name == "Albert" & Last.Name == "Pujols") %>% 
@@ -141,11 +141,15 @@ albert %>%
   slice(1:2) 
 
 table(albert$RUNNERS)
+```
 
-## Figure 5.1
+#### Figure 5.1
+```{r Fig_5.1, fig.align = "center"}
 with(albert, stripchart(RUNS.VALUE ~ RUNNERS, vertical = TRUE, jitter = 0.2, xlab = "RUNNERS", method = "jitter", ylab = "RUNS.VALUE", pch = 19, cex = 0.8, col = rgb(0, 0, 0, 0.5), las = 1))
 abline(h = 0, lty = 2, lwd = 2)
+```
 
+```{r Sec_5.4_cont}
 A.runs <- aggregate(albert$RUNS.VALUE, list(albert$RUNNERS), sum)
 names(A.runs)[2] <- "RUNS"
 A.PA <- aggregate(albert$RUNS.VALUE, list(albert$RUNNERS), length)
@@ -160,7 +164,7 @@ dim(data2011b)
 ```
 
 ### Section 5.6 - *Opportunities and success for all hitters*
-```{r opportunities, fig.align = "center"}
+```{r Sec_5.6}
 # Rather than use aggretate, I'll continue to use the dplyr pipeline.
 runs.sums <- data2011b %>% 
   select(Batter = BAT_ID, RUNS.VALUE) %>% 
@@ -191,17 +195,19 @@ head(runs)
 
 runs400 <- runs %>% filter(PA >= 400)
 head(runs400)
+```
 
-## Figure 5.2
+#### Figure 5.2
+```{r Fig_5.2, fig.align = "center"}
 runs.plot <- ggplot(runs400, aes(y = Runs, x = Runs.Start)) + geom_hline(yintercept = 0) + 
   theme_bw() + 
   geom_point(size = 2) + 
   stat_smooth(method = "loess", col = "black", se = FALSE)
 
-# I don't know how to add the top player labels to this plot
-runs.plot + geom_text(data = (runs %>% filter(PA >= 400 & Runs >= 40)), aes(PA, Runs, label = Last.Name), check_overlap = FALSE) 
-# need to get the names to move over
+runs.plot + geom_text(data = (runs %>% filter(PA >= 400 & Runs >= 40)), aes(y = Runs, x = Runs.Start, label = Last.Name), vjust = -0.5, check_overlap = FALSE)
+```
 
+```{r Sec_5.6_cont}
 runs400.top <- runs400 %>% filter(Runs >= 40)
 head(runs400.top)
 
@@ -210,15 +216,17 @@ runs400.top
 ```
 
 ### Section 5.7 - *Position in batting lineup*
-```{r Position, fig.align = "center"}
+```{r Sec_5.7, fig.align = "center"}
 get.batting.pos <- function(batter){
 	TB <- table(subset(data2011, BAT_ID == batter)$BAT_LINEUP_ID)
 	names(TB)[TB == max(TB)][1]
 }
 position <- sapply(as.character(runs400$Batter), get.batting.pos)
 head(position)
+```
 
-## Figure 5.3
+#### Figure 5.3
+```{r Fig_5.3, fig.align = "center"}
 ggplot(runs400, aes(x = Runs.Start, y = Runs)) + 
   theme_bw() + 
   stat_smooth(method = "loess", col = "black", se = FALSE) + 
@@ -229,7 +237,7 @@ ggplot(runs400, aes(x = Runs.Start, y = Runs)) +
 ### Section 5.8 - *Runs values of different base hits*
 
 #### I made a table of the 24 different *EVENT_CD* codes and placed it in the repo. 
-```{r Hit_values, fig.align = "center"}
+```{r Sec_5.8}
 d.homerun <- data2011 %>% 
   filter(EVENT_CD == 23)
 dim(d.homerun)
@@ -237,8 +245,10 @@ table(d.homerun$STATE)
 
 # Make a proportion table
 round(prop.table(table(d.homerun$STATE)), 3)
+```
 
-## Figure 5.4
+#### Figure 5.4
+```{r Fig_5.4, fig.align = "center"}
 MASS::truehist(d.homerun$RUNS.VALUE, col = "grey", xlim = c(1, 4), las = 1, xlab = "Runs Value, Home Run", ylab = "Density")
 abline(v = mean(d.homerun$RUNS.VALUE), lwd = 3)
 text(x = 1.5, y = 5, "Mean Runs Value", pos = 4)
@@ -249,8 +259,10 @@ subset(d.homerun, RUNS.VALUE == max(RUNS.VALUE))[1, c("STATE", "NEW.STATE", "RUN
 (mean.HR <- mean(d.homerun$RUNS.VALUE))
 
 d.single <- data2011 %>% filter(EVENT_CD == 20)
+```
 
-## Figure 5.5
+#### Figure 5.5
+```{r Fig_5.5, fig.align = "center"}
 MASS::truehist(d.single$RUNS.VALUE, col = "grey", xlim = c(-1, 3), las = 1, xlab = "Runs Value, Single", ylab = "Density")
 abline(v = mean(d.single$RUNS.VALUE), lwd = 3)
 text(0.5, 5, "Mean Runs Value", pos = 4)
@@ -263,7 +275,7 @@ subset(d.single, d.single$RUNS.VALUE == min(d.single$RUNS.VALUE))[, c("STATE", "
 ```
 
 ### Section 5.9 - *value of stolen bases*
-```{r stolen_bases, fig.align = "center"}
+```{r Sec_5.9}
 stealing <- data2011 %>% 
   filter(EVENT_CD == 6| EVENT_CD == 4)
 dim(stealing)
@@ -271,8 +283,10 @@ head(stealing)
 
 table(stealing$EVENT_CD)
 table(stealing$STATE)
+```
 
-## Figure 5.6
+#### Figure 5.6
+```{r Fig_5.6, fig.align = "center"}
 MASS::truehist(stealing$RUNS.VALUE, xlim = c(-1.5, 1.5), col = "grey", xlab = "Runs Value, Stealing", las = 1, ylab = "Density")
 abline(v = mean(stealing$RUNS.VALUE), lwd = 3)
 mean(stealing$RUNS.VALUE)
