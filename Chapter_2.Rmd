@@ -17,13 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Load packages, set seed, and note which package versions we will use.
 ```{r preliminaries}
 library("Lahman")
-library("dplyr"); options(dplyr.width = Inf)
-library("ggplot2")
-library("devtools")
-library("readr")
+library("tidyverse"); options(dplyr.width = Inf)
 
 set.seed(8761825)
-session_info()
+devtools::session_info()
 ```
 ### Section 2.3 - **Vectors and Warren Spahn**
 ```{r Ch2.S3}

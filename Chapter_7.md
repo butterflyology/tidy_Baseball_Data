@@ -1,4 +1,4 @@
-# Chapter_7.Rmd
+# tidy Baseball Chapter 7
 Chris Hamm  
 `r format(Sys.Date())`  
 
@@ -10,34 +10,32 @@ Chris Hamm
 
 ```r
 library("Lahman")
-library("dplyr"); options(dplyr.width = Inf)
+library("tidyverse"); options(dplyr.width = Inf)
 ```
 
 ```
-## 
-## Attaching package: 'dplyr'
+## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr
 ```
 
 ```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
+## Conflicts with tidy packages ----------------------------------------------
 ```
 
 ```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
+## filter(): dplyr, stats
+## lag():    dplyr, stats
 ```
 
 ```r
-library("ggplot2")
-library("devtools")
-library("readr")
 library("plotrix")
 
 set.seed(8761825)
-session_info()
+devtools::session_info()
 ```
 
 ```
@@ -64,7 +62,7 @@ session_info()
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
 ##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
 ##  DBI          0.5-1   2016-09-10 CRAN (R 3.3.0)
-##  devtools   * 1.12.0  2016-06-24 CRAN (R 3.3.0)
+##  devtools     1.12.0  2016-06-24 CRAN (R 3.3.0)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
 ##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
 ##  evaluate     0.9     2016-04-29 CRAN (R 3.3.0)
@@ -79,6 +77,7 @@ session_info()
 ##  munsell      0.4.3   2016-02-13 CRAN (R 3.3.0)
 ##  plotrix    * 3.6-3   2016-07-21 CRAN (R 3.3.0)
 ##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
+##  purrr      * 0.2.2   2016-06-18 CRAN (R 3.3.0)
 ##  R6           2.1.3   2016-08-19 CRAN (R 3.3.0)
 ##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
 ##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
@@ -86,7 +85,9 @@ session_info()
 ##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
 ##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.0)
 ##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
-##  tibble       1.2     2016-08-26 CRAN (R 3.3.0)
+##  tibble     * 1.2     2016-08-26 CRAN (R 3.3.0)
+##  tidyr      * 0.6.0   2016-08-12 CRAN (R 3.3.1)
+##  tidyverse  * 1.0.0   2016-09-09 CRAN (R 3.3.0)
 ##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
 ```

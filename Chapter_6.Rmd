@@ -1,5 +1,5 @@
 ---
-title: "Chapter_6.Rmd"
+title: "tidy Baseball Chapter 6"
 author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
@@ -16,13 +16,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r preliminaries}
 library("Lahman")
-library("dplyr"); options(dplyr.width = Inf)
-library("ggplot2")
-library("devtools")
-library("readr")
+library("tidyverse"); options(dplyr.width = Inf)
 
 set.seed(8761825)
-session_info()
+devtools::session_info()
 ```
 
 ### Section 6.2 - the lattice package. I think the power of the lattice package comes from the facets (multi-pane images). We can use the facet() function in ggplot2 to the same effect.

@@ -1,5 +1,5 @@
 ---
-title: "Chapter_7.Rmd"
+title: "tidy Baseball Chapter 7"
 author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
@@ -16,14 +16,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r preliminaries}
 library("Lahman")
-library("dplyr"); options(dplyr.width = Inf)
-library("ggplot2")
-library("devtools")
-library("readr")
+library("tidyverse"); options(dplyr.width = Inf)
 library("plotrix")
 
 set.seed(8761825)
-session_info()
+devtools::session_info()
 ```
 
 #### Figure 7.1 - This is essentially a plot of a contingency table
