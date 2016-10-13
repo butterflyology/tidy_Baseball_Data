@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 ## Chapter 2 - *Introduction to R*
 #### Starting here because Chapter 1 doesn't have much for us. 
@@ -38,7 +38,7 @@ WaSp <- as.data.frame(cbind(Age, Year, Win.Pct))
 WaSp
 ```
 #### Figure 2.4
-```{r Fig_2.4, fig.align = "center"}
+```{r Fig_2.4}
 ggplot(WaSp, aes(y = Win.Pct, x = Age)) +
   theme_bw() + 
   geom_point(size = 3) + 
@@ -65,7 +65,7 @@ Winner <- as.data.frame(Winner) # Note that ggplot2 only works with data frames,
 table(Winner)
 ```
 #### Figure 2.5
-```{r Fig_2.5, fig.align = "center"}
+```{r Fig_2.5}
 ggplot(Winner, aes(x = Winner)) +
   theme_bw() + 
   geom_bar() + 
@@ -151,7 +151,7 @@ Batting.5000 %>% filter(playerID == "aaronha01") %>%
 ```
 
 #### Figure 2.8 - where we want to plot the SO/AB (Y) against the HR/AB (X)
-```{r Fig_2.8, fig.align = "center"}
+```{r Fig_2.8}
 ggplot(Batting.5000, aes(x = HR / AB, y = SO / AB)) + 
   theme_bw() + 
   xlim(0, 0.08) + 
@@ -193,7 +193,7 @@ SB.Game <- hof %>% select(SB, G) %>% transmute(SB.Game = SB / G) %>% arrange(des
 head(SB.Game)
 ```
 + Construct a scatterplot of the stolen bases per game against the success rates. Are there particular players with unusually high or low stolen base success rates? Which player had the greatest number of stolen bases per game?
-```{r Ch2.Q1e, fig.align = "center"}
+```{r Ch2.Q1e}
 ggplot(hof, aes(x = (SB / (SB + CS)), y = (SB / G)), label = X2) + theme_bw() + geom_point(size = 1.5) + xlab("Stolen Base \nSuccess Rate") + ylab("Stolen Bases \nper Game") + geom_text(size= 2, aes(label = X2), nudge_y = 0.0125)
 ```
 2. Question 2 - Suppose one records the outcomes of a batter in ten plate appearances:
@@ -336,7 +336,7 @@ head(career.1000)
 
 + For the pitchers with at least 10,000 career IPouts, construct a scatterplot of mid career year and ratio of strikeouts to walks. Comment on the general pattern in this scatterplot.
 
-```{r Ch2.Q5e, fig.align = "center"}
+```{r Ch2.Q5e}
 ggplot(career.1000, aes(x = midyear, y = (SO / BB))) + 
   theme_bw() + 
   geom_point(size = 1.5) + 

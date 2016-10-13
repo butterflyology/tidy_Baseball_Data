@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
 ## Chapter 7 - *Balls and strikes effects*
@@ -24,7 +24,7 @@ devtools::session_info()
 ```
 
 #### Figure 7.1 - This is essentially a plot of a contingency table
-```{r Fig_7.1, fig.align = "center"}
+```{r Fig_7.1}
 mussina <- expand.grid(balls = 0:3, strikes = 0:2)
 mussina$value <- c(100, 118, 157, 207, 72, 82, 114, 171, 30, 38, 64, 122)
 mussina
@@ -84,7 +84,7 @@ runs.by.count$value <- mapply(FUN = bs.count.run.value,
 ```
 
 ### Figure 7.2
-```{r Fig_7.2, fig.align = "center"}
+```{r Fig_7.2}
 countmap(runs.by.count)
 ```
 
@@ -132,7 +132,7 @@ pred.area %>% filter(px == 2 & pz == 2.5)
 ```
 
 ### Figure 7.4 - contour plot - I don't know how to make the countourplot exactly as it is from the lattice package
-```{r Fig_7.4, fig.align = "center"}
+```{r Fig_7.4}
 ggplot(cabrera, aes(x = px, y = pz)) + 
   theme_bw() + ylim(0.5, 4.5) + 
   xlim(-1.5, 1.5) + 

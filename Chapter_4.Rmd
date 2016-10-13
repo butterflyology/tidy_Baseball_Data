@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
 ## Chapter 4 - *The relation between runs and wins*
@@ -22,7 +22,7 @@ devtools::session_info()
 ```
 
 ### Section 4.2 - Teams in Lahman's Database
-```{r Sec_4.2, fig.align = "center"}
+```{r Sec_4.2}
 # The Teams table is includedin the Lahman package
 
 str(Teams)
@@ -39,7 +39,7 @@ tail(myteams)
 ```
 
 #### Figure 4.1
-```{r Fig_4.1, fig.align = "center"}
+```{r Fig_4.1}
 ggplot(myteams, aes(x = RD, y = Wpct)) + 
   geom_point(cex = 2, alpha = 0.6) + 
   theme_bw() + 
@@ -49,7 +49,7 @@ ggplot(myteams, aes(x = RD, y = Wpct)) +
 ```
 
 
-```{r Sec_4.2b, fig.align = "center"}
+```{r Sec_4.2b}
 linfit <- lm(Wpct ~ RD, data = myteams)
 summary(linfit)
 # Wpct = 0.50 + 0.000628 * RD
@@ -62,7 +62,7 @@ max(myteams$linResiduals)
 ```
 
 #### Figure 4.2
-```{r Fig_4.2, fig.align = "center"}
+```{r Fig_4.2}
 ggplot(myteams, aes(x = RD, y = linResiduals)) + 
   geom_point(size = 2) + 
   theme_bw() + 
@@ -82,7 +82,7 @@ nrow(subset(myteams, abs(linResiduals) < 2 * linRMSE)) / nrow(myteams)
 ```
 
 ### Section 4.4 - Now let's explore the Pythagorean expectation
-```{r Sec_4.4, fig.align = "center"}
+```{r Sec_4.4}
 myteams <- myteams %>% 
   mutate(pytWpct = R^2 / (R^2 + RA^2), pytResiduals = Wpct - pytWpct)
 tail(myteams)
@@ -122,7 +122,7 @@ summary(pytFit) # suggests a Pythagorean exponent of 1.88 rather than 2.
 ```
 
 ### Section 4.6 - Good and Bad predictions based on the Pythagorean Formula
-```{r Sec_4.6, fig.align = "center"}
+```{r Sec_4.6}
 games1 <- Pythag.line(875, 737, N = 2)
 games1 * 162
 games1a <- Pythag.line(875, 757, N = 1.88)
@@ -165,7 +165,7 @@ head(teams2011)
 ```
 
 #### Figure 4.3
-```{r Fig_4.3, fig.align = "center"}
+```{r Fig_4.3}
 ggplot(teams2011, aes(x = onerunW, y = pytResiduals)) +
   theme_bw() +
   geom_point(cex = 2) + 
@@ -246,7 +246,7 @@ C19teams <- Teams %>%
 head(C19teams)
 ```
 + By inspecting the residual plot of your fitted model from (a), did the great and poor teams in the 19th century do better or worse than one would expect on the basis of their run differentials?
-```{r Ch4.Q2b, fig.align = "center"}
+```{r Ch4.Q2b}
 ggplot(C19teams, aes(y = pytWpct, x = Wpct)) +
   theme_bw() + 
     geom_abline(slope = 1, color = "red") +
@@ -260,7 +260,7 @@ ggplot(C19teams, aes(y = pytWpct, x = Wpct)) +
 ```
 3. *Exploring the manager effect in baseball*. Retrosheet game logs report, for every game played, the managers of both teams.
 + Select a period of your choice (encompassing at least ten years) and fit the Pythagorean formula model to the run-differential, win-loss data.
-```{r Ch4.Q3a, fig.align = "center"}
+```{r Ch4.Q3a}
 # I was at game one of the 1988 World Series and love the Dodgers, so I'll select the 1980's.
 
 Teams80s <- Teams %>%
