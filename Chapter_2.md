@@ -49,7 +49,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-10-13
+##  date     2016-10-28
 ```
 
 ```
@@ -79,7 +79,7 @@ devtools::session_info()
 ##  R6           2.2.0   2016-10-05 CRAN (R 3.3.1)
 ##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
 ##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
-##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
+##  rmarkdown    1.1     2016-10-16 CRAN (R 3.3.1)
 ##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
 ##  stringi      1.1.2   2016-10-01 CRAN (R 3.3.1)
 ##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
@@ -452,7 +452,7 @@ system.time(S <- sapply(players, compute.hr))
 
 ```
 ##    user  system elapsed 
-##   2.099   0.008   2.107
+##   2.213   0.011   2.227
 ```
 
 ```r
@@ -481,7 +481,7 @@ system.time(S1 <- Batting.60 %>%
 
 ```
 ##    user  system elapsed 
-##   0.012   0.000   0.012
+##   0.018   0.000   0.021
 ```
 
 ```r

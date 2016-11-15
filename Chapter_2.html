@@ -11,7 +11,7 @@
 
 <meta name="author" content="Chris Hamm" />
 
-<meta name="date" content="2016-10-13" />
+<meta name="date" content="2016-10-28" />
 
 <title>tidy Baseball Chapter 2</title>
 
@@ -95,6 +95,7 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
@@ -118,7 +119,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">tidy Baseball Chapter 2</h1>
 <h4 class="author"><em>Chris Hamm</em></h4>
-<h4 class="date"><em>2016-10-13</em></h4>
+<h4 class="date"><em>2016-10-28</em></h4>
 
 </div>
 
@@ -151,7 +152,7 @@ devtools::session_info()</code></pre>
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-10-13</code></pre>
+##  date     2016-10-28</code></pre>
 <pre><code>## Packages ------------------------------------------------------------------</code></pre>
 <pre><code>##  package    * version date       source        
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
@@ -175,7 +176,7 @@ devtools::session_info()</code></pre>
 ##  R6           2.2.0   2016-10-05 CRAN (R 3.3.1)
 ##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
 ##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
-##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
+##  rmarkdown    1.1     2016-10-16 CRAN (R 3.3.1)
 ##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
 ##  stringi      1.1.2   2016-10-01 CRAN (R 3.3.1)
 ##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
@@ -437,7 +438,7 @@ head(Batting.60)</code></pre>
 players &lt;- unique(Batting.60$playerID)
 system.time(S &lt;- sapply(players, compute.hr))</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.099   0.008   2.107</code></pre>
+##   2.213   0.011   2.227</code></pre>
 <pre class="r"><code>head(S)</code></pre>
 <pre><code>## aaronha01 abernte02 adairje01 adcocjo01 aguirha01 allisbo01 
 ##       375         0        57       155         0       225</code></pre>
@@ -448,7 +449,7 @@ system.time(S1 &lt;- Batting.60 %&gt;%
               group_by(playerID) %&gt;% 
               summarize(sum(HR)))</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.012   0.000   0.012</code></pre>
+##   0.018   0.000   0.021</code></pre>
 <pre class="r"><code>head(S1)</code></pre>
 <pre><code>## # A tibble: 6 × 2
 ##    playerID `sum(HR)`
@@ -926,6 +927,7 @@ dim(career.1000)</code></pre>
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 

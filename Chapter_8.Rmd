@@ -1,0 +1,206 @@
+---
+title: "tidy Baseball Chapter 8"
+author: "Chris Hamm"
+date: "`r format(Sys.Date())`"
+output:  
+      html_document: 
+        keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
+```
+
+## Chapter 8 - *Career trajectories*
+
+
+```{r preliminaries}
+library("Lahman")
+library("tidyverse"); options(dplyr.width = Inf)
+
+set.seed(8761825)
+devtools::session_info()
+```
+
+### Section 8.2 - *Mickey Mantel's Batting Trajectory*
+```{r Sec_8.2}
+# The Batting and Master files are already loaded with the Lahman package. 
+head(Batting) # using read.csv here rather than read_csv because it imports triples as X3B rather than 3B, which is not the best
+# I don't know how to recode variables with dplyr so I will use recode from "car."
+Batting$SF <- car::recode(Batting$SF, "NA = 0")
+Batting$HBP <- car::recode(Batting$HBP, "NA = 0")
+head(Batting)
+dim(Batting)
+
+mantle.id <- Master %>% filter(nameFirst == "Mickey" & nameLast == "Mantle") %>% select(playerID)
+mantle.id
+
+get.birthyear <- function(player.id){
+	playerline <- Master %>% 
+	  filter(playerID == as.character(player.id))
+	birthyear <- playerline$birthYear
+	birthmonth <- playerline$birthMonth
+	ifelse(birthmonth >= 7, birthyear + 1, birthyear)
+}
+get.birthyear(mantle.id)
+```
+
+
+
+#### Note that the book formula for OBP does not include HBP; if you exclude this you will get the incorrect result. The book inculdes hits in the denominator, which I have re-added as well.
+```{r Sec_8.2b}
+get.stats <- function(player.id){
+	d <- Batting %>% filter(playerID == as.character(player.id))
+	byear <- get.birthyear(as.character(player.id))
+	d <- d %>% mutate(Age = yearID - byear, SLG = (((H - X2B - X3B - HR) + (2 * X2B) + (3 * X3B) + (4 * HR)) / AB), OBP = ((H + BB + HBP) / (AB + BB + SF + HBP)), OPS = SLG + OBP)
+	return(d)
+}
+Mantle <- get.stats(mantle.id)
+Mantle
+```
+
+### Figure 8.1
+```{r Fig_8.1, fig.cap = "Scatterplot of OPS against age for Mickey Mantle."}
+ggplot(Mantle, aes(x = Age, y = OPS)) + 
+	theme_bw() + 
+	geom_point(size = 3) +
+	xlim(16, 39)
+```
+
+Create a smooth curve of the quadratic:
+$A + B(Age − 30) + C(Age − 30)^2$ where $A$, $B$, and $C$ are constants:
+
+  1. The constant $A$ is predicted by the value of OPS when the player reaches 30 years of age. 
+  1. The function reaches its highest value at
+    $PEAK.AGE = 30 - \frac{B}{2C}$. This value is estiamted to be the player's peak batting performance. 
+  1. The maximum value of the curve is: $Max = A - \frac{B^2}{4C}$. This is the estimate of the largest OPS of the player over his career. 
+  1. The $C$ coefficient explains the curve of the quadratic function and usually takes a negative value. "Large" values represent stronger curves (rapid rise and delcline). We'll use the "lm" function to fit the quadratic curve formula: $OPS \sim I(Age - 30) + I((Age - 30)^2)$
+
+```{r Sec_8.2c}
+fit.model <- function(d){
+	fit <- lm(OPS ~ I(Age - 30) + I((Age - 30)^2), data = d)
+	b <- coef(fit)
+	Age.max <- 30 - b[2] / b[3] / 2
+	Max <- b[1] - b[2]^2 / b[3] / 4
+	list(fit = fit, Age.max = Age.max, Max = Max)
+}
+
+F2 <- fit.model(Mantle)
+F2
+summary(F2$fit)
+```
+This makes the model: `r cat(sprintf("%.02f %.02f(Age - 30) %.02f (Age - 30)^2", coef(F2$fit)[1], coef(F2$fit)[2], coef(F2$fit)[3]))`
+
+```{r Fig_8.2, fig.cap = "Scatterplot of OPS against age for Mickey Mantle with a quadratic fit added. The location of the peak age and the maximum OPS fit are displayed."}
+# I don't know how to add a function line in ggplot, so base R it is.
+plot(x = Mantle$Age, y = Mantle$OPS, pch = 19, las = 1, , cex =1.5, ylab = "OPS", xlab = "Age", xlim = c(18, 37), ylim = c(0, 1.3))
+lines(Mantle$Age, predict(F2$fit, Age = Mantle$Age), lwd = 3)
+abline(v = F2$Age.max, lwd = 3, lty = 2, col = "grey")
+abline(h = F2$Max, lwd = 3, lty = 2, col = "grey")
+text(29.5, .72, "Peak.age" , cex = 2)
+text(20, 1.175, "Max", cex = 2)
+```
+
+### In honor of A-Rod retiring this season.
+```{r A-Rod}
+Arod.id <- Master %>% filter(nameFirst == "Alex" & nameLast == "Rodriguez") %>% select(playerID)
+get.birthyear(Arod.id)
+Arod <- get.stats(Arod.id) #only through 2015
+A2 <- fit.model(Arod)
+A2 # Arod peaked at 28 for OPS but stayed OK
+# ggplot(Arod, aes(x = Age, y = OPS)) + theme_bw() + geom_point(size = 2) 
+plot(x = Arod$Age, y = Arod$OPS, las = 1, pch = 19, cex =1.5, ylab = "OPS", xlab = "Age", xlim = c(17, 40), ylim = c(0, 1.1))
+lines(Arod$Age, predict(A2$fit, Age = Arod$Age), lwd = 3, lty = 2)
+```
+
+### Section 8.3 - *Comparing trajectories*
+```{r Sec_8.3}
+head(Fielding)
+
+AB.totals <- Batting %>% group_by(playerID) %>% summarize(Career.AB = sum(AB, na.rm = TRUE))
+head(AB.totals)
+
+Batting <- full_join(Batting, AB.totals, by = "playerID")
+head(Batting)
+Batting.2000 <- Batting %>% filter(Career.AB >= 2000)
+head(Batting.2000)
+dim(Batting.2000)
+
+find.position <- function(p){
+	positions <- c("OF", "1B", "2B", "SS", "3B", "C", "P", "DH")
+	d <- subset(Fielding, playerID == p)
+	count.games <- function(po)
+		sum(subset(d, POS == po)$G)
+	FLD <- sapply(positions, count.games)
+	positions[FLD == max(FLD)][1]
+}
+
+
+PLAYER <- as.character(unique(Batting.2000$playerID))
+POSITIONS <- sapply(PLAYER, find.position)
+length(POSITIONS)
+
+Fielding.2000 <- data.frame(playerID = names(POSITIONS), POS = POSITIONS)
+head(Fielding.2000)
+Batting.2000 <- left_join(Batting.2000, Fielding.2000, by = "playerID") # Becuase there are duplicate column names they get suffixes. The only way I know how to remove these is clunky.
+
+# Batting.2000 <- merge(Batting.2000, Fielding.2000)
+head(Batting.2000)
+dim(Batting.2000)
+```
+
+#### Calculating career statistics
+```{r Sec_8.3.2}
+C.totals <- Batting.2000 %>% group_by(playerID) %>% summarize(
+	C.G = sum(G, na.rm = TRUE), 
+	C.AB = sum(AB, na.rm = TRUE), 
+	C.R = sum(R, na.rm = TRUE), 
+	C.H = sum(H, na.rm = TRUE), 
+	C.2B = sum(X2B, na.rm = TRUE), 
+	C.3B = sum(X3B, na.rm = TRUE), 
+	C.HR = sum(HR, na.rm = TRUE), 
+	C.RBI = sum(RBI, na.rm = TRUE), 
+	C.BB = sum(BB, na.rm = TRUE), 
+	C.SO = sum(SO, na.rm = TRUE), 
+	C.SB = sum(SB, na.rm = TRUE)) %>% mutate(C.AVG = (C.H / C.AB), 	C.SLG = (((C.H - C.2B - C.3B - C.HR) + (2 * C.2B) + (3 * C.3B) + (4 * C.HR)) / C.AB))
+head(C.totals)
+
+C.totals <- inner_join(C.totals, Fielding.2000, by = "playerID")
+head(C.totals) 
+
+C.totals$Value.POS <- with(C.totals,
+	ifelse(POS == "C", 240,
+	ifelse(POS == "SS", 168,
+	ifelse(POS == "2B", 132,
+	ifelse(POS == "3B", 84,
+	ifelse(POS == "OF", 48,
+	ifelse(POS == "1B", 12, 0)))))))
+	
+head(C.totals)	
+```
+
+```{r Sec_8.3.3}
+similar <- function(p, number = 10){
+	P <- subset(C.totals, playerID == p)
+	C.totals$SS <- with(C.totals,
+	1000 -
+	floor(abs(C.G - P$C.G) / 20) -
+	floor(abs(C.AB - P$C.AB) / 75) -
+	floor(abs(C.R - P$C.R) / 10) -
+	floor(abs(C.H - P$C.H) / 15) -
+	floor(abs(C.2B - P$C.2B) / 5) -
+	floor(abs(C.3B - P$C.3B) / 4) -
+	floor(abs(C.HR - P$C.HR) / 2) -
+	floor(abs(C.RBI - P$C.RBI) / 10) -
+	floor(abs(C.BB - P$C.BB) / 25) -
+	floor(abs(C.SO - P$C.SO) / 150) -
+	floor(abs(C.SB - P$C.SB) / 20) -
+	floor(abs(C.AVG - P$C.AVG) / 0.001) -
+	floor(abs(C.SLG - P$C.SLG) / 0.002) -
+	abs(Value.POS - P$Value.POS))
+C.totals <- C.totals[order(C.totals$SS, decreasing = TRUE), ]
+C.totals[1:number, ]
+}
+similar(as.character(mantle.id), 6) # This is nice and all but I bet that hierarchical cluster analysis could do a great job at this. 
+```
+

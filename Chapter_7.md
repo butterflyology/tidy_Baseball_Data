@@ -44,13 +44,13 @@ devtools::session_info()
 
 ```
 ##  setting  value                       
-##  version  R version 3.3.1 (2016-06-21)
+##  version  R version 3.3.2 (2016-10-31)
 ##  system   x86_64, darwin13.4.0        
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-10-04
+##  date     2016-11-11
 ```
 
 ```
@@ -60,17 +60,16 @@ devtools::session_info()
 ```
 ##  package    * version date       source        
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
-##  colorspace   1.2-6   2015-03-11 CRAN (R 3.3.0)
+##  colorspace   1.2-7   2016-10-11 CRAN (R 3.3.0)
 ##  DBI          0.5-1   2016-09-10 CRAN (R 3.3.0)
 ##  devtools     1.12.0  2016-06-24 CRAN (R 3.3.0)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
 ##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
-##  evaluate     0.9     2016-04-29 CRAN (R 3.3.0)
-##  formatR      1.4     2016-05-09 CRAN (R 3.3.0)
+##  evaluate     0.10    2016-10-11 CRAN (R 3.3.1)
 ##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.0)
 ##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.0)
 ##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.0)
-##  knitr        1.14    2016-08-13 CRAN (R 3.3.0)
+##  knitr        1.15    2016-11-09 CRAN (R 3.3.2)
 ##  Lahman     * 5.0-0   2016-08-27 CRAN (R 3.3.0)
 ##  magrittr     1.5     2014-11-22 CRAN (R 3.3.0)
 ##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.0)
@@ -78,12 +77,12 @@ devtools::session_info()
 ##  plotrix    * 3.6-3   2016-07-21 CRAN (R 3.3.0)
 ##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
 ##  purrr      * 0.2.2   2016-06-18 CRAN (R 3.3.0)
-##  R6           2.1.3   2016-08-19 CRAN (R 3.3.0)
+##  R6           2.2.0   2016-10-05 CRAN (R 3.3.1)
 ##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
 ##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
-##  rmarkdown    1.0     2016-07-08 CRAN (R 3.3.0)
-##  scales       0.4.0   2016-02-26 CRAN (R 3.3.0)
-##  stringi      1.1.1   2016-05-27 CRAN (R 3.3.0)
+##  rmarkdown    1.1     2016-10-16 CRAN (R 3.3.1)
+##  scales       0.4.1   2016-11-09 CRAN (R 3.3.2)
+##  stringi      1.1.2   2016-10-01 CRAN (R 3.3.1)
 ##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
 ##  tibble     * 1.2     2016-08-26 CRAN (R 3.3.0)
 ##  tidyr      * 0.6.0   2016-08-12 CRAN (R 3.3.1)
@@ -92,7 +91,7 @@ devtools::session_info()
 ##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
 ```
 
-#### Figure 7.1 - This is essentially a plot of a contingency table
+### Figure 7.1 - This is essentially a plot of a contingency table
 
 ```r
 mussina <- expand.grid(balls = 0:3, strikes = 0:2)
@@ -613,7 +612,7 @@ ggplot(sampCabrera, aes(x = px, y = pz, shape = swung)) +
 ## Warning: Removed 4 rows containing missing values (geom_point).
 ```
 
-![](Chapter_7_files/figure-html/Fig_7.3-1.png)<!-- -->
+<img src="Chapter_7_files/figure-html/Fig_7.3-1.png" style="display: block; margin: auto;" />
 
 
 
@@ -1007,4 +1006,4 @@ ggplot(umpireContours, aes(x = x, y = y)) +
   stat_density2d(aes(color = bscount))
 ```
 
-![](Chapter_7_files/figure-html/Verlander-1.png)<!-- -->
+<img src="Chapter_7_files/figure-html/Verlander-1.png" style="display: block; margin: auto;" />

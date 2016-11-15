@@ -23,7 +23,7 @@ set.seed(8761825)
 devtools::session_info()
 ```
 
-#### Figure 7.1 - This is essentially a plot of a contingency table
+### Figure 7.1 - This is essentially a plot of a contingency table
 ```{r Fig_7.1}
 mussina <- expand.grid(balls = 0:3, strikes = 0:2)
 mussina$value <- c(100, 118, 157, 207, 72, 82, 114, 171, 30, 38, 64, 122)
