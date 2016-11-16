@@ -12,7 +12,7 @@ I've tried to name the code chunks in a way that makes sense. For example, the c
 
 I will be downloading the data remotely or using the Lahman package so the repo is not filled with large files. If you are following along at home you may want to clone the repo or download the data locally. 
 
-*If there are errors or you found a better way for me to do something, please submit a PR*.
+*If there are errors or you found a better way for me to do something, pretty please submit a PR*.
 
 **2016 Commits:**
 
