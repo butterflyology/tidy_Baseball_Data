@@ -25,5 +25,5 @@ I will be downloading the data remotely or using the Lahman package so the repo 
 1. 24 August - Cleaned code and centered figures.
 1. 28 August - Fixed figures in Ch.2, began work on Ch.7 
 1. 4 October - Found error in code for Figure 5.2, began Ch.7, used the "tidyverse" package rather than a la carte packages.  
-1. 13 October - Cleaned the RMarkdown code by setting global with opts_chunk$set
-1. 15 Novemeber - Added Chapter 8 material.
+1. 13 October - Cleaned the RMarkdown code by setting global with opts_chunk$set.
+1. 15 Novemeber - Added Chapter 8 material and cleaned earlier chapters.
