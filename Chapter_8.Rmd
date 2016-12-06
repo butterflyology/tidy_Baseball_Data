@@ -46,7 +46,6 @@ get.birthyear(mantle.id)
 ```
 
 
-
 #### Note that the book formula for OBP does not include HBP; if you exclude this you will get the incorrect result. The book inculdes hits in the denominator, which I have re-added as well.
 ```{r Sec_8.2b}
 get.stats <- function(player.id){
@@ -162,7 +161,8 @@ C.totals <- Batting.2000 %>% group_by(playerID) %>% summarize(
 	C.RBI = sum(RBI, na.rm = TRUE), 
 	C.BB = sum(BB, na.rm = TRUE), 
 	C.SO = sum(SO, na.rm = TRUE), 
-	C.SB = sum(SB, na.rm = TRUE)) %>% mutate(C.AVG = (C.H / C.AB), 	C.SLG = (((C.H - C.2B - C.3B - C.HR) + (2 * C.2B) + (3 * C.3B) + (4 * C.HR)) / C.AB))
+	C.SB = sum(SB, na.rm = TRUE)) %>% 
+  mutate(C.AVG = (C.H / C.AB), 	C.SLG = (((C.H - C.2B - C.3B - C.HR) + (2 * C.2B) + (3 * C.3B) + (4 * C.HR)) / C.AB))
 head(C.totals)
 
 C.totals <- inner_join(C.totals, Fielding.2000, by = "playerID")
@@ -175,12 +175,12 @@ C.totals$Value.POS <- with(C.totals,
 	ifelse(POS == "3B", 84,
 	ifelse(POS == "OF", 48,
 	ifelse(POS == "1B", 12, 0)))))))
-	
-head(C.totals)	
+head(C.totals)
 ```
 
+#### Computing similarity scores
 ```{r Sec_8.3.3}
-similar <- function(p, number = 10){
+similar <- function(p, number){
 	P <- subset(C.totals, playerID == p)
 	C.totals$SS <- with(C.totals,
 	1000 -
@@ -203,4 +203,57 @@ C.totals[1:number, ]
 }
 similar(as.character(mantle.id), 6) # This is nice and all but I bet that hierarchical cluster analysis could do a great job at this. 
 ```
+
+#### Defining age, OBP, SLG, and OPS variables
+```{r Sec_8.3.4}
+collapse.stint <- function(d){
+	d %>% group_by(playerID, yearID) %>% summarize(G = sum(G), AB = sum(AB), R = sum(R), H = sum(H), X2B = sum(X2B), X3B = sum(X3B), HR = sum(HR), RBI = sum(RBI), SB = sum(SB), CS = sum(CS), BB = sum(BB), SH = sum(SH), SF = sum(SF), HBP = sum(HBP), SLG = (((H - X2B - X3B - HR) + (2 * X2B) + (3 * X3B) + 4 * HR) / AB), OBP = ((H + BB + HBP) / (AB + BB + HBP + SF)), OPS = SLG + OBP, Career.AB = Career.AB[1], POS = POS[1]) # This is the correct OBP formula. Earlier it is incorrect.
+} 
+Batting.2000a <- Batting.2000 %>%
+  group_by(playerID, yearID) %>%
+  collapse.stint
+head(Batting.2000a)
+dim(Batting.2000a)
+
+player.list <- as.character(unique(Batting.2000$playerID))
+birthyears <- sapply(player.list, get.birthyear)
+Batting.2000a <- merge(Batting.2000a, data.frame(playerID = player.list, Birthyear = birthyears))
+Batting.2000a$Age <- with(Batting.2000a, yearID - Birthyear)
+Batting.2000a <- Batting.2000a[complete.cases(Batting.2000a$Age), ]
+head(Batting.2000a)
+```
+
+#### Fitting and plotting trajectories
+```{r Sec_8.3.5}
+fit.trajectory <- function(d){
+  fit <- lm(OPS ~ I(Age - 30) + I((Age - 30)^2), data = d)
+  data.frame(Age = d$Age, Fit = predict(fit, Age = d$Age))
+}
+
+plot.trajectories <- function(first, last, n.similar, ncol){
+  
+get.name <- function(playerid){
+  d1 <- subset(Master, playerID == playerid)
+  with(d1, paste(nameFirst, nameLast))
+}
+
+player.id <- subset(Master, nameFirst == first & nameLast == last)$playerID
+player.id <- as.character(player.id)
+player.list <- as.character(similar(player.id, n.similar)$playerID)
+Batting.new <- subset(Batting.2000a, playerID %in% player.list)
+F2 <- Batting.new %>%
+  group_by(playerID) %>%
+  fit.trajectory # note here the book calls for a function "plot.traj"
+F2a <- merge(F2, data.frame(playerID = player.list, Name = sapply(as.character(player.list), get.name)))
+print(ggplot(F2a, aes(x = Age, y = Fit)) +
+  theme_bw() + 
+  geom_line(size = 1.5) +
+  facet_wrap(~ Name, ncol = ncol)) 
+return(Batting.new)
+}
+
+plot.trajectories("Mickey", "Mantle", n.similar = 6, ncol = 2)
+plot.trajectories("Derek", "Jeter", n.similar = 9, ncol = 3)
+```
+
 

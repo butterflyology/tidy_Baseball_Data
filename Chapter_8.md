@@ -48,7 +48,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/New_York            
-##  date     2016-11-11
+##  date     2016-12-05
 ```
 
 ```
@@ -58,26 +58,29 @@ devtools::session_info()
 ```
 ##  package    * version date       source        
 ##  assertthat   0.1     2013-12-06 CRAN (R 3.3.0)
-##  colorspace   1.2-7   2016-10-11 CRAN (R 3.3.0)
+##  backports    1.0.4   2016-10-24 CRAN (R 3.3.1)
+##  colorspace   1.3-1   2016-11-18 CRAN (R 3.3.2)
 ##  DBI          0.5-1   2016-09-10 CRAN (R 3.3.0)
 ##  devtools     1.12.0  2016-06-24 CRAN (R 3.3.0)
 ##  digest       0.6.10  2016-08-02 CRAN (R 3.3.1)
 ##  dplyr      * 0.5.0   2016-06-24 CRAN (R 3.3.0)
 ##  evaluate     0.10    2016-10-11 CRAN (R 3.3.1)
-##  ggplot2    * 2.1.0   2016-03-01 CRAN (R 3.3.0)
+##  ggplot2    * 2.2.0   2016-11-11 CRAN (R 3.3.2)
 ##  gtable       0.2.0   2016-02-26 CRAN (R 3.3.0)
 ##  htmltools    0.3.5   2016-03-21 CRAN (R 3.3.0)
-##  knitr        1.15    2016-11-09 CRAN (R 3.3.2)
+##  knitr        1.15.1  2016-11-22 CRAN (R 3.3.2)
 ##  Lahman     * 5.0-0   2016-08-27 CRAN (R 3.3.0)
+##  lazyeval     0.2.0   2016-06-12 CRAN (R 3.3.0)
 ##  magrittr     1.5     2014-11-22 CRAN (R 3.3.0)
 ##  memoise      1.0.0   2016-01-29 CRAN (R 3.3.0)
 ##  munsell      0.4.3   2016-02-13 CRAN (R 3.3.0)
 ##  plyr         1.8.4   2016-06-08 CRAN (R 3.3.0)
 ##  purrr      * 0.2.2   2016-06-18 CRAN (R 3.3.0)
 ##  R6           2.2.0   2016-10-05 CRAN (R 3.3.1)
-##  Rcpp         0.12.7  2016-09-05 CRAN (R 3.3.0)
+##  Rcpp         0.12.8  2016-11-17 CRAN (R 3.3.2)
 ##  readr      * 1.0.0   2016-08-03 CRAN (R 3.3.0)
-##  rmarkdown    1.1     2016-10-16 CRAN (R 3.3.1)
+##  rmarkdown    1.2     2016-11-21 CRAN (R 3.3.2)
+##  rprojroot    1.1     2016-10-29 CRAN (R 3.3.0)
 ##  scales       0.4.1   2016-11-09 CRAN (R 3.3.2)
 ##  stringi      1.1.2   2016-10-01 CRAN (R 3.3.1)
 ##  stringr      1.1.0   2016-08-19 CRAN (R 3.3.0)
@@ -85,7 +88,7 @@ devtools::session_info()
 ##  tidyr      * 0.6.0   2016-08-12 CRAN (R 3.3.1)
 ##  tidyverse  * 1.0.0   2016-09-09 CRAN (R 3.3.0)
 ##  withr        1.0.2   2016-06-20 CRAN (R 3.3.0)
-##  yaml         2.1.13  2014-06-12 CRAN (R 3.3.0)
+##  yaml         2.1.14  2016-11-12 CRAN (R 3.3.2)
 ```
 
 ### Section 8.2 - *Mickey Mantel's Batting Trajectory*
@@ -321,8 +324,8 @@ text(20, 1.175, "Max", cex = 2)
 ```
 
 <div class="figure" style="text-align: center">
-<img src="Chapter_8_files/figure-html/Fig_8.2-1.png" alt="Scatterplot of OPS against age for Mickey Mantle with a quadratic fit added. // The location of the peak age and the maximum OPS fit are displayed."  />
-<p class="caption">Scatterplot of OPS against age for Mickey Mantle with a quadratic fit added. // The location of the peak age and the maximum OPS fit are displayed.</p>
+<img src="Chapter_8_files/figure-html/Fig_8.2-1.png" alt="Scatterplot of OPS against age for Mickey Mantle with a quadratic fit added. The location of the peak age and the maximum OPS fit are displayed."  />
+<p class="caption">Scatterplot of OPS against age for Mickey Mantle with a quadratic fit added. The location of the peak age and the maximum OPS fit are displayed.</p>
 </div>
 
 ### In honor of A-Rod retiring this season.
@@ -369,3 +372,319 @@ lines(Arod$Age, predict(A2$fit, Age = Arod$Age), lwd = 3, lty = 2)
 ```
 
 <img src="Chapter_8_files/figure-html/A-Rod-1.png" style="display: block; margin: auto;" />
+
+### Section 8.3 - *Comparing trajectories*
+
+```r
+head(Fielding)
+```
+
+```
+##    playerID yearID stint teamID lgID POS  G GS InnOuts PO  A  E DP PB WP
+## 1 abercda01   1871     1    TRO   NA  SS  1 NA      NA  1  3  2  0 NA NA
+## 2  addybo01   1871     1    RC1   NA  2B 22 NA      NA 67 72 42  5 NA NA
+## 3  addybo01   1871     1    RC1   NA  SS  3 NA      NA  8 14  7  0 NA NA
+## 4 allisar01   1871     1    CL1   NA  2B  2 NA      NA  1  4  0  0 NA NA
+## 5 allisar01   1871     1    CL1   NA  OF 29 NA      NA 51  3  7  1 NA NA
+## 6 allisdo01   1871     1    WS3   NA   C 27 NA      NA 68 15 20  4  0 NA
+##   SB CS ZR
+## 1 NA NA NA
+## 2 NA NA NA
+## 3 NA NA NA
+## 4 NA NA NA
+## 5 NA NA NA
+## 6 NA NA NA
+```
+
+```r
+AB.totals <- Batting %>% group_by(playerID) %>% summarize(Career.AB = sum(AB, na.rm = TRUE))
+head(AB.totals)
+```
+
+```
+## # A tibble: 6 × 2
+##    playerID Career.AB
+##       <chr>     <int>
+## 1 aardsda01         4
+## 2 aaronha01     12364
+## 3 aaronto01       944
+## 4  aasedo01         5
+## 5  abadan01        21
+## 6  abadfe01         8
+```
+
+```r
+Batting <- full_join(Batting, AB.totals, by = "playerID")
+head(Batting)
+```
+
+```
+##    playerID yearID stint teamID lgID  G  AB  R  H X2B X3B HR RBI SB CS BB
+## 1 abercda01   1871     1    TRO   NA  1   4  0  0   0   0  0   0  0  0  0
+## 2  addybo01   1871     1    RC1   NA 25 118 30 32   6   0  0  13  8  1  4
+## 3 allisar01   1871     1    CL1   NA 29 137 28 40   4   5  0  19  3  1  2
+## 4 allisdo01   1871     1    WS3   NA 27 133 28 44  10   2  2  27  1  1  0
+## 5 ansonca01   1871     1    RC1   NA 25 120 29 39  11   3  0  16  6  2  2
+## 6 armstbo01   1871     1    FW1   NA 12  49  9 11   2   1  0   5  0  1  0
+##   SO IBB HBP SH SF GIDP Career.AB
+## 1  0  NA   0 NA  0   NA         4
+## 2  0  NA   0 NA  0   NA      1231
+## 3  5  NA   0 NA  0   NA       740
+## 4  2  NA   0 NA  0   NA      1407
+## 5  1  NA   0 NA  0   NA     10277
+## 6  1  NA   0 NA  0   NA        49
+```
+
+```r
+Batting.2000 <- Batting %>% filter(Career.AB >= 2000)
+head(Batting.2000)
+```
+
+```
+##    playerID yearID stint teamID lgID  G  AB  R  H X2B X3B HR RBI SB CS BB
+## 1 ansonca01   1871     1    RC1   NA 25 120 29 39  11   3  0  16  6  2  2
+## 2 barnero01   1871     1    BS1   NA 31 157 66 63  10   9  0  34 11  6 13
+## 3 careyto01   1871     1    FW1   NA 19  87 16 20   2   0  0  10  5  0  2
+## 4 cuthbne01   1871     1    PH1   NA 28 150 47 37   7   5  3  30 16  2 10
+## 5 eggleda01   1871     1    NY2   NA 33 147 37 47   7   3  0  18 14  3  4
+## 6 fergubo01   1871     1    NY2   NA 33 158 30 38   6   1  0  25  4  4  3
+##   SO IBB HBP SH SF GIDP Career.AB
+## 1  1  NA   0 NA  0   NA     10277
+## 2  1  NA   0 NA  0   NA      2392
+## 3  1  NA   0 NA  0   NA      2394
+## 4  2  NA   0 NA  0   NA      2113
+## 5  3  NA   0 NA  0   NA      2546
+## 6  2  NA   0 NA  0   NA      3468
+```
+
+```r
+dim(Batting.2000)
+```
+
+```
+## [1] 31751    23
+```
+
+```r
+find.position <- function(p){
+	positions <- c("OF", "1B", "2B", "SS", "3B", "C", "P", "DH")
+	d <- subset(Fielding, playerID == p)
+	count.games <- function(po)
+		sum(subset(d, POS == po)$G)
+	FLD <- sapply(positions, count.games)
+	positions[FLD == max(FLD)][1]
+}
+
+
+PLAYER <- as.character(unique(Batting.2000$playerID))
+POSITIONS <- sapply(PLAYER, find.position)
+length(POSITIONS)
+```
+
+```
+## [1] 2375
+```
+
+```r
+Fielding.2000 <- data.frame(playerID = names(POSITIONS), POS = POSITIONS)
+head(Fielding.2000)
+```
+
+```
+##            playerID POS
+## ansonca01 ansonca01  1B
+## barnero01 barnero01  2B
+## careyto01 careyto01  SS
+## cuthbne01 cuthbne01  OF
+## eggleda01 eggleda01  OF
+## fergubo01 fergubo01  3B
+```
+
+```r
+Batting.2000 <- left_join(Batting.2000, Fielding.2000, by = "playerID") # Becuase there are duplicate column names they get suffixes. The only way I know how to remove these is clunky.
+```
+
+```
+## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factor and character vector, coercing into character vector
+```
+
+```r
+# Batting.2000 <- merge(Batting.2000, Fielding.2000)
+head(Batting.2000)
+```
+
+```
+##    playerID yearID stint teamID lgID  G  AB  R  H X2B X3B HR RBI SB CS BB
+## 1 ansonca01   1871     1    RC1   NA 25 120 29 39  11   3  0  16  6  2  2
+## 2 barnero01   1871     1    BS1   NA 31 157 66 63  10   9  0  34 11  6 13
+## 3 careyto01   1871     1    FW1   NA 19  87 16 20   2   0  0  10  5  0  2
+## 4 cuthbne01   1871     1    PH1   NA 28 150 47 37   7   5  3  30 16  2 10
+## 5 eggleda01   1871     1    NY2   NA 33 147 37 47   7   3  0  18 14  3  4
+## 6 fergubo01   1871     1    NY2   NA 33 158 30 38   6   1  0  25  4  4  3
+##   SO IBB HBP SH SF GIDP Career.AB POS
+## 1  1  NA   0 NA  0   NA     10277  1B
+## 2  1  NA   0 NA  0   NA      2392  2B
+## 3  1  NA   0 NA  0   NA      2394  SS
+## 4  2  NA   0 NA  0   NA      2113  OF
+## 5  3  NA   0 NA  0   NA      2546  OF
+## 6  2  NA   0 NA  0   NA      3468  3B
+```
+
+```r
+dim(Batting.2000)
+```
+
+```
+## [1] 31751    24
+```
+
+#### Calculating career statistics
+
+```r
+C.totals <- Batting.2000 %>% group_by(playerID) %>% summarize(
+	C.G = sum(G, na.rm = TRUE), 
+	C.AB = sum(AB, na.rm = TRUE), 
+	C.R = sum(R, na.rm = TRUE), 
+	C.H = sum(H, na.rm = TRUE), 
+	C.2B = sum(X2B, na.rm = TRUE), 
+	C.3B = sum(X3B, na.rm = TRUE), 
+	C.HR = sum(HR, na.rm = TRUE), 
+	C.RBI = sum(RBI, na.rm = TRUE), 
+	C.BB = sum(BB, na.rm = TRUE), 
+	C.SO = sum(SO, na.rm = TRUE), 
+	C.SB = sum(SB, na.rm = TRUE)) %>% mutate(C.AVG = (C.H / C.AB), 	C.SLG = (((C.H - C.2B - C.3B - C.HR) + (2 * C.2B) + (3 * C.3B) + (4 * C.HR)) / C.AB))
+head(C.totals)
+```
+
+```
+## # A tibble: 6 × 14
+##    playerID   C.G  C.AB   C.R   C.H  C.2B  C.3B  C.HR C.RBI  C.BB  C.SO
+##       <chr> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
+## 1 aaronha01  3298 12364  2174  3771   624    98   755  2297  1402  1383
+## 2 abbated01   855  3044   355   772    99    43    11   324   289    16
+## 3 abbotku01   702  2044   273   523   109    23    62   242   133   571
+## 4 abreubo01  2425  8480  1453  2470   574    59   288  1363  1476  1840
+## 5 ackledu01   607  2064   255   503    94    18    46   212   186   410
+## 6 adairje01  1165  4019   378  1022   163    19    57   366   208   499
+##    C.SB     C.AVG     C.SLG
+##   <int>     <dbl>     <dbl>
+## 1   240 0.3049984 0.5545131
+## 2   142 0.2536137 0.3252300
+## 3    22 0.2558708 0.4227006
+## 4   400 0.2912736 0.4747642
+## 5    31 0.2437016 0.3735465
+## 6    29 0.2542921 0.3468525
+```
+
+```r
+C.totals <- inner_join(C.totals, Fielding.2000, by = "playerID")
+```
+
+```
+## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector
+```
+
+```r
+head(C.totals) 
+```
+
+```
+## # A tibble: 6 × 15
+##    playerID   C.G  C.AB   C.R   C.H  C.2B  C.3B  C.HR C.RBI  C.BB  C.SO
+##       <chr> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
+## 1 aaronha01  3298 12364  2174  3771   624    98   755  2297  1402  1383
+## 2 abbated01   855  3044   355   772    99    43    11   324   289    16
+## 3 abbotku01   702  2044   273   523   109    23    62   242   133   571
+## 4 abreubo01  2425  8480  1453  2470   574    59   288  1363  1476  1840
+## 5 ackledu01   607  2064   255   503    94    18    46   212   186   410
+## 6 adairje01  1165  4019   378  1022   163    19    57   366   208   499
+##    C.SB     C.AVG     C.SLG    POS
+##   <int>     <dbl>     <dbl> <fctr>
+## 1   240 0.3049984 0.5545131     OF
+## 2   142 0.2536137 0.3252300     2B
+## 3    22 0.2558708 0.4227006     SS
+## 4   400 0.2912736 0.4747642     OF
+## 5    31 0.2437016 0.3735465     2B
+## 6    29 0.2542921 0.3468525     2B
+```
+
+```r
+C.totals$Value.POS <- with(C.totals,
+	ifelse(POS == "C", 240,
+	ifelse(POS == "SS", 168,
+	ifelse(POS == "2B", 132,
+	ifelse(POS == "3B", 84,
+	ifelse(POS == "OF", 48,
+	ifelse(POS == "1B", 12, 0)))))))
+	
+head(C.totals)	
+```
+
+```
+## # A tibble: 6 × 16
+##    playerID   C.G  C.AB   C.R   C.H  C.2B  C.3B  C.HR C.RBI  C.BB  C.SO
+##       <chr> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
+## 1 aaronha01  3298 12364  2174  3771   624    98   755  2297  1402  1383
+## 2 abbated01   855  3044   355   772    99    43    11   324   289    16
+## 3 abbotku01   702  2044   273   523   109    23    62   242   133   571
+## 4 abreubo01  2425  8480  1453  2470   574    59   288  1363  1476  1840
+## 5 ackledu01   607  2064   255   503    94    18    46   212   186   410
+## 6 adairje01  1165  4019   378  1022   163    19    57   366   208   499
+##    C.SB     C.AVG     C.SLG    POS Value.POS
+##   <int>     <dbl>     <dbl> <fctr>     <dbl>
+## 1   240 0.3049984 0.5545131     OF        48
+## 2   142 0.2536137 0.3252300     2B       132
+## 3    22 0.2558708 0.4227006     SS       168
+## 4   400 0.2912736 0.4747642     OF        48
+## 5    31 0.2437016 0.3735465     2B       132
+## 6    29 0.2542921 0.3468525     2B       132
+```
+
+
+```r
+similar <- function(p, number = 10){
+	P <- subset(C.totals, playerID == p)
+	C.totals$SS <- with(C.totals,
+	1000 -
+	floor(abs(C.G - P$C.G) / 20) -
+	floor(abs(C.AB - P$C.AB) / 75) -
+	floor(abs(C.R - P$C.R) / 10) -
+	floor(abs(C.H - P$C.H) / 15) -
+	floor(abs(C.2B - P$C.2B) / 5) -
+	floor(abs(C.3B - P$C.3B) / 4) -
+	floor(abs(C.HR - P$C.HR) / 2) -
+	floor(abs(C.RBI - P$C.RBI) / 10) -
+	floor(abs(C.BB - P$C.BB) / 25) -
+	floor(abs(C.SO - P$C.SO) / 150) -
+	floor(abs(C.SB - P$C.SB) / 20) -
+	floor(abs(C.AVG - P$C.AVG) / 0.001) -
+	floor(abs(C.SLG - P$C.SLG) / 0.002) -
+	abs(Value.POS - P$Value.POS))
+C.totals <- C.totals[order(C.totals$SS, decreasing = TRUE), ]
+C.totals[1:number, ]
+}
+similar(as.character(mantle.id), 6) # This is nice and all but I bet that hierarchical cluster analysis could do a great job at this. 
+```
+
+```
+## # A tibble: 6 × 17
+##    playerID   C.G  C.AB   C.R   C.H  C.2B  C.3B  C.HR C.RBI  C.BB  C.SO
+##       <chr> <int> <int> <int> <int> <int> <int> <int> <int> <int> <int>
+## 1 mantlmi01  2401  8102  1677  2415   344    72   536  1509  1733  1710
+## 2 thomafr04  2322  8199  1494  2468   495    12   521  1704  1667  1397
+## 3 matheed01  2391  8537  1509  2315   354    72   512  1453  1444  1487
+## 4 schmimi01  2404  8352  1506  2234   408    59   548  1595  1507  1883
+## 5 sheffga01  2576  9217  1636  2689   467    27   509  1676  1475  1171
+## 6  sosasa01  2354  8813  1475  2408   379    45   609  1667   929  2306
+##    C.SB     C.AVG     C.SLG    POS Value.POS    SS
+##   <int>     <dbl>     <dbl> <fctr>     <dbl> <dbl>
+## 1   153 0.2980745 0.5567761     OF        48  1000
+## 2    32 0.3010123 0.5549457     1B        12   856
+## 3    68 0.2711725 0.5094295     3B        84   853
+## 4   174 0.2674808 0.5272989     3B        84   848
+## 5   253 0.2917435 0.5139416     OF        48   847
+## 6   234 0.2732327 0.5337569     OF        48   831
+```
+
