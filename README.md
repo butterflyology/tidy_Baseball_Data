@@ -16,14 +16,15 @@ I will be downloading the data remotely or using the Lahman package so the repo 
 
 **2016 Commits:**
 
-1. 31 July - Initial commit (README.md)
-1. 7 August - Updated Ch. 2 file to include exercises
-1. 9 August - Completed Ch. 2 & 3 questions at the end of the chapter. 
-1. 16 August - Completed Ch. 4 and three end of chapter questions.
-1. 20 August - Uploaded Ch. 5, exercises, and added a table with EVENT_CD codes explained. 
-1. 22 August - Uploaded Ch. 6 code and exercises.
-1. 24 August - Cleaned code and centered figures.
-1. 28 August - Fixed figures in Ch.2, began work on Ch.7 
-1. 4 October - Found error in code for Figure 5.2, began Ch.7, used the "tidyverse" package rather than a la carte packages.  
-1. 13 October - Cleaned the RMarkdown code by setting global with opts_chunk$set.
-1. 15 Novemeber - Added Chapter 8 material and cleaned earlier chapters.
+1. 2016-07-31 - Initial commit (README.md)
+1. 2016-08-07 - Updated Ch. 2 file to include exercises
+1. 2016-09-09 - Completed Ch. 2 & 3 questions at the end of the chapter. 
+1. 2016-08-16 - Completed Ch. 4 and three end of chapter questions.
+1. 2016-08-20 - Uploaded Ch. 5, exercises, and added a table with EVENT_CD codes explained. 
+1. 2016-08-22 - Uploaded Ch. 6 code and exercises.
+1. 2016-08-24 - Cleaned code and centered figures.
+1. 2016-08-28 - Fixed figures in Ch.2, began work on Ch.7 
+1. 2016-10-04 - Found error in code for Figure 5.2, began Ch.7, used the "tidyverse" package rather than a la carte packages.  
+1. 2016-10-13 - Cleaned the RMarkdown code by setting global with opts_chunk$set.
+1. 2016-11-15 - Added Chapter 8 material and cleaned earlier chapters.
+1. 2017-08-04 - Updated figures, started `bookdown` branch.

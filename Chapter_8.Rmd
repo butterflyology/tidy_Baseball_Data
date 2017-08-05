@@ -4,10 +4,10 @@ author: "Chris Hamm"
 date: "`r format(Sys.Date())`"
 output:  
       html_document: 
-        keep_md: yes
+        keep_md: TRUE
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")
 ```
 
@@ -51,7 +51,10 @@ get.birthyear(mantle.id)
 get.stats <- function(player.id){
 	d <- Batting %>% filter(playerID == as.character(player.id))
 	byear <- get.birthyear(as.character(player.id))
-	d <- d %>% mutate(Age = yearID - byear, SLG = (((H - X2B - X3B - HR) + (2 * X2B) + (3 * X3B) + (4 * HR)) / AB), OBP = ((H + BB + HBP) / (AB + BB + SF + HBP)), OPS = SLG + OBP)
+	d <- d %>% mutate(Age = yearID - byear, 
+	             SLG = (((H - X2B - X3B - HR) + (2 * X2B) + (3 * X3B) + (4 * HR)) / AB), 
+	             OBP = ((H + BB + HBP) / (AB + BB + SF + HBP)), 
+	             OPS = SLG + OBP)
 	return(d)
 }
 Mantle <- get.stats(mantle.id)
@@ -238,9 +241,13 @@ get.name <- function(playerid){
 }
 
 player.id <- subset(Master, nameFirst == first & nameLast == last)$playerID
+
 player.id <- as.character(player.id)
+
 player.list <- as.character(similar(player.id, n.similar)$playerID)
+
 Batting.new <- subset(Batting.2000a, playerID %in% player.list)
+
 F2 <- Batting.new %>%
   group_by(playerID) %>%
   fit.trajectory # note here the book calls for a function "plot.traj"
@@ -249,7 +256,7 @@ print(ggplot(F2a, aes(x = Age, y = Fit)) +
   theme_bw() + 
   geom_line(size = 1.5) +
   facet_wrap(~ Name, ncol = ncol)) 
-return(Batting.new)
+# return(Batting.new)
 }
 
 plot.trajectories("Mickey", "Mantle", n.similar = 6, ncol = 2)
