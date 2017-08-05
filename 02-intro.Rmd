@@ -1,11 +1,5 @@
----
-title: "tidy Baseball Chapter 2"
-author: "Chris Hamm"
-date: "`r format(Sys.Date())`"
-output:  
-      html_document:  
-        keep_md: TRUE  
----
+# Introduction to `R`
+
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")

@@ -1,11 +1,4 @@
----
-title: "tidy Baseball Chapter 7"
-author: "Chris Hamm"
-date: "`r format(Sys.Date())`"
-output:  
-      html_document:  
-        keep_md: TRUE
----
+# Ball and Strikes Effects
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")

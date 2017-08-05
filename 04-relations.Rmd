@@ -1,11 +1,4 @@
----
-title: "tidy Baseball Chapter 4"
-author: "Chris Hamm"
-date: "`r format(Sys.Date())`"
-output:  
-      html_document:  
-        keep_md: TRUE  
----
+# The Relationship Between Runs and Wins
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center")

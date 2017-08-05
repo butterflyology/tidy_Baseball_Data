@@ -1,0 +1,7 @@
+book_filename: "tidy-baseball"
+chapter_name: "Chapter "
+repo: https://github.com/butterflyology/tidy_Baseball_Data
+output_dir: docs
+rmd_files: ["index.Rmd", "01-datasets.Rmd", "02-intro.Rmd", "03-traditional_graphics.Rmd", "04-relations.Rmd", "05-run_expectancy.Rmd", "06-advanced_graphics.Rmd", "07-effects.Rmd", "08-trajectories.Rmd", "09-simulations.Rmd", "10-streaks.Rmd", "11-park_effects.Rmd", "12-fielding.Rmd"]
+clean: [packages.bib, bookdown.bbl]
+new_session: yes
