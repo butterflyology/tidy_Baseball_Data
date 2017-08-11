@@ -125,11 +125,11 @@ AB.totals <- Batting %>% group_by(playerID) %>%
 head(AB.totals)
 dim(AB.totals)
 
-Batting.new <- inner_join(Batting, AB.totals, by = "playerID")
+Batting <- inner_join(Batting, AB.totals, by = "playerID")
 head(Batting.new) # Adds the Career.AB column by player
 dim(Batting.new)
 
-Batting.2000 <- Batting.new %>% filter(Career.AB >= 2000)
+Batting.2000 <- Batting %>% filter(Career.AB >= 2000)
 head(Batting.2000)
 dim(Batting.2000)
 
@@ -155,9 +155,9 @@ Fielding.2000 <- as_data_frame(x = list(playerID = PLAYER, POS = POSITIONS))
 head(Fielding.2000)
 dim(Fielding.2000)
 
-Data.2000 <- inner_join(Batting.2000, Fielding.2000, by = "playerID")
-head(Data.2000)
-dim(Data.2000)
+Batting.2000 <- inner_join(Batting.2000, Fielding.2000, by = "playerID")
+head(Batting.2000)
+dim(Batting.2000)
 
 ```
 
@@ -222,13 +222,13 @@ similar(as.character(mantle.id), 6) # This is nice and all but I bet that hierar
 collapse.stint <- function(d){
 	d %>% group_by(playerID, yearID) %>% summarize(G = sum(G), AB = sum(AB), R = sum(R), H = sum(H), X2B = sum(X2B), X3B = sum(X3B), HR = sum(HR), RBI = sum(RBI), SB = sum(SB), CS = sum(CS), BB = sum(BB), SH = sum(SH), SF = sum(SF), HBP = sum(HBP), SLG = (((H - X2B - X3B - HR) + (2 * X2B) + (3 * X3B) + 4 * HR) / AB), OBP = ((H + BB + HBP) / (AB + BB + HBP + SF)), OPS = SLG + OBP, Career.AB = Career.AB[1], POS = POS[1]) # This is the correct OBP formula. Earlier it is incorrect.
 } 
-Batting.2000a <- Data.2000 %>%
+Batting.2000 <- Batting.2000 %>%
   group_by(playerID, yearID) %>%
   collapse.stint
-head(Batting.2000a)
-dim(Batting.2000a)
+head(Batting.2000)
+dim(Batting.2000)
 
-player.list <- as.character(unique(Batting.2000a$playerID))
+player.list <- as.character(unique(Batting.2000$playerID))
 
 birthyears <- map_dbl(.x = player.list, .f = get.birthyear)
 
@@ -237,19 +237,18 @@ birthyears <- map_dbl(.x = player.list, .f = get.birthyear)
 
 # Batting.2000b <- merge(Batting.2000a, data.frame(playerID = player.list, Birthyear = birthyears))
 
-Batting.2000c <- inner_join(Batting.2000a, as_data_frame(x = list(playerID = player.list, Birthyear = birthyears)), by = "playerID")
+Batting.2000 <- inner_join(Batting.2000, as_data_frame(x = list(playerID = player.list, Birthyear = birthyears)), by = "playerID")
 
 # setequal(Batting.2000b, Batting.2000c)
   
-
-Batting.2000c <- Batting.2000c %>%
+Batting.2000 <- Batting.2000 %>%
   mutate(Age = yearID - Birthyear)
   
 # Batting.2000a$Age <- with(Batting.2000a, yearID - Birthyear)
 # Batting.2000a[complete.cases(Batting.2000a$Age), ]
 # head(Batting.2000a)
 
-Batting.2000c[complete.cases(Batting.2000c$Age), ]
+Batting.2000[complete.cases(Batting.2000$Age), ]
 ```
 
 #### Fitting and plotting trajectories
@@ -268,16 +267,16 @@ get.name <- function(playerid){
 
 player.id <- subset(Master, nameFirst == first & nameLast == last)$playerID
 
-pid <- Master %>%
-  group_by(playerID) %>%
-  select(playerID)
-unique(pid)
+# pid <- Master %>%
+#   group_by(playerID) %>%
+#   select(playerID)
+# unique(pid)
+# 
+# player.id <- as.character(pid)
 
-player.id <- as.character(pid)
+player.list <- as.character(similar(player.id, n.similar)$playerID)
 
-player.list <- as.character(similar(pid, n.similar)$playerID)
-
-Batting.new <- subset(Batting.2000c, playerID %in% player.list)
+Batting.new <- subset(Batting.2000, playerID %in% player.list)
 
 F2 <- Batting.new %>%
   group_by(playerID) %>%
