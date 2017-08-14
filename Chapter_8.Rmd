@@ -126,8 +126,8 @@ head(AB.totals)
 dim(AB.totals)
 
 Batting <- inner_join(Batting, AB.totals, by = "playerID")
-head(Batting.new) # Adds the Career.AB column by player
-dim(Batting.new)
+head(Batting) # Adds the Career.AB column by player
+dim(Batting)
 
 Batting.2000 <- Batting %>% filter(Career.AB >= 2000)
 head(Batting.2000)
@@ -158,12 +158,11 @@ dim(Fielding.2000)
 Batting.2000 <- inner_join(Batting.2000, Fielding.2000, by = "playerID")
 head(Batting.2000)
 dim(Batting.2000)
-
 ```
 
 #### Calculating career statistics
 ```{r Sec_8.3.2}
-C.totals <- Data.2000 %>% group_by(playerID) %>% summarize(
+C.totals <- Batting.2000 %>% group_by(playerID) %>% summarize(
 	C.G = sum(G, na.rm = TRUE), 
 	C.AB = sum(AB, na.rm = TRUE), 
 	C.R = sum(R, na.rm = TRUE), 
